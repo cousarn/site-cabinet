@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Icone from '../../components/Icone.astro';
+import Cta from '../../components/Cta.astro';
+const domaines = (await getCollection('domaines')).sort((a, b) => a.data.ordre - b.data.ordre);
+const icones: Record<string, any> = { 'separation-divorce': 'famille', successions: 'succession', 'droit-du-travail': 'travail', 'procedure-appel': 'procedure' };
+---
+<Base title="Domaines d’intervention — avocat à Rennes | Arnaud Cousin" description="Famille et patrimoine, successions et indivision, droit du travail, procédure civile et appel : les domaines d’intervention du cabinet Arnaud Cousin à Rennes." fil={[{ label: 'Domaines', href: '/domaines' }]}>
+  <Hero variante="clair" surtitre="Domaines d’intervention" titre="Contentieux des familles et du patrimoine familial, conflits du travail, droit civil" chapo="En demande comme en défense, pour les particuliers, les familles et les chefs d’entreprise, devant les juridictions de Rennes et de Bretagne. Votre situation n’entre dans aucune case ? Décrivez-la : vous orienter fait partie du conseil." image="parlement" />
+  <section class="section">
+    <div class="conteneur grille grille--2">
+      {domaines.map((d) => (
+        <a href={`/domaines/${d.id}`} class="carte carte--lien">
+          <span class="carte__icone"><Icone nom={icones[d.id]} /></span>
+          <h3>{d.data.h1.replace(/^Avocat en /, '').replace(/ à Rennes$/, '').replace(/^./, (c) => c.toUpperCase())}</h3>
+          <p class="muet" style="font-size: 15px">{d.data.accroche}</p>
+          <span class="lien" style="margin-top: auto">Découvrir</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="section section--ivoire">
+    <div class="conteneur deux-colonnes">
+      <div class="pile"><h2>Le droit civil des personnes, des biens et des contrats</h2><p class="muet">Tutelles et curatelles, voisinage et propriété, recouvrement et contrats, responsabilité civile et accidents : le cabinet traite aussi les litiges civils du quotidien, en particulier lorsqu’ils touchent une famille ou un patrimoine qu’il connaît déjà.</p></div>
+      <div class="pile"><h3>Une simple information sur vos droits ou une consultation approfondie ?</h3><p class="muet" style="font-size: 15px">La consultation écrite en ligne répond à la première ; le rendez-vous au cabinet, en visio ou par téléphone, à la seconde.</p><div style="display:flex;flex-wrap:wrap;gap:14px"><a href="/services/consultation-ecrite" class="btn btn--plein">Consultation écrite</a><a href="/services/rendez-vous" class="btn btn--contour">Rendez-vous</a></div></div>
+    </div>
+  </section>
+  <Cta />
+</Base>

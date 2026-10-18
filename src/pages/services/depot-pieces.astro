@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import { cabinet } from '../../data/cabinet';
+---
+<Base title="Déposer des pièces pour votre dossier | Cabinet Arnaud Cousin" description="Clients du cabinet : transmettez vos documents par le lien personnel reçu pour votre dossier. Chiffrés, classés directement dans votre dossier, sans service tiers." noindex fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Dépôt de pièces', href: '/services/depot-pieces' }]}>
+  <Hero surtitre="Dépôt de pièces" titre="Déposer des pièces pour votre dossier" chapo="Fini les pièces jointes trop lourdes et les mails perdus. Depuis votre lien personnel, déposez PDF, photos et scans, de l’ordinateur ou du téléphone. Chiffrés, classés dans votre dossier, sans service tiers." image="couloir" />
+  <section class="section">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile">
+        <h2 style="font-size: 28px">Vous avez reçu un lien personnel ?</h2>
+        <p class="muet">Il figure dans le courriel d’ouverture de votre dossier et dans chaque demande de pièces du cabinet. Il est propre à votre dossier : ne le transmettez pas.</p>
+        <p class="muet">Vous ne le retrouvez pas ? Écrivez à <a href={`mailto:${cabinet.email}`} class="lien">{cabinet.email}</a> en indiquant votre nom : un nouveau lien vous est renvoyé.</p>
+      </div>
+      <div class="carte pile">
+        <h3>Comment ça marche</h3>
+        <ol class="muet" style="font-size: 15px; display: flex; flex-direction: column; gap: 8px">
+          <li>Ouvrez votre lien personnel (il commence par <code>{cabinet.siteUrl}/depot/</code>).</li>
+          <li>Glissez vos fichiers ou prenez-les en photo depuis le téléphone ; nommez-les si vous le pouvez (« bulletin mars 2026 »).</li>
+          <li>Validez : un accusé de réception vous est adressé, les pièces sont classées dans votre dossier au cabinet.</li>
+        </ol>
+        <p class="muet" style="font-size: 13px">Formats : PDF, JPG, PNG, HEIC, DOCX — 50 Mo par fichier. Les pièces sont chiffrées en transit, conservées sur les serveurs du cabinet en France et supprimées du site après classement.</p>
+      </div>
+    </div>
+  </section>
+</Base>

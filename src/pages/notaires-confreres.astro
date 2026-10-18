@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import { cabinet } from '../data/cabinet';
+---
+<Base title="Notaires et confrères — postulation et partage judiciaire à Rennes | Arnaud Cousin" description="Postulation devant le tribunal judiciaire et la cour d’appel de Rennes (540 € / 700 € TTC), partage judiciaire en relais de l’étude, séparation d’un chef d’entreprise. Saisir le cabinet en ligne." fil={[{ label: 'Notaires & confrères', href: '/notaires-confreres' }]}>
+  <Hero surtitre="Notaires & confrères" titre="Un partenaire judiciaire à Rennes pour débloquer vos dossiers" chapo="Partenaire des notaires et des professionnels face à un blocage : un relais judiciaire efficace, avec réactivité et célérité. Pour les confrères : postulation et suivi devant le tribunal judiciaire et la cour d’appel de Rennes, à tarifs connus d’avance." image="parlement" position="50% 40%">
+    <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px"><a href="#saisine" class="btn btn--clair">Saisir le cabinet</a><a href={`tel:${cabinet.telephoneE164}`} class="btn btn--contour-clair">{cabinet.telephone}</a></div>
+  </Hero>
+  <section class="section">
+    <div class="conteneur grille">
+      <div class="carte" id="postulation"><p class="surtitre">Confrères</p><h3>Postulation à Rennes</h3><p class="muet" style="font-size: 15px">Vous plaidez, le cabinet postule : actes, délais, mise en état, audiences de procédure, compte rendu à chaque étape. Tribunal judiciaire (référés compris) et cour d’appel (renvoi après cassation inclus).</p><p style="font-weight: 600; color: var(--vert)">540 € TTC au TJ · 700 € TTC en appel · 192 € TTC la vacation</p></div>
+      <div class="carte" id="partage"><p class="surtitre">Notaires</p><h3>Partage judiciaire en relais de l’étude</h3><p class="muet" style="font-size: 15px">Héritier taisant, indivisaire qui bloque, recel suspecté : le cabinet assigne en partage, fait désigner votre étude comme notaire commis et conduit la procédure jusqu’à l’homologation ou la licitation. Sans empiéter sur votre rôle.</p></div>
+      <div class="carte" id="entreprise"><p class="surtitre">Experts-comptables, conseils</p><h3>Séparation d’un chef d’entreprise</h3><p class="muet" style="font-size: 15px">Parts sociales, compte courant d’associé, conjoint salarié, immobilier d’entreprise : une liquidation se gagne sur les chiffres. Le cabinet travaille avec vous, à partir de vos comptes.</p></div>
+    </div>
+  </section>
+  <section class="section section--nuit" id="saisine">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile"><p class="surtitre">Saisine</p><h2>Saisir le cabinet</h2><p class="muet">Un formulaire, un accusé de réception sous 24 h ouvrées, un lien de dépôt sécurisé pour les pièces. Le cabinet vous confirme sa disponibilité et le forfait applicable avant toute diligence.</p></div>
+      <!-- Traité par /api/saisine.php (phase services) -->
+      <form class="pile" method="post" action="/api/saisine.php" style="gap: 14px">
+        <div class="grille grille--2" style="gap: 14px">
+          <label class="champ" style="color: var(--sur-vert)">Vous êtes<select name="qualite"><option>Avocat</option><option>Notaire</option><option>Expert-comptable, conseil</option></select></label>
+          <label class="champ" style="color: var(--sur-vert)">Barreau / étude / cabinet<input type="text" name="structure" required /></label>
+          <label class="champ" style="color: var(--sur-vert)">Nom<input type="text" name="nom" required autocomplete="name" /></label>
+          <label class="champ" style="color: var(--sur-vert)">Courriel professionnel<input type="email" name="email" required autocomplete="email" /></label>
+        </div>
+        <label class="champ" style="color: var(--sur-vert)">Objet<select name="objet"><option>Postulation — tribunal judiciaire</option><option>Postulation — cour d’appel</option><option>Partage judiciaire</option><option>Séparation d’un chef d’entreprise</option><option>Autre</option></select></label>
+        <label class="champ" style="color: var(--sur-vert)">Juridiction, date d’audience ou délai connu, parties<textarea name="message" required></textarea></label>
+        <button type="submit" class="btn btn--clair" style="align-self: flex-start">Envoyer la saisine</button>
+      </form>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Faq from '../components/Faq.astro';
+import Cta from '../components/Cta.astro';
+import { bareme } from '../data/honoraires';
+import themis from '../assets/photos/themis-1600.jpg';
+
+const modes = [
+  ['Au temps passé', 'Taux horaire × temps passé : le plus juste — tout le travail, rien que le travail. Le temps s’estime avec vous, sachant que l’adversaire, le juge et l’encombrement des juridictions ne se maîtrisent pas.', `${bareme.tauxHoraire} € TTC / heure`],
+  ['Au forfait', 'Lorsque les diligences sont prévisibles — divorce amiable, postulation, procédure simple —, un prix convenu d’avance, détaillé dans la convention.', 'Grille ci-dessous'],
+  ['Honoraire de résultat', 'Un complément proportionnel aux sommes obtenues ou économisées, dans le respect de la loi : jamais seul, toujours en plus d’un honoraire de base.', bareme.resultat],
+  ['Honoraire de transaction', 'Appliqué lorsque le cabinet négocie l’accord qui met fin au litige : l’amiable est valorisé, votre avocat reste neutre.', 'Prévu dans chaque convention'],
+];
+const faq = [
+  { q: 'La première consultation est-elle gratuite ?', r: '<p>Non. Elle est payante (150 € TTC au cabinet, dès 100 € par internet) et vous repartez avec un avis, pas seulement un devis. Son coût est déduit des honoraires si vous confiez ensuite votre dossier au cabinet.</p>' },
+  { q: 'Qui paie les frais de justice ?', r: '<p>Huissier, expert, droits de plaidoirie, timbre d’appel : ils s’ajoutent aux honoraires et sont avancés par le client, sauf prise en charge par une protection juridique ou l’aide juridictionnelle. Le juge peut en mettre tout ou partie à la charge de l’adversaire (dépens, article 700 CPC).</p>' },
+  { q: 'Puis-je payer en plusieurs fois ?', r: '<p>Oui : la convention prévoit un échéancier adapté à l’avancement du dossier. Les provisions sont appelées étape par étape, chaque facture détaillant les diligences accomplies.</p>' },
+];
+---
+<Base title="Honoraires d’avocat à Rennes — grille et convention | Arnaud Cousin" description="Taux horaire, forfaits, honoraire de résultat et de transaction, convention détaillée, aide juridictionnelle et protection juridique : la politique tarifaire du cabinet Arnaud Cousin." fil={[{ label: 'Honoraires', href: '/honoraires' }]}>
+  <Hero variante="clair" surtitre="Honoraires" titre="Tarifs et coûts : justesse et transparence" image="themis">
+    <p slot="actions" class="chapo"><strong style="color: var(--vert)">La justice n’est pas gratuite.</strong> À votre charge, à celle de l’adversaire, de votre assurance ou de l’État, l’accès au droit a un coût : sa prise en charge doit être juste et transparente. Les honoraires sont fixés librement, en accord avec vous.</p>
+  </Hero>
+
+  <section class="section" id="modes">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="max-width: 720px; gap: 10px"><h2>Rémunération obligatoire, mais pas n’importe comment</h2><p class="muet">La loi impose de facturer toute intervention, quel que soit le résultat, et interdit la rémunération au seul succès. Mais le résultat peut peser. D’où quatre modes de calcul, combinés selon le dossier.</p></div>
+      <div class="grille grille--4">
+        {modes.map(([t, x, v]) => <div class="carte"><h3>{t}</h3><p class="muet" style="font-size: 15px">{x}</p><p style="margin-top: auto; font-weight: 600; color: var(--vert)">{v}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire" id="grille">
+    <div class="conteneur pile" style="gap: 24px">
+      <h2>Grille indicative</h2>
+      <p class="muet" style="max-width: 760px">Montants TTC, hors frais de justice, pour un dossier sans difficulté particulière : un ordre de grandeur, ni une promesse ni un plafond. <span class="a-confirmer">[Barème {bareme.millesime} — mise à jour 2026 à valider]</span></p>
+      <div class="tableau-defilant">
+        <table class="grille-tarifs">
+          <thead><tr><th scope="col">Prestation</th><th scope="col">Honoraires TTC</th></tr></thead>
+          {bareme.lignes.map((f) => (
+            <tbody>
+              <tr><th scope="rowgroup" colspan="2" style="background: var(--papier); color: var(--laiton-sombre); font-size: 12px; letter-spacing: .16em; text-transform: uppercase">{f.famille}</th></tr>
+              {f.items.map((i) => <tr><td>{i.label}</td><td>{i.prix}</td></tr>)}
+            </tbody>
+          ))}
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="convention">
+    <div class="conteneur deux-colonnes">
+      <div class="pile"><p class="surtitre">Convention d’honoraires</p><h2>La convention d’honoraires est obligatoire</h2><p class="muet">Dès l’ouverture du dossier, une convention détaillée : périmètre de la mission, conditions financières, frais de justice et qui les paie. Signée en ligne. Chaque facture détaille les diligences : vous savez ce que vous payez, et pourquoi.</p></div>
+      <div class="section--nuit" style="border-radius: var(--r); padding: 32px"><h3 style="color: var(--sur-vert)">Le mythe de l’avocat procédurier</h3><p class="muet" style="margin-top: 10px; font-size: 15px">Les avocats feraient durer les procédures par intérêt ? Chaque convention du cabinet prévoit un honoraire de transaction, appliqué lorsqu’il négocie l’accord qui met fin au litige : l’amiable est valorisé, votre avocat reste neutre.</p></div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire" id="aides">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile"><p class="surtitre">Protection juridique</p><h2>Vous l’ignorez peut-être, mais vous cotisez</h2><p class="muet">Multirisque habitation, contrat auto ou bancaire : une protection juridique peut couvrir les frais de justice et une part des honoraires, et avancer des frais élevés (expertise). Vous choisissez librement votre avocat ; le cabinet vérifie avec vous.</p></div>
+      <div class="pile"><p class="surtitre">Aide juridictionnelle</p><h2>Un engagement militant, une mission de service public</h2><p class="muet">Revenus modestes, pas de patrimoine : l’État peut prendre en charge tout ou partie des frais, par une indemnité forfaitaire versée à l’avocat — un défraiement, pas une rémunération. Le cabinet accepte en principe l’aide juridictionnelle, hors successions. Demandez-le dès le rendez-vous.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <Faq items={faq} />
+      <figure class="figure" style="max-width: 420px; justify-self: center"><span class="cadre"><Image src={themis} alt="Thémis, allégorie de la justice" widths={[480, 800]} sizes="(max-width: 720px) 90vw, 420px" loading="lazy" /></span><figcaption>Thémis — la balance pour peser, le glaive pour trancher</figcaption></figure>
+    </div>
+  </section>
+  <Cta />
+</Base>

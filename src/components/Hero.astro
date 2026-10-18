@@ -1,0 +1,59 @@
+---
+/**
+ * Bandeau de page. Variante « photo » : fond vert, photo à droite voilée.
+ * Variante « clair » : fond ivoire avec décor photo transparent.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import parlement from '../assets/photos/parlement-1536.webp';
+import couloir from '../assets/photos/couloir-bandeau-1672x700.webp';
+import cite from '../assets/photos/cite-judiciaire-bandeau-2400.webp';
+import themis from '../assets/photos/themis-bandeau-1600.webp';
+
+interface Props {
+  surtitre?: string;
+  titre: string;
+  chapo?: string;
+  image?: 'parlement' | 'couloir' | 'cite' | 'themis' | 'aucune';
+  variante?: 'photo' | 'clair';
+  position?: string; // object-position de la photo
+}
+const { surtitre, titre, chapo, image = 'parlement', variante = 'photo', position = '70% 45%' } = Astro.props;
+const photos: Record<string, ImageMetadata> = { parlement, couloir, cite, themis };
+const photo = image === 'aucune' ? null : photos[image];
+---
+{variante === 'photo' ? (
+  <section class="hero">
+    {photo && <Image src={photo} alt="" class="hero__photo" style={`object-position:${position}`} widths={[800, 1200, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />}
+    <div class="hero__voile" aria-hidden="true"></div>
+    <div class="conteneur hero__contenu hero__grille">
+      <div class="pile entree" style="gap: 24px; max-width: 680px">
+        {surtitre && <p class="surtitre" style="color: var(--laiton-clair); display: flex; align-items: center; gap: 14px"><span class="filet" style="background: var(--laiton-clair)"></span>{surtitre}</p>}
+        <h1>{titre}</h1>
+        {chapo && <p class="chapo">{chapo}</p>}
+        <slot name="actions" />
+      </div>
+      <slot name="aside" />
+    </div>
+  </section>
+) : (
+  <section class="hero-clair decor-parent">
+    {photo && <div class="decor decor--papier" aria-hidden="true"><Image src={photo} alt="" width={1200} loading="eager" /></div>}
+    <div class="conteneur hero-clair__in">
+      <div class="pile entree" style="gap: 20px; max-width: 720px">
+        {surtitre && <p class="surtitre">{surtitre}</p>}
+        <h1>{titre}</h1>
+        {chapo && <p class="chapo">{chapo}</p>}
+        <slot name="actions" />
+      </div>
+      <slot name="aside" />
+    </div>
+  </section>
+)}
+
+<style>
+  .hero__grille { padding-top: 88px; padding-bottom: 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 56px; align-items: end; }
+  .hero-clair { background: var(--ivoire); border-bottom: 1px solid var(--ligne); }
+  .hero-clair__in { padding-top: 72px; padding-bottom: 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 48px 72px; align-items: center; position: relative; }
+  @media (max-width: 720px) { .hero__grille { padding-top: 48px; padding-bottom: 48px; } .hero-clair__in { padding-top: 44px; padding-bottom: 40px; } }
+</style>

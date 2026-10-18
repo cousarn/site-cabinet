@@ -1,0 +1,41 @@
+---
+title: "Avocat successions, partage et indivision à Rennes | Arnaud Cousin"
+h1: "Avocat en successions, partages et indivision à Rennes"
+description: "Succession bloquée, indivision paralysée, testament contesté : partage judiciaire, licitation, recel, salaire différé. Avocat à Rennes, partenaire des notaires."
+accroche: "Succession bloquée, héritier qui ne répond plus, testament contesté, assurance-vie qui vide la masse : quand le notaire ne peut plus avancer seul, il faut un partenaire judiciaire. Rennes, Saint-Malo, Saint-Brieuc, Nantes et la cour d’appel."
+image: parlement
+ordre: 2
+situations:
+  - titre: "Partage judiciaire et licitation"
+    texte: "Nul ne peut être contraint de demeurer dans l’indivision (art. 815 C. civ.). À défaut d’accord : partage judiciaire, vente autorisée malgré un minoritaire, licitation. Souvent, une mise en demeure chiffrée suffit."
+  - titre: "Testament, donations, réserve"
+    texte: "Réduction des libéralités excessives, rapport des donations, nullité d’un testament, recel successoral : la part de chacun se calcule avant de se discuter."
+  - titre: "Assurance-vie"
+    texte: "Primes manifestement exagérées, requalification en donation, bénéficiaire désigné à la dernière heure : l’assurance-vie n’échappe pas toujours à la succession."
+  - titre: "Salaire différé agricole"
+    texte: "Les enfants qui ont travaillé sans rémunération sur l’exploitation familiale disposent d’une créance souvent ignorée au moment du partage."
+  - titre: "Liquidation du régime matrimonial"
+    texte: "Divorce, séparation de concubins ou de pacsés, succession : le partage est une matière de chiffres et de procédure. L’essentiel de l’activité du cabinet depuis vingt-six ans — pour les parties comme pour les notaires."
+  - titre: "Conjoint survivant, envoi en possession"
+    texte: "Droits du conjoint, usufruit, droit viager au logement, envoi en possession du légataire universel : sécuriser la situation avant qu’elle ne se fige."
+methode:
+  - titre: "Chiffrer d’abord"
+    texte: "Le cabinet produit sa propre liquidation plutôt que de commenter celle de l’adversaire, avec l’appui de notaires, experts-comptables et fiscalistes."
+  - titre: "Négocier ferme"
+    texte: "Une mise en demeure chiffrée et argumentée débloque plus d’un dossier. L’honoraire de transaction valorise cet accord."
+  - titre: "Assigner si nécessaire"
+    texte: "Assignation en partage, désignation d’un notaire commis, incidents de mise en état, homologation ou licitation : jusqu’à la cour d’appel, avec la même personne du début à la fin."
+encadre:
+  titre: "Notaires : un dossier qui n’avance plus ?"
+  texte: "Le cabinet est le partenaire judiciaire de l’étude : il reçoit la partie qui veut avancer, assigne en partage, fait désigner votre étude comme notaire commis et conduit la procédure jusqu’à l’homologation ou la licitation. Sans empiéter sur votre rôle."
+  lien: "/notaires-confreres#partage"
+  libelle: "Saisir le cabinet"
+faq:
+  - q: "Combien de temps dure un partage judiciaire ?"
+    r: "<p>De dix-huit mois à plusieurs années selon la complexité et l’attitude des indivisaires. La phase amiable, même tardive, reste ouverte à tout moment et le cabinet la recherche systématiquement.</p>"
+  - q: "Peut-on vendre un bien indivis si un héritier s’y oppose ?"
+    r: "<p>Oui, sous conditions : la vente peut être autorisée à la majorité des deux tiers (art. 815-5-1 C. civ.) ou ordonnée par le tribunal lorsque le refus met en péril l’intérêt commun (art. 815-5). À défaut, la licitation intervient dans le cadre du partage judiciaire.</p>"
+  - q: "L’aide juridictionnelle est-elle possible en matière de succession ?"
+    r: "<p>Le cabinet n’intervient pas à l’aide juridictionnelle en matière de succession. Une assurance de protection juridique peut en revanche prendre en charge une partie des frais : on vérifie avec vous.</p>"
+fiches: ["indivision-bloquee", "salaire-differe-agricole"]
+---

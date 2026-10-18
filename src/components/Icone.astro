@@ -1,0 +1,22 @@
+---
+/** Icônes au trait, cohérentes avec la maquette (jamais d'emoji). */
+interface Props { nom: 'famille' | 'succession' | 'travail' | 'procedure' | 'globe' | 'livre' | 'puce' | 'horloge' | 'calendrier' | 'ecrit' | 'depot' | 'devis' | 'assistant' | 'bouclier'; taille?: number; }
+const { nom, taille = 26 } = Astro.props;
+const trace: Record<Props['nom'], string> = {
+  famille: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.6-4.5 3.8-4.5S21 17.5 21 20"/>',
+  succession: '<path d="M4 20h16M6 20V9l6-5 6 5v11M10 20v-6h4v6"/>',
+  travail: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+  procedure: '<path d="M12 3v18M5 7l7-4 7 4M5 7l-2 7a3.5 3.5 0 0 0 7 0l-2-7M19 7l-2 7a3.5 3.5 0 0 0 7 0l-2-7"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  livre: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h7"/>',
+  puce: '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+  horloge: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  calendrier: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  ecrit: '<path d="M4 20h16M4 4h10l6 6v6"/><path d="M14 4v6h6M7 16l8-8"/>',
+  depot: '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>',
+  devis: '<path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5M9 13h6M9 17h6"/>',
+  assistant: '<path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4z"/><path d="M8 8h8M8 11h5"/>',
+  bouclier: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+};
+---
+<svg width={taille} height={taille} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={trace[nom]} />

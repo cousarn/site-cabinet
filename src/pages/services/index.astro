@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Icone from '../../components/Icone.astro';
+import Cta from '../../components/Cta.astro';
+import { cabinet } from '../../data/cabinet';
+import themisBandeau from '../../assets/photos/themis-bandeau-1600.webp';
+
+const services = [
+  ['calendrier', 'Rendez-vous en ligne', 'Cabinet, visio ou téléphone : choisissez le format et le créneau, c’est confirmé. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier.', '/services/rendez-vous', 'Choisir un créneau'],
+  ['ecrit', 'Consultation écrite', 'Posez votre question par écrit, joignez vos pièces, réglez en ligne : une note écrite que vous conservez, sous cinq jours ouvrés. L’équivalent d’une consultation d’orientation d’une heure, sans vous déplacer, moins cher.', '/services/consultation-ecrite', 'Consulter dès 100 €'],
+  ['depot', 'Déposer des pièces', 'Fini les pièces jointes trop lourdes et les mails perdus. Depuis votre lien personnel, déposez PDF, photos et scans, de l’ordinateur ou du téléphone. Chiffrés, classés dans votre dossier, sans service tiers.', '/services/depot-pieces', 'Comment ça marche'],
+  ['devis', 'Devis divorce par consentement mutuel', 'Six questions — mariage, régime, enfants, biens, points d’accord — et un ordre de grandeur des honoraires, dès 960 € TTC. L’avocat confirme ou ajuste : ni une promesse ni un plafond.', '/services/devis-divorce', 'Estimer mes honoraires'],
+] as const;
+---
+<Base title="Services en ligne — rendez-vous, consultation écrite, dépôt de pièces | Arnaud Cousin" description="Consultez le cabinet par internet : rendez-vous en ligne, consultation écrite dès 100 €, devis divorce amiable, dépôt sécurisé de pièces, assistant de pré-entretien. Avocat à Rennes." fil={[{ label: 'Services en ligne', href: '/services' }]}>
+  <Hero surtitre="Services en ligne" titre="Consultez le cabinet par internet, comme au cabinet" chapo="Prestations juridiques par internet, autorisées et encadrées par le Règlement intérieur national des avocats. Le cabinet les propose depuis 2015 : pratique, rapide, économique, sécurisé — et la même prestation qu’en rendez-vous." image="couloir" position="60% 40%">
+    <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/services/consultation-ecrite" class="btn btn--clair">Consultation écrite</a><a href="/services/rendez-vous" class="btn btn--contour-clair">Rendez-vous</a></div>
+  </Hero>
+
+  <section class="section">
+    <div class="conteneur grille grille--2">
+      {services.map(([ic, t, x, h, l]) => (
+        <div class="carte"><span class="carte__icone"><Icone nom={ic} /></span><h3>{t}</h3><p class="muet" style="font-size: 15px">{x}</p><a href={h} class="lien" style="margin-top: auto">{l}</a></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--nuit decor-parent" id="assistant">
+    <div class="decor decor--sombre" aria-hidden="true"><Image src={themisBandeau} alt="" width={1200} loading="lazy" /></div>
+    <div class="conteneur deux-colonnes">
+      <div class="pile">
+        <p class="surtitre">Assistant de pré-entretien</p>
+        <h2>Pas sûr de votre situation ? Décrivez-la.</h2>
+        <p class="muet">Jour et nuit, l’assistant identifie le domaine, repère un délai qui court et prépare votre rendez-vous. Il n’est pas avocat et ne donne aucun conseil juridique. Échanges confidentiels, jamais réutilisés.</p>
+        <p class="muet" style="font-size: 14px">Prise de message 24h/24 au <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a> pour les urgences.</p>
+      </div>
+      <!-- Phase services : panneau interactif (IA, serveur du cabinet). Ici, bouton d'ouverture. -->
+      <div class="carte carte--sombre" style="gap: 14px">
+        <span style="color: var(--laiton-clair)"><Icone nom="assistant" /></span>
+        <h3 style="color: var(--sur-vert)">L’assistant du cabinet</h3>
+        <p class="muet" style="font-size: 15px">« Décrivez votre situation en quelques phrases : ce qui s’est passé, depuis quand, ce que vous attendez. »</p>
+        <button type="button" class="btn btn--clair" data-ouvrir-assistant disabled title="Disponible à la mise en ligne">Démarrer <span class="a-confirmer" style="font-weight: 400; font-size: 13px">(bientôt)</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire">
+    <div class="conteneur grille">
+      <div class="pile" style="gap: 10px"><span class="carte__icone"><Icone nom="bouclier" /></span><h3>Le secret professionnel ne s’arrête pas à la porte du cabinet</h3><p class="muet" style="font-size: 15px">Carte bancaire via un prestataire agréé — le cabinet ne voit jamais votre numéro ; pièces chiffrées, hébergées en France ; aucun traceur publicitaire. Virement et chèque acceptés.</p></div>
+      <div class="pile" style="gap: 10px"><span class="carte__icone"><Icone nom="ecrit" /></span><h3>La même prestation qu’en rendez-vous</h3><p class="muet" style="font-size: 15px">C’est l’avocat qui répond, et lui seul. Il peut refuser une consultation : remboursement sous huit jours. Délai de rétractation de quatorze jours, auquel vous pouvez renoncer pour être servi plus vite.</p></div>
+      <div class="pile" style="gap: 10px"><span class="carte__icone"><Icone nom="horloge" /></span><h3>De la consultation au dossier</h3><p class="muet" style="font-size: 15px">Si votre question appelle un dossier, le coût de la consultation est déduit des honoraires. Convention signée en ligne, provision réglée en ligne, pièces déposées par votre lien personnel : le dossier démarre sans rendez-vous physique.</p></div>
+    </div>
+  </section>
+  <Cta />
+</Base>

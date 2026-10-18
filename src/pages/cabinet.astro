@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icone from '../components/Icone.astro';
+import Cta from '../components/Cta.astro';
+import { cabinet, anneesExercice, anneesEnLettres } from '../data/cabinet';
+import portrait from '../assets/photos/couloir-portrait-753x941.webp';
+import parlementBandeau from '../assets/photos/parlement-bandeau-1536x640.webp';
+const n = anneesExercice();
+---
+<Base title="Le cabinet — Arnaud Cousin, avocat à Rennes depuis 2000" description={`Maître Arnaud Cousin, avocat au Barreau de Rennes depuis ${cabinet.sermentAnnee} : parcours, méthode, engagements. Un seul interlocuteur du premier rendez-vous à l’audience.`} fil={[{ label: 'Le cabinet', href: '/cabinet' }]}>
+  <section class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
+    <div class="conteneur deux-colonnes" style="padding-top: 72px; padding-bottom: 64px">
+      <div class="pile entree" style="gap: 20px">
+        <p class="surtitre">Le cabinet</p>
+        <h1>Nous connaître</h1>
+        <p class="chapo">Serment en {cabinet.sermentMois} {cabinet.sermentAnnee}. Installé rue du Puits Mauger, à Rennes, avec Mes {cabinet.confreres.slice(0, -1).join(', ')} et {cabinet.confreres.at(-1)} : taille humaine, un seul interlocuteur du premier rendez-vous à l’audience. Écouter, analyser, conseiller, agir.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/services/rendez-vous" class="btn btn--plein">Prendre rendez-vous</a><a href="/domaines" class="btn btn--contour">Voir les domaines</a></div>
+      </div>
+      <figure class="figure" style="max-width: 420px; justify-self: center">
+        <span class="cadre"><Image src={portrait} alt="Maître Arnaud Cousin dans le couloir du cabinet, rue du Puits Mauger" widths={[400, 600, 753]} sizes="(max-width: 720px) 90vw, 420px" loading="eager" style="aspect-ratio: 4/5" /></span>
+        <figcaption>Me Arnaud Cousin, avocat au {cabinet.barreau} · Toque {cabinet.toque}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile">
+        <p class="surtitre">En bref</p>
+        <h2>{anneesEnLettres(n).replace(/^./, (c) => c.toUpperCase())} ans d’exercice en droit civil et du travail</h2>
+        <p class="muet">Maîtrise et DEA de droit privé (Nantes), CAPA (Rennes), ancien chargé de TD en droit de la famille. Formé auprès de Me Pajot-Marivin (droit des personnes, droit social) et de Me Brouillet (droit rural, successions agricoles).</p>
+      </div>
+      <div class="pile">
+        <p class="surtitre">Méthode</p>
+        <h2>Écouter. Analyser. Conseiller. Agir.</h2>
+        <p class="muet">Rompu aux négociations difficiles, attaché au règlement des conflits familiaux lourds : l’amiable d’abord, le judiciaire maîtrisé si nécessaire.</p>
+        <div class="grille grille--2" style="gap: 20px">
+          <div class="pile" style="gap: 8px; border-top: 1px solid var(--laiton); padding-top: 14px"><h3>Une liquidation se gagne sur les chiffres</h3><p class="muet" style="font-size: 15px">Entreprise, profession libérale, conjoint associé, immobilier : le cabinet produit la sienne, avec notaires, experts-comptables et fiscalistes.</p></div>
+          <div class="pile" style="gap: 8px; border-top: 1px solid var(--laiton); padding-top: 14px"><h3>Stratégie et ténacité</h3><p class="muet" style="font-size: 15px">Successions bloquées, indivisions paralysées, séparations à haute tension : négocier ferme ; à défaut, assigner, conclure, plaider, jusqu’à la cour d’appel.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire" id="connecte">
+    <div class="conteneur pile" style="gap: 36px">
+      <div class="pile" style="max-width: 720px; gap: 12px">
+        <p class="surtitre">Un cabinet connecté</p>
+        <h2>Le conseil reste humain. Tout le reste est numérique.</h2>
+        <p class="chapo" style="font-size: 17px">Ce que la machine fait mieux, elle le fait ; le temps gagné revient à votre dossier.</p>
+      </div>
+      <div class="grille grille--4">
+        {[
+          ['globe', 'Où que vous soyez', 'Rendez-vous en visio ou par téléphone, convention signée électroniquement, pièces déposées en ligne, paiement sécurisé. Un dossier se traite de Saint-Malo, Paris ou l’étranger comme de Rennes.'],
+          ['livre', 'Veille juridique quotidienne', 'Abonnements aux bases de données professionnelles, alertes de jurisprudence dans vos matières : un conseil fondé sur l’état du droit du jour.'],
+          ['puce', 'Technologies de pointe', 'Dossier 100 % dématérialisé, échanges sécurisés avec les juridictions (RPVA), assistants numériques sous le contrôle de l’avocat, données hébergées en France.'],
+          ['horloge', 'Réactivité', 'Accusé de réception, délais annoncés, compte rendu après chaque étape : vous savez toujours où en est votre dossier.'],
+        ].map(([ic, t, x]) => (
+          <div class="carte"><span class="carte__icone"><Icone nom={ic as any} /></span><h3 style="font-size: 21px">{t}</h3><p class="muet" style="font-size: 15px">{x}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--vert decor-parent">
+    <div class="decor decor--sombre" aria-hidden="true"><Image src={parlementBandeau} alt="" width={1200} loading="lazy" /></div>
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile"><p class="surtitre">Engagements</p><h2>Défenseur des personnes en difficulté</h2><p class="muet">Militant de l’Aide juridique d’urgence, bénévole au CIDFF. Aide juridictionnelle acceptée selon les dossiers (hors successions), confirmée dès la prise de rendez-vous. La défense est la même pour tous.</p></div>
+      <div class="pile"><p class="surtitre">Réseau</p><h2>Un partenaire de choix des notaires et des professionnels</h2><p class="muet">Un relais judiciaire pour les notaires, experts-comptables et fiscalistes, avec réactivité et célérité. Postulation à Rennes pour les confrères ; à Saint-Malo et Dinan via un confrère partenaire. Chacun reste à sa place.</p><a href="/notaires-confreres" class="lien" style="color: #E9D9B5">Espace notaires &amp; confrères</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="conteneur pile" style="gap: 14px; max-width: 760px">
+      <p class="surtitre">Rennes et la Bretagne</p>
+      <h2>À 400 m de la Cité judiciaire</h2>
+      <p class="muet">Tribunal judiciaire et conseil de prud’hommes de Rennes, cour d’appel au Parlement de Bretagne, tribunaux de Saint-Malo, Saint-Brieuc et Nantes : le cabinet plaide là où sont vos juges, et reçoit à 50 m du métro Colombier. <a href="/contact#acces" class="lien">Plan et accès</a></p>
+    </div>
+  </section>
+
+  <Cta titre="Exposez votre situation. Le cabinet vous dit s’il peut vous aider, et comment." />
+</Base>

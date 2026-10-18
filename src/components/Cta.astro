@@ -1,0 +1,22 @@
+---
+/** Bande d'appel à l'action en bas de page. */
+interface Props { titre?: string; texte?: string; }
+const { titre = 'Parlons de votre situation', texte = 'Réception sur rendez-vous — cabinet, visio ou téléphone. Un courriel ou le formulaire valent mieux qu’un appel impromptu : vous serez rappelé.' } = Astro.props;
+---
+<section class="section section--vert">
+  <div class="conteneur deux-colonnes">
+    <div class="pile">
+      <p class="surtitre">Contact</p>
+      <h2>{titre}</h2>
+      <p class="chapo">{texte}</p>
+    </div>
+    <div class="actions">
+      <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
+      <a href="/services/consultation-ecrite" class="btn btn--contour-clair btn--grand">Consultation écrite en ligne</a>
+      <a href="/contact" class="btn btn--contour-clair btn--grand">Écrire au cabinet</a>
+    </div>
+  </div>
+</section>
+<style>
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+</style>

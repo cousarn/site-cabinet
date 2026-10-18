@@ -1,0 +1,252 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icone from '../components/Icone.astro';
+import Cta from '../components/Cta.astro';
+import { cabinet, navigation, anneesExercice, anneesEnLettres } from '../data/cabinet';
+import cite from '../assets/photos/cite-judiciaire-bandeau-2400.webp';
+import couloirPortrait from '../assets/photos/couloir-portrait-753x941.webp';
+import couloirBandeau from '../assets/photos/couloir-bandeau-1672x700.webp';
+import parlement from '../assets/photos/parlement-1536.webp';
+import parlementBandeau from '../assets/photos/parlement-bandeau-1536x640.webp';
+import themis from '../assets/photos/themis-1600.jpg';
+
+const n = anneesExercice();
+const fiches = (await getCollection('fiches', (f) => !f.data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const icones = ['famille', 'succession', 'travail', 'procedure'] as const;
+const listes = [
+  ['Divorce amiable ou contentieux', 'Prestation compensatoire, pension alimentaire', 'Liquidation du régime matrimonial', 'Résidence des enfants, autorité parentale'],
+  ['Partage judiciaire, licitation', 'Recel, rapport, réduction, testament', 'Assurance-vie, donations', 'Salaire différé agricole'],
+  ['Licenciement, inaptitude, prise d’acte', 'Harcèlement, travail dissimulé', 'Rupture conventionnelle, transaction', 'Salariés et employeurs'],
+  ['Appels devant la cour de Rennes', 'Référés, incidents, exécution', 'Postulation pour les confrères', 'Renvoi après cassation'],
+];
+const leads = [
+  ['Vous vous séparez', ' : préserver vos enfants, vos droits et ce que vous avez construit.'],
+  ['Votre succession n’avance plus', ' : un héritier bloque, le notaire attend. En sortir sans y laisser votre part.'],
+  ['Licenciement, convocation, rupture proposée', ' : savoir vite ce que vous pouvez accepter, contester, négocier.'],
+  ['Un jugement à contester', ', un délai qui court. Ou un confrère qui cherche un relais fiable à Rennes.'],
+];
+---
+<Base
+  title="Avocat à Rennes — famille, successions, travail | Arnaud Cousin"
+  description={`Maître Arnaud Cousin, avocat à Rennes depuis ${n} ans : divorce et séparation, successions et partages, droit du travail, procédure civile et appel. Rendez-vous et consultation en ligne.`}
+  image="/og/cabinet.jpg"
+>
+  <!-- Hero -->
+  <section class="hero">
+    <Image src={cite} alt="" class="hero__photo" style="object-position: 72% 45%" widths={[800, 1200, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="hero__voile" aria-hidden="true" style="background: linear-gradient(90deg, var(--vert) 0%, var(--vert) 42%, rgba(13,38,34,.55) 100%)"></div>
+    <div class="conteneur hero__contenu accueil-hero">
+      <div class="pile entree" style="gap: 28px; max-width: 640px">
+        <p class="surtitre" style="color: var(--laiton-clair); display: flex; align-items: center; gap: 14px"><span class="filet" style="background: var(--laiton-clair)"></span>Famille · Successions · Travail · Procédure civile</p>
+        <h1 style="font-size: clamp(42px, 5.2vw, 64px)">Écouter. Analyser.<br />Conseiller. <em style="font-style: italic; color: var(--laiton-clair)">Agir.</em></h1>
+        <p class="chapo">Séparation, succession bloquée, licenciement : vous devez savoir vite où vous en êtes, et à quel prix. Négociateur pugnace ou défenseur combatif, avocat à Rennes depuis {anneesEnLettres(n)} ans : appui, soutien et conseil, à des conditions transparentes.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px">
+          <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
+          <a href="/services/consultation-ecrite" class="btn btn--contour-clair btn--grand">Consultation écrite en ligne</a>
+        </div>
+        <p style="font-size: 14px; color: var(--sur-vert-muet)">Urgence, délai qui expire : <a href={`tel:${cabinet.telephoneE164}`} style="color: #E9D9B5; font-weight: 600; text-decoration: none">{cabinet.telephone}</a> — prise de message 24h/24.</p>
+      </div>
+      <figure class="figure accueil-portrait">
+        <span class="cadre"><Image src={couloirPortrait} alt="Maître Arnaud Cousin dans le couloir du cabinet, un dossier sous le bras" widths={[400, 600, 753]} sizes="(max-width: 720px) 90vw, 400px" loading="eager" /></span>
+        <figcaption>Me Arnaud Cousin, au cabinet · en fond, la Cité judiciaire de Rennes, à 400 m</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Repères -->
+  <section class="section section--serree" aria-label="Repères" style="border-bottom: 1px solid var(--ligne)">
+    <div class="conteneur grille grille--4">
+      {[
+        [`${n} ans`, `de barreau, serment prêté en ${cabinet.sermentMois} ${cabinet.sermentAnnee}`],
+        ['Patrimoines complexes', 'entreprises, professions libérales, immobilier'],
+        ['Partenaire des notaires', 'pour débloquer les successions en impasse'],
+        ['Postulation Rennes', 'tribunal judiciaire et cour d’appel, pour les confrères'],
+      ].map(([k, v]) => (
+        <div style="border-top: 1px solid var(--laiton); padding-top: 14px">
+          <div style="font-family: var(--serif); font-size: 28px; color: var(--vert)">{k}</div>
+          <div style="font-size: 14px; color: var(--muet)">{v}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Domaines -->
+  <section class="section" id="domaines">
+    <div class="conteneur pile" style="gap: 40px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 40px">
+        <div class="pile" style="max-width: 620px; gap: 14px">
+          <p class="surtitre">Domaines d’intervention</p>
+          <h2>Contentieux des familles et du patrimoine familial, conflits du travail, droit civil</h2>
+          <p class="chapo"><em>Famille et patrimoine</em>, <em>travail</em>, <em>procédure civile et appel</em> : en demande comme en défense, devant les juridictions de Rennes, Saint-Malo, Saint-Brieuc, Nantes et la cour d’appel de Rennes.</p>
+        </div>
+        <a href="/domaines" class="lien">Tous les domaines</a>
+      </div>
+      <div class="grille grille--2">
+        {navigation.domaines.map((d, i) => (
+          <a href={d.href} class="carte carte--lien">
+            <span class="carte__icone"><Icone nom={icones[i]} /></span>
+            <h3>{d.titre}</h3>
+            <p style="font-size: 15px"><strong>{leads[i][0]}</strong>{leads[i][1]}</p>
+            <ul class="carte__liste">{listes[i].map((l) => <li>{l}</li>)}</ul>
+            <span class="lien" style="margin-top: auto">En savoir plus</span>
+          </a>
+        ))}
+      </div>
+      <p class="muet" style="font-size: 15px">Également : tutelles et curatelles, voisinage et propriété, recouvrement et contrats, responsabilité civile et accidents.</p>
+    </div>
+  </section>
+
+  <!-- Pourquoi ce cabinet -->
+  <section class="section section--ivoire" id="cabinet">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile" style="gap: 20px">
+        <figure class="figure" style="max-width: 420px; margin-bottom: 12px">
+          <span class="cadre"><Image src={parlementBandeau} alt="Salle des pas perdus du Parlement de Bretagne, siège de la cour d’appel de Rennes" widths={[480, 840, 1200]} sizes="(max-width: 720px) 90vw, 420px" loading="lazy" style="aspect-ratio: 12/5" /></span>
+          <figcaption>Parlement de Bretagne, siège de la cour d’appel de Rennes</figcaption>
+        </figure>
+        <p class="surtitre">Pourquoi ce cabinet</p>
+        <h2>Vos intérêts servis par {n} années de défense familiale, patrimoniale et des relations de travail</h2>
+        <p class="chapo" style="font-size: 17px">Pas un généraliste : un avocat qui connaît votre problème pour l’avoir plaidé cent fois. Droit patrimonial de la famille, contentieux du travail. Rompu aux négociations difficiles, attaché au règlement des conflits lourds.</p>
+        <a href="/cabinet" class="lien">Nous connaître</a>
+      </div>
+      <div class="grille grille--2" style="gap: 28px">
+        {[
+          ['Une liquidation se gagne sur les chiffres', 'Entreprise, profession libérale, conjoint associé, immobilier : votre dossier se joue sur des chiffres. Avec un réseau de notaires, experts-comptables et fiscalistes, la défense est globale.'],
+          ['Vous voulez en finir, pas faire durer', 'L’amiable d’abord, chaque fois qu’il est possible ; le judiciaire, maîtrisé, si l’adversaire refuse. À chaque étape, vous savez où vous en êtes.'],
+          ['Le mythe de l’avocat procédurier', 'Un honoraire « de transaction » valorise l’accord dans chaque convention : votre avocat a intérêt à ce que votre affaire se règle vite et bien, pas à ce qu’elle dure.'],
+          ['La même défense, quels que soient vos moyens', 'Aide juridictionnelle acceptée selon les dossiers, protection juridique toujours vérifiée. La défense est la même pour tous.'],
+        ].map(([t, x]) => (
+          <div class="pile" style="gap: 10px; border-top: 1px solid var(--laiton); padding-top: 18px">
+            <h3>{t}</h3>
+            <p class="muet" style="font-size: 15px">{x}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services en ligne -->
+  <section class="section section--nuit decor-parent" id="services">
+    <div class="decor decor--sombre" aria-hidden="true"><Image src={couloirBandeau} alt="" width={1200} loading="lazy" /></div>
+    <div class="conteneur pile" style="gap: 40px">
+      <div class="deux-colonnes" style="align-items: end">
+        <div class="pile" style="gap: 14px">
+          <p class="surtitre">Services en ligne</p>
+          <h2>Consulter sans attendre. Et sans vous déplacer.</h2>
+          <p class="chapo">Vous travaillez, vous habitez loin, vous voulez une réponse cette semaine : le cabinet consulte par internet depuis 2015. Sans rendez-vous, par écrit, moins cher qu’au cabinet, sous le sceau du secret professionnel.</p>
+        </div>
+        <a href="/services" class="lien" style="color: #E9D9B5; justify-self: end">Tous les services en ligne</a>
+      </div>
+      <div class="grille grille--4">
+        {[
+          ['calendrier', 'Rendez-vous en ligne', 'Choisissez un créneau au cabinet, en visioconférence ou par téléphone. Confirmation et rappel automatiques.', '/services/rendez-vous'],
+          ['ecrit', 'Consultation écrite', 'Exposez votre situation, joignez vos pièces, réglez en ligne. Réponse écrite de l’avocat sous 5 jours ouvrés. À partir de 100 € TTC.', '/services/consultation-ecrite'],
+          ['depot', 'Déposer des pièces', 'Clients du cabinet : transmettez vos documents par le lien sécurisé reçu pour votre dossier. Ils sont classés directement dans votre dossier.', '/services/depot-pieces'],
+          ['devis', 'Devis divorce amiable', 'Divorce par consentement mutuel : décrivez votre situation en quelques questions et recevez une estimation d’honoraires, confirmée par l’avocat.', '/services/devis-divorce'],
+        ].map(([ic, t, x, h]) => (
+          <a href={h} class="carte carte--sombre carte--lien">
+            <span style="color: var(--laiton-clair)"><Icone nom={ic as any} /></span>
+            <h3>{t}</h3>
+            <p class="muet" style="font-size: 15px">{x}</p>
+          </a>
+        ))}
+      </div>
+      <p style="border-left: 2px solid var(--laiton-clair); padding-left: 16px; max-width: 760px; color: var(--sur-vert-muet)"><strong style="color: var(--sur-vert)">Pas sûr de votre situation ?</strong> L’assistant du cabinet identifie le bon domaine, repère les délais urgents et prépare votre rendez-vous. Sans conseil juridique : c’est le rôle de l’avocat. <a href="/services#assistant">Préparer mon rendez-vous →</a></p>
+    </div>
+  </section>
+
+  <!-- Cabinet connecté -->
+  <section class="section" id="connecte" style="border-top: 1px solid var(--ligne)">
+    <div class="conteneur pile" style="gap: 36px">
+      <div class="pile" style="max-width: 680px; gap: 12px">
+        <p class="surtitre">Un cabinet connecté</p>
+        <h2>Le droit d’aujourd’hui, les outils d’aujourd’hui.</h2>
+        <p class="chapo" style="font-size: 17px">La réactivité ne se promet pas : elle s’organise.</p>
+      </div>
+      <div class="grille">
+        {[
+          ['globe', 'Votre dossier, où que vous soyez', 'Visio, signature électronique, dépôt de pièces et paiement en ligne : tout se traite à distance, de Rennes ou d’ailleurs.'],
+          ['livre', 'Le droit du jour, pas celui de l’an dernier', 'Textes et jurisprudence suivis au jour le jour, bases de données professionnelles : vos conseils reposent sur le droit d’aujourd’hui.'],
+          ['puce', 'La technique au service du conseil, jamais à sa place', 'Dossier dématérialisé, échanges sécurisés avec les juridictions, assistants numériques sous le contrôle de l’avocat : plus de réactivité, plus de qualité.'],
+        ].map(([ic, t, x]) => (
+          <div class="carte">
+            <span class="carte__icone"><Icone nom={ic as any} /></span>
+            <h3 style="font-size: 21px">{t}</h3>
+            <p class="muet" style="font-size: 15px">{x}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Honoraires -->
+  <section class="section section--ivoire" id="honoraires">
+    <div class="conteneur deux-colonnes">
+      <div class="pile" style="gap: 18px">
+        <p class="surtitre">Honoraires</p>
+        <h2>La justice n’est pas gratuite</h2>
+        <p class="chapo">L’accès au droit n’est jamais gratuit ; son coût doit être juste et transparent. D’où une convention d’honoraires détaillée dès l’ouverture du dossier : mission, mode de calcul, frais de justice.</p>
+        <ul class="pile" style="gap: 10px; padding-left: 0; list-style: none; color: var(--muet)">
+          <li>— Au temps passé — le plus juste : tout le travail, rien que le travail — ou au forfait lorsque les diligences sont prévisibles</li>
+          <li>— Honoraire de résultat dans le respect de la loi, honoraire de transaction pour valoriser l’accord</li>
+          <li>— Protection juridique et aide juridictionnelle : on vérifie toujours, même si vous pensez n’y avoir pas droit</li>
+        </ul>
+        <a href="/honoraires" class="lien">Grille indicative et convention</a>
+      </div>
+      <figure class="figure" style="max-width: 460px; justify-self: center">
+        <span class="cadre"><Image src={themis} alt="Thémis, allégorie de la justice, balance et glaive" widths={[480, 800, 1200]} sizes="(max-width: 720px) 90vw, 460px" loading="lazy" /></span>
+        <figcaption>Thémis — la balance pour peser, le glaive pour trancher</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Notaires & confrères -->
+  <section class="section" id="confreres" style="border-top: 1px solid var(--ligne)">
+    <div class="conteneur deux-colonnes">
+      <figure class="figure">
+        <span class="cadre"><Image src={parlement} alt="Avocats en robe traversant la salle des pas perdus du Parlement de Bretagne" widths={[600, 900, 1536]} sizes="(max-width: 720px) 90vw, 560px" loading="lazy" style="aspect-ratio: 3/2" /></span>
+      </figure>
+      <div class="pile">
+        <p class="surtitre">Notaires &amp; confrères</p>
+        <h2>Débloquer, sans empiéter.</h2>
+        <p class="muet">Succession en impasse, audience à Rennes pour un confrère, dirigeant qui se sépare : le cabinet reprend la main sans empiéter sur votre rôle. Partage judiciaire, postulation, suivi de procédure — avec réactivité et célérité, à tarifs connus d’avance.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px">
+          <a href="/notaires-confreres#postulation" class="btn btn--plein">Saisir le cabinet d’une postulation</a>
+          <a href="/notaires-confreres#partage" class="btn btn--contour">Débloquer un partage</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fiches -->
+  {fiches.length > 0 && (
+    <section class="section section--ivoire" id="actualites">
+      <div class="conteneur pile" style="gap: 32px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 40px">
+          <div class="pile" style="gap: 12px"><p class="surtitre">Fiches &amp; actualités</p><h2>…Et écrire</h2></div>
+          <a href="/fiches" class="lien">Toutes les fiches</a>
+        </div>
+        <div class="grille">
+          {fiches.map((f) => (
+            <a href={`/fiches/${f.id}`} class="carte carte--lien">
+              <span class="surtitre">{f.data.type} · {f.data.lecture ?? ''}</span>
+              <h3>{f.data.title}</h3>
+              <p class="muet" style="font-size: 15px">{f.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Cta />
+</Base>
+
+<style>
+  .accueil-hero { padding-top: 96px; padding-bottom: 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 56px; align-items: end; }
+  .accueil-portrait { max-width: 400px; justify-self: center; }
+  .accueil-portrait img { aspect-ratio: 4 / 5; }
+  @media (max-width: 720px) { .accueil-hero { padding-top: 48px; padding-bottom: 48px; } }
+</style>

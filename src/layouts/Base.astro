@@ -1,0 +1,80 @@
+---
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/figtree';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { cabinet } from '../data/cabinet';
+
+interface Props {
+  title: string;            // <title> — ≤ 60 caractères, mot-clé + Rennes
+  description: string;      // meta description — ≤ 160 caractères
+  canonical?: string;       // chemin (/cabinet) ; par défaut l'URL courante
+  noindex?: boolean;
+  image?: string;           // chemin absolu de l'image de partage
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  fil?: { label: string; href: string }[]; // fil d'Ariane (BreadcrumbList)
+}
+const { title, description, canonical, noindex: noindexProp = false, image = '/og/cabinet.jpg', jsonLd, fil } = Astro.props;
+// La préproduction (PUBLIC_ENV=preprod) n'est jamais indexée.
+const noindex = noindexProp || import.meta.env.PUBLIC_ENV === 'preprod';
+const url = new URL(canonical ?? Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site!.href;
+
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': ['LegalService', 'Attorney'],
+  '@id': `${cabinet.siteUrl}/#cabinet`,
+  name: cabinet.nom,
+  legalName: cabinet.nom,
+  url: cabinet.siteUrl,
+  telephone: cabinet.telephoneE164,
+  email: cabinet.email,
+  image: `${cabinet.siteUrl}/og/cabinet.jpg`,
+  address: { '@type': 'PostalAddress', streetAddress: cabinet.adresse.rue, postalCode: cabinet.adresse.cp, addressLocality: cabinet.adresse.ville, addressCountry: cabinet.adresse.pays },
+  geo: { '@type': 'GeoCoordinates', latitude: cabinet.geo.lat, longitude: cabinet.geo.lon },
+  openingHours: cabinet.horairesSchema,
+  areaServed: ['Rennes', 'Ille-et-Vilaine', 'Bretagne'],
+  knowsAbout: ['Droit de la famille', 'Divorce', 'Successions', 'Partage judiciaire', 'Indivision', 'Droit du travail', 'Procédure civile', 'Postulation'],
+  founder: { '@type': 'Person', name: cabinet.avocat, jobTitle: 'Avocat', memberOf: { '@type': 'Organization', name: `Ordre des avocats du ${cabinet.barreau}` } },
+  priceRange: '€€',
+};
+const filAriane = fil && fil.length ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ label: 'Accueil', href: '/' }, ...fil].map((f, i) => ({ '@type': 'ListItem', position: i + 1, name: f.label, item: `${cabinet.siteUrl}${f.href === '/' ? '' : f.href}` })),
+} : null;
+const donnees = [organisation, filAriane, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])].filter(Boolean);
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={url} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  <meta name="theme-color" content="#11352F" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={cabinet.nom} />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={url} />
+  <meta property="og:image" content={new URL(image, Astro.site).href} />
+  <meta name="twitter:card" content="summary_large_image" />
+  {donnees.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  <slot name="head" />
+</head>
+<body>
+  <a href="#contenu" class="skip">Aller au contenu</a>
+  <Header />
+  <main id="contenu">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

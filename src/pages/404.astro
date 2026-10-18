@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { cabinet } from '../data/cabinet';
+---
+<Base title="Page introuvable | Cabinet Arnaud Cousin" description="Cette page n’existe pas ou a changé d’adresse." noindex>
+  <section class="section"><div class="conteneur pile" style="gap: 18px; max-width: 720px; padding-top: 80px; padding-bottom: 80px">
+    <p class="surtitre">Erreur 404</p>
+    <h1>Cette page n’existe pas, ou plus.</h1>
+    <p class="chapo">Le site a été refondu ; certaines adresses ont changé. Vous cherchiez probablement l’une de ces pages :</p>
+    <ul class="pile" style="list-style: none; padding: 0; gap: 8px">
+      <li><a href="/domaines" class="lien">Domaines d’intervention</a></li>
+      <li><a href="/honoraires" class="lien">Honoraires</a></li>
+      <li><a href="/services/consultation-ecrite" class="lien">Consultation écrite en ligne</a></li>
+      <li><a href="/contact" class="lien">Contact et accès</a></li>
+    </ul>
+    <p class="muet">Ou appelez le cabinet : <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a>.</p>
+  </div></section>
+</Base>

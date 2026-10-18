@@ -1,0 +1,65 @@
+# Cabinet Arnaud Cousin — configuration Apache (OVH mutualisé)
+# Objectifs : HTTPS + domaine unique (sans www), URLs sans extension,
+# redirections 301 depuis l'ancien site TOWeb, en-têtes de sécurité, cache.
+
+Options -Indexes -MultiViews
+AddDefaultCharset UTF-8
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1. HTTPS obligatoire et domaine canonique sans www
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # 2. Anciennes adresses TOWeb → nouvelles pages (301 permanentes)
+  RewriteRule ^index\.html$ / [R=301,L]
+  RewriteRule ^nous-connaitre\.html$ /cabinet [R=301,L]
+  RewriteRule ^domaines-dintervention\.html$ /domaines [R=301,L]
+  RewriteRule ^tarifs-et-couts-justesse-et-transparence\.html$ /honoraires [R=301,L]
+  RewriteRule ^consultez-le-cabinet-par-internet\.html$ /services/consultation-ecrite [R=301,L]
+  RewriteRule ^_checkout\.html$ /services/consultation-ecrite [R=301,L]
+  RewriteRule ^infos-pratiques\.html$ /contact [R=301,L]
+  RewriteRule ^contact\.html$ /contact [R=301,L]
+  RewriteRule ^mentions-legales\.html$ /mentions-legales [R=301,L]
+
+  # 3. Pas de barre finale (sauf racine), pas d'extension visible
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+  RewriteCond %{REQUEST_URI} \.html$
+  RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  # CSP : à élargir à la mise en place de Bookings / Stripe (frame-src, script-src)
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'"
+  # Les fichiers générés par Astro portent un hash : cache long
+  <FilesMatch "\.(css|js|woff2|webp|avif|jpg|jpeg|png|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+  AddType image/avif .avif
+</IfModule>

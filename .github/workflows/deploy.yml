@@ -1,0 +1,80 @@
+# Déploiement du site sur OVH (hébergement mutualisé) par FTPS (FTP chiffré TLS, port 21 — disponible sur toutes les offres OVH).
+#
+# - push sur `main`            → préproduction  (sous-domaine preprod.arnaudcousin-avocat.fr → dossier www/preprod)
+# - tag `v*` ou lancement manuel → production     (arnaudcousin-avocat.fr → dossier www)
+#
+# Secrets à créer dans GitHub › Settings › Secrets and variables › Actions
+# (Me Cousin les saisit lui-même ; ils ne transitent jamais par ailleurs) :
+#   OVH_FTP_HOST       ex. ftp.cluster0xx.hosting.ovh.net (Espace client OVH › Hébergement › FTP-SSH)
+#   OVH_FTP_USER       utilisateur FTP dédié au déploiement, limité au dossier www (à créer dans l'espace client)
+#   OVH_FTP_PASSWORD   mot de passe de cet utilisateur
+#   OVH_DIR_PREPROD    ex. ./www/preprod/
+#   OVH_DIR_PROD       ex. ./www/
+
+name: Déployer sur OVH
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: Environnement
+        type: choice
+        options: [preprod, prod]
+        default: preprod
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Construire le site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Construire (préprod → noindex via variable d'environnement)
+        run: npm run build
+        env:
+          PUBLIC_ENV: ${{ (startsWith(github.ref, 'refs/tags/v') || inputs.cible == 'prod') && 'prod' || 'preprod' }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+  deploy:
+    name: Publier
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ (startsWith(github.ref, 'refs/tags/v') || inputs.cible == 'prod') && 'production' || 'preproduction' }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Envoyer par FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.OVH_FTP_HOST }}
+          port: 21
+          username: ${{ secrets.OVH_FTP_USER }}
+          password: ${{ secrets.OVH_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ${{ (startsWith(github.ref, 'refs/tags/v') || inputs.cible == 'prod') && secrets.OVH_DIR_PROD || secrets.OVH_DIR_PREPROD }}
+          state-name: .deploy-state.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            api/**
+            depot/**

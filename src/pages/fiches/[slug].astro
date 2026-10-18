@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Cta from '../../components/Cta.astro';
+import { cabinet } from '../../data/cabinet';
+import parlement from '../../assets/photos/parlement-bandeau-1536x640.webp';
+
+export async function getStaticPaths() {
+  const fiches = await getCollection('fiches', (f) => !f.data.draft);
+  return fiches.map((f) => ({ params: { slug: f.id }, props: { f } }));
+}
+const { f } = Astro.props;
+const { Content, headings } = await render(f);
+const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'Article', headline: f.data.title, description: f.data.description,
+  datePublished: f.data.date.toISOString(), dateModified: (f.data.updated ?? f.data.date).toISOString(),
+  author: { '@type': 'Person', name: cabinet.avocat, jobTitle: 'Avocat', url: `${cabinet.siteUrl}/cabinet` },
+  publisher: { '@id': `${cabinet.siteUrl}/#cabinet` }, mainEntityOfPage: `${cabinet.siteUrl}/fiches/${f.id}`, inLanguage: 'fr-FR',
+};
+---
+<Base title={`${f.data.title} | Arnaud Cousin, avocat`} description={f.data.description} jsonLd={jsonLd} fil={[{ label: 'Fiches & actualités', href: '/fiches' }, { label: f.data.title, href: `/fiches/${f.id}` }]}>
+  <article>
+    <header class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
+      <div class="conteneur pile" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 900px">
+        <p class="surtitre">{f.data.type} · {fmt(f.data.updated ?? f.data.date)}{f.data.lecture ? ` · ${f.data.lecture} de lecture` : ''}</p>
+        <h1 style="font-size: clamp(32px, 4vw, 48px)">{f.data.title}</h1>
+        <p class="chapo">{f.data.description}</p>
+        <p class="muet" style="font-size: 13px">Par {cabinet.avocat}, avocat au {cabinet.barreau}. Information générale : elle ne remplace pas une consultation sur votre situation.</p>
+      </div>
+    </header>
+    <div class="conteneur fiche-corps">
+      <aside class="fiche-sommaire">
+        {headings.filter((h) => h.depth === 2).length > 0 && (
+          <nav aria-label="Sommaire" class="pile" style="gap: 8px; position: sticky; top: 110px">
+            <p class="surtitre">Sommaire</p>
+            {headings.filter((h) => h.depth === 2).map((h) => <a href={`#${h.slug}`} style="text-decoration: none; font-size: 14px; color: var(--muet)">{h.text}</a>)}
+          </nav>
+        )}
+      </aside>
+      <div class="prose">
+        <figure class="figure" style="margin: 0 0 32px"><span class="cadre"><Image src={parlement} alt="Parlement de Bretagne, siège de la cour d’appel de Rennes" widths={[600, 900, 1536]} sizes="(max-width: 900px) 90vw, 760px" loading="eager" style="aspect-ratio: 12/5" /></span></figure>
+        <Content />
+        <p class="muet" style="font-size: 13px; border-top: 1px solid var(--ligne); padding-top: 16px; margin-top: 40px">Publié le {fmt(f.data.date)}{f.data.updated ? `, mis à jour le ${fmt(f.data.updated)}` : ''}. Textes en vigueur à cette date.</p>
+      </div>
+    </div>
+  </article>
+  <Cta titre="Votre situation ressemble à celle-ci ?" texte="Une consultation écrite en ligne répond à une question précise sous cinq jours ; un rendez-vous au cabinet, en visio ou par téléphone permet d’aller plus loin." />
+</Base>
+
+<style is:global>
+  .fiche-corps { display: grid; grid-template-columns: 220px minmax(0, 760px); gap: 48px; padding-top: 56px; padding-bottom: 72px; }
+  @media (max-width: 900px) { .fiche-corps { grid-template-columns: minmax(0, 1fr); } .fiche-sommaire { display: none; } }
+  .prose { font-size: 17px; line-height: 1.7; color: var(--encre); }
+  .prose h2 { font-size: 30px; margin: 44px 0 14px; }
+  .prose h3 { font-size: 22px; margin: 28px 0 10px; }
+  .prose p { margin: 0 0 16px; }
+  .prose ul, .prose ol { margin: 0 0 16px; padding-left: 22px; }
+  .prose li { margin-bottom: 6px; }
+  .prose blockquote { margin: 24px 0; padding: 16px 20px; border-left: 2px solid var(--laiton); background: var(--ivoire); color: var(--muet); font-family: var(--serif); font-size: 19px; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 0 0 20px; }
+  .prose th, .prose td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--ligne); vertical-align: top; }
+  .prose th { color: var(--vert); background: var(--ivoire); }
+  .prose .encadre { border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; background: var(--ivoire); margin: 24px 0; }
+</style>

@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import parlement from '../assets/photos/parlement-bandeau-1536x640.webp';
+import { cabinet, navigation } from '../data/cabinet';
+const annee = new Date().getFullYear();
+---
+<footer class="pied decor-parent">
+  <div class="decor decor--sombre decor--pied" aria-hidden="true"><Image src={parlement} alt="" width={1000} loading="lazy" /></div>
+  <div class="conteneur pied__in">
+    <div class="pied__marque">
+      <span class="pied__nom">Arnaud Cousin</span>
+      <span>Avocat au {cabinet.barreau} · Toque {cabinet.toque} · {cabinet.adresse.rue}, {cabinet.adresse.cp} {cabinet.adresse.ville} · <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a></span>
+    </div>
+    <nav class="pied__liens" aria-label="Pied de page">
+      {navigation.pied.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <p class="pied__legal">© {annee} {cabinet.nom} · Membre de l’Ordre des avocats du {cabinet.barreau}. Photos : Cité judiciaire (vue d’artiste), Parlement de Bretagne, cabinet — <span class="a-confirmer">[crédits à préciser]</span>.</p>
+  </div>
+</footer>
+
+<style>
+  .pied { background: var(--encre); color: var(--sur-vert-muet); font-size: 14px; }
+  .pied__in { padding-top: 40px; padding-bottom: 28px; display: flex; flex-direction: column; gap: 18px; }
+  .pied__marque { display: flex; flex-direction: column; gap: 6px; }
+  .pied__nom { font-family: var(--serif); font-size: 22px; color: var(--papier); }
+  .pied a { color: var(--sur-vert-muet); text-decoration: none; }
+  .pied a:hover { color: #fff; }
+  .pied__liens { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .pied__legal { font-size: 12px; color: #9AA19C; }
+</style>

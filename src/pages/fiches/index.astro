@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Cta from '../../components/Cta.astro';
+const fiches = (await getCollection('fiches', (f) => !f.data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title="Fiches pratiques, simulateurs et actualités juridiques | Arnaud Cousin, avocat à Rennes" description="Indivision bloquée, pension alimentaire, délais de licenciement, salaire différé agricole, recel successoral : fiches pratiques et simulateurs rédigés par un avocat rennais." fil={[{ label: 'Fiches & actualités', href: '/fiches' }]}>
+  <Hero variante="clair" surtitre="Fiches & actualités" titre="…Et écrire" chapo="Des fiches courtes, des simulateurs et des billets sur ce que le cabinet plaide. Une fois par trimestre, pas plus." image="parlement" />
+  <section class="section">
+    <div class="conteneur grille">
+      {fiches.map((f) => (
+        <a href={`/fiches/${f.id}`} class="carte carte--lien">
+          <span class="surtitre">{f.data.type} · {fmt(f.data.updated ?? f.data.date)}{f.data.lecture ? ` · ${f.data.lecture}` : ''}</span>
+          <h3>{f.data.title}</h3>
+          <p class="muet" style="font-size: 15px">{f.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+  <Cta />
+</Base>

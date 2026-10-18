@@ -1,0 +1,83 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Faq from '../../components/Faq.astro';
+import Cta from '../../components/Cta.astro';
+
+export async function getStaticPaths() {
+  const domaines = await getCollection('domaines');
+  return domaines.map((d) => ({ params: { slug: d.id }, props: { d } }));
+}
+const { d } = Astro.props;
+const { Content } = await render(d);
+const fichesLiees = (await Promise.all(d.data.fiches.map((s) => getEntry('fiches', s)))).filter(Boolean);
+---
+<Base title={d.data.title} description={d.data.description} fil={[{ label: 'Domaines', href: '/domaines' }, { label: d.data.h1, href: `/domaines/${d.id}` }]}>
+  <Hero surtitre="Domaine d’intervention" titre={d.data.h1} chapo={d.data.accroche} image={d.data.image}>
+    <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px">
+      <a href="/services/rendez-vous" class="btn btn--clair">Prendre rendez-vous</a>
+      <a href="/services/consultation-ecrite" class="btn btn--contour-clair">Poser ma question par écrit</a>
+    </div>
+  </Hero>
+
+  <section class="section" id="situations">
+    <div class="conteneur pile" style="gap: 28px">
+      <h2>Ce que le cabinet traite</h2>
+      <div class="grille">
+        {d.data.situations.map((s) => (
+          <div class="pile" style="gap: 8px; border-top: 1px solid var(--laiton); padding-top: 16px">
+            <h3>{s.titre}</h3>
+            <p class="muet" style="font-size: 15px">{s.texte}</p>
+          </div>
+        ))}
+      </div>
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+
+  {d.data.methode && (
+    <section class="section section--ivoire" id="methode">
+      <div class="conteneur pile" style="gap: 28px">
+        <h2>Comment le cabinet intervient</h2>
+        <div class="grille grille--2">
+          {d.data.methode.map((m) => (
+            <div class="carte"><h3>{m.titre}</h3><p class="muet" style="font-size: 15px">{m.texte}</p></div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {d.data.encadre && (
+    <section class="section section--serree">
+      <div class="conteneur">
+        <div class="section--nuit" style="border-radius: var(--r); padding: 36px 34px; display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: center; justify-content: space-between">
+          <div class="pile" style="gap: 8px; max-width: 720px">
+            <h3 style="color: var(--sur-vert); font-size: 24px">{d.data.encadre.titre}</h3>
+            <p class="muet" style="font-size: 15px">{d.data.encadre.texte}</p>
+          </div>
+          {d.data.encadre.lien && <a href={d.data.encadre.lien} class="btn btn--clair">{d.data.encadre.libelle ?? 'En savoir plus'}</a>}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="conteneur pile" style="gap: 48px">
+      <Faq items={d.data.faq} />
+      {fichesLiees.length > 0 && (
+        <div class="pile" style="gap: 18px">
+          <h2 style="font-size: 28px">Pour aller plus loin</h2>
+          <div class="grille">
+            {fichesLiees.map((f) => f && (
+              <a href={`/fiches/${f.id}`} class="carte carte--lien"><span class="surtitre">{f.data.type}</span><h3>{f.data.title}</h3><p class="muet" style="font-size: 15px">{f.data.description}</p></a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Cta />
+</Base>
