@@ -82,6 +82,10 @@ Chaque envoi redirige vers `/merci?objet=…&ref=…` (référence du type `2610
 
 **Sur le serveur, une fois** : déposer `/config/site-cabinet.php` (modèle : `public/api/config.local.example.php`) avec l'IBAN, l'adresse d'expédition (`site@arnaudcousin-avocat.fr`, à créer dans OVH › Emails) et, si besoin, la grille du devis. Hors racine web, il n'est jamais touché par les déploiements.
 
+## Paiement en ligne (PayPal)
+
+La consultation écrite se règle sur la page de paiement hébergée par PayPal (compte PayPal **ou carte bancaire sans compte**). Aucun script tiers, aucun secret : `lien_paypal()` dans `_lib.php` construit une URL `cgi-bin/webscr?cmd=_xclick` avec l'identifiant marchand public (`paypal_id`), le montant, l'intitulé et la référence (`invoice` + `custom`), plus les URL de retour (`/merci?objet=paiement`) et d'annulation. Le lien figure dans l'accusé de réception et sur la page *Merci* ; le RIB reste proposé en secours. Activation : `'paiement' => 'paypal'` dans `/config/site-cabinet.php` (fait le 18/10/2026). Phase 2 : IPN/webhook pour marquer la demande « payée » automatiquement.
+
 ## Phase 2 (même dépôt)
 
 - Paiement par carte : Stripe Checkout (`paiement => 'stripe'` dans la config) — le site ne voit jamais la carte.
