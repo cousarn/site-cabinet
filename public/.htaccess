@@ -19,25 +19,25 @@ ErrorDocument 404 /404.html
   RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
   # 2. Anciennes adresses TOWeb → nouvelles pages (301 permanentes)
-  RewriteRule ^index\.html$ / [R=301,L]
-  RewriteRule ^nous-connaitre\.html$ /cabinet [R=301,L]
-  RewriteRule ^domaines-dintervention\.html$ /domaines [R=301,L]
-  RewriteRule ^tarifs-et-couts-justesse-et-transparence\.html$ /honoraires [R=301,L]
-  RewriteRule ^consultez-le-cabinet-par-internet\.html$ /services/consultation-ecrite [R=301,L]
-  RewriteRule ^_checkout\.html$ /services/consultation-ecrite [R=301,L]
-  RewriteRule ^infos-pratiques\.html$ /contact [R=301,L]
-  RewriteRule ^contact\.html$ /contact [R=301,L]
-  RewriteRule ^mentions-legales\.html$ /mentions-legales [R=301,L]
+  RewriteRule ^index\.html$ https://%{HTTP_HOST}/ [R=301,L]
+  RewriteRule ^nous-connaitre\.html$ https://%{HTTP_HOST}/cabinet [R=301,L]
+  RewriteRule ^domaines-dintervention\.html$ https://%{HTTP_HOST}/domaines [R=301,L]
+  RewriteRule ^tarifs-et-couts-justesse-et-transparence\.html$ https://%{HTTP_HOST}/honoraires [R=301,L]
+  RewriteRule ^consultez-le-cabinet-par-internet\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
+  RewriteRule ^_checkout\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
+  RewriteRule ^infos-pratiques\.html$ https://%{HTTP_HOST}/contact [R=301,L]
+  RewriteRule ^contact\.html$ https://%{HTTP_HOST}/contact [R=301,L]
+  RewriteRule ^mentions-legales\.html$ https://%{HTTP_HOST}/mentions-legales [R=301,L]
 
   # 3. Pas de barre finale (sauf racine), pas d'extension visible
   #    Les redirections externes ne s'appliquent qu'à la requête d'origine (REDIRECT_STATUS vide),
   #    jamais après la réécriture interne vers le .html ni pour la page d'erreur 404.
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.+)/$ /$1 [R=301,L]
+  RewriteRule ^(.+)/$ https://%{HTTP_HOST}/$1 [R=301,L]
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?] [NC]
-  RewriteRule ^ /%1 [R=301,L]
+  RewriteRule ^ https://%{HTTP_HOST}/%1 [R=301,L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}.html -f
