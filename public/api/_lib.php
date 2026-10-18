@@ -13,7 +13,7 @@ const SITE_URL = 'https://arnaudcousin-avocat.fr';
 /** Réglages par défaut — surchargés par config.local.php si présent. */
 $CONFIG = [
     'cabinet_email'   => 'cabinet@arnaudcousin-avocat.fr', // destinataire des formulaires
-    'from_email'      => 'site@arnaudcousin-avocat.fr',    // expéditeur technique (doit exister chez OVH pour passer les filtres)
+    'from_email'      => 'site@arnaudcousin-avocat.fr',    // expéditeur technique (alias de cabinet@ dans Microsoft 365)
     'from_name'       => 'Site du cabinet Arnaud Cousin',
     'stockage'        => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/consultations', // hors racine web
     'rate_par_heure'  => 6,     // envois max par IP et par formulaire
@@ -35,8 +35,14 @@ $CONFIG = [
 $racineHebergement = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..');
 foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $fichierConfig) {
     if (is_file($fichierConfig)) {
-        $local = require $fichierConfig;
-        if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+        try {
+            $local = require $fichierConfig;
+            if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+        } catch (\Throwable $e) {
+            /* Fichier de configuration invalide (faute de frappe) : on garde les valeurs par défaut
+               plutôt que de casser les formulaires ; l'erreur est journalisée. */
+            error_log('site-cabinet : configuration serveur illisible (' . $e->getMessage() . ')');
+        }
         break;
     }
 }
