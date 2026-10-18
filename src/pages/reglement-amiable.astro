@@ -1,12 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
 import Icone from '../components/Icone.astro';
 import { cabinet } from '../data/cabinet';
 import parlement from '../assets/photos/parlement-1536.webp';
+import mediationTable from '../assets/photos/mediation-table-1536.webp';
+import mediationCouple from '../assets/photos/mediation-couple-1536.webp';
 
 const peurs = [
   ['« Le rapport de force n’est pas en ma faveur. »', 'L’autre parle mieux, connaît mieux le dossier, ou vous impressionne. En médiation, vous n’êtes pas seul : votre avocat est à vos côtés, prépare chaque séance avec vous, demande une suspension quand il le faut, et peut parler à votre place sur les points techniques. Le médiateur, de son côté, est tenu de rétablir l’équilibre de la parole.'],
@@ -43,12 +44,25 @@ const sources = [
 ];
 ---
 <Base title="Médiation et règlement amiable à Rennes | Arnaud Cousin" description="Médiation, conciliation, procédure participative : un avocat à vos côtés à chaque étape, de la préparation à l’exécution de l’accord. N’y allez pas seul." fil={[{ label: 'Règlement amiable & médiation', href: '/reglement-amiable' }]}>
-  <Hero surtitre="Règlement amiable & médiation" titre="La médiation, oui. Seul, non." chapo="Les tribunaux renvoient de plus en plus les justiciables vers la médiation et la conciliation. C’est souvent une bonne nouvelle — à condition d’y aller préparé, conseillé et protégé. Le cabinet, rompu aux techniques de négociation, de médiation et de conciliation, est à vos côtés avant, pendant et après." image="couloir" position="60% 40%">
-    <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px">
-      <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
-      <a href="#peurs" class="btn btn--contour-clair btn--grand">Ce qui vous retient</a>
+  <section class="hero-amiable" aria-label="Règlement amiable et médiation">
+    <div class="hero-amiable__fond" aria-hidden="true">
+      <Image src={mediationCouple} alt="" class="hero-amiable__photo hero-amiable__photo--avant" widths={[800, 1200, 1536]} sizes="100vw" quality={70} loading="eager" fetchpriority="high" />
+      <Image src={mediationTable} alt="" class="hero-amiable__photo hero-amiable__photo--apres" widths={[800, 1200, 1536]} sizes="100vw" quality={72} loading="eager" />
+      <div class="hero-amiable__voile"></div>
     </div>
-  </Hero>
+    <div class="conteneur hero-amiable__in">
+      <div class="hero-amiable__verre entree">
+        <p class="surtitre" style="color: var(--laiton-clair); display: flex; align-items: center; gap: 14px"><span class="filet" style="background: var(--laiton-clair)"></span>Règlement amiable &amp; médiation</p>
+        <h1>La médiation, oui. Seul, non.</h1>
+        <p class="chapo">Les tribunaux renvoient de plus en plus les justiciables vers la médiation et la conciliation. C’est souvent une bonne nouvelle — à condition d’y aller préparé, conseillé et protégé. Le cabinet, rompu aux techniques de négociation, de médiation et de conciliation, est à vos côtés avant, pendant et après.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px">
+          <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
+          <a href="#peurs" class="btn btn--contour-clair btn--grand">Ce qui vous retient</a>
+        </div>
+      </div>
+      <p class="hero-amiable__legende">De la confrontation au dialogue — <em>la médiation, accompagnée.</em></p>
+    </div>
+  </section>
 
   <section class="section">
     <div class="conteneur deux-colonnes" style="align-items: start">
@@ -67,7 +81,8 @@ const sources = [
     </div>
   </section>
 
-  <section class="section section--ivoire" id="peurs">
+  <section class="section section--ivoire decor-parent peurs" id="peurs">
+    <div class="decor decor--papier peurs__decor" aria-hidden="true"><Image src={mediationCouple} alt="" width={1400} loading="lazy" /></div>
     <div class="conteneur pile" style="gap: 36px">
       <div class="pile" style="max-width: 720px; gap: 14px">
         <p class="surtitre">Ce qui vous retient</p>
@@ -75,7 +90,7 @@ const sources = [
         <p class="chapo">Elles sont légitimes. Aucune n’est une raison d’y aller seul, ni de refuser sans réfléchir.</p>
       </div>
       <div class="grille grille--2">
-        {peurs.map(([t, x]) => <div class="carte" style="gap: 12px"><h3 style="font-style: italic">{t}</h3><p class="muet" style="font-size: 15px">{x}</p></div>)}
+        {peurs.map(([t, x]) => <div class="carte carte--verre" style="gap: 12px"><h3 style="font-style: italic">{t}</h3><p class="muet" style="font-size: 15px">{x}</p></div>)}
       </div>
     </div>
   </section>
@@ -147,3 +162,31 @@ const sources = [
   </section>
   <Cta />
 </Base>
+
+<style>
+  /* Bandeau : la confrontation (gauche, estompée) fond dans le dialogue (droite, en couleur) ; le texte sur un panneau de verre. */
+  .hero-amiable { position: relative; overflow: hidden; background: var(--vert-nuit); color: var(--sur-vert); isolation: isolate; }
+  .hero-amiable__fond { position: absolute; inset: 0; z-index: -1; }
+  .hero-amiable__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-amiable__photo--avant { object-position: 15% 30%; filter: grayscale(1) contrast(1.1) brightness(1.05); opacity: .72; mix-blend-mode: luminosity; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 34%, transparent 66%); mask-image: linear-gradient(90deg, #000 0%, #000 34%, transparent 66%); }
+  .hero-amiable__photo--apres { object-position: 50% 32%; -webkit-mask-image: linear-gradient(90deg, transparent 36%, #000 64%); mask-image: linear-gradient(90deg, transparent 36%, #000 64%); }
+  .hero-amiable__voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13, 38, 34, .35) 0%, rgba(13, 38, 34, .15) 45%, rgba(13, 38, 34, 0) 70%), linear-gradient(0deg, rgba(13, 38, 34, .65) 0%, rgba(13, 38, 34, 0) 40%); }
+  .hero-amiable__in { position: relative; padding-top: 72px; padding-bottom: 36px; display: grid; gap: 22px; }
+  .hero-amiable__verre { max-width: 640px; display: grid; gap: 22px; padding: 36px 38px; border-radius: var(--r); background: rgba(13, 38, 34, .46); border: 1px solid rgba(244, 239, 230, .16); box-shadow: 0 30px 70px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06); -webkit-backdrop-filter: blur(16px) saturate(1.15); backdrop-filter: blur(16px) saturate(1.15); }
+  .hero-amiable__verre h1 { color: var(--sur-vert); }
+  .hero-amiable__verre .chapo { color: rgba(244, 239, 230, .9); }
+  .hero-amiable__legende { justify-self: end; font-size: 14px; color: rgba(244, 239, 230, .78); padding: 8px 14px; border-radius: 999px; background: rgba(13, 38, 34, .4); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(244, 239, 230, .12); }
+  .hero-amiable__legende em { color: var(--laiton-clair); font-style: italic; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .hero-amiable__verre { background: rgba(13, 38, 34, .82); } }
+  @media (max-width: 860px) {
+    .hero-amiable__fond { position: relative; height: 240px; }
+    .hero-amiable__photo--avant { -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 70%); mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 70%); }
+    .hero-amiable__photo--apres { -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 70%); mask-image: linear-gradient(90deg, transparent 30%, #000 70%); }
+    .hero-amiable__in { padding-top: 0; margin-top: -56px; padding-bottom: 32px; }
+    .hero-amiable__verre { padding: 26px 22px; }
+    .hero-amiable__legende { justify-self: start; }
+  }
+  /* Peurs : le face-à-face en filigrane, cartes translucides */
+  .peurs__decor img { width: 58%; opacity: .16; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); }
+  .carte--verre { background: rgba(251, 249, 244, .78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(154, 123, 79, .28); }
+</style>

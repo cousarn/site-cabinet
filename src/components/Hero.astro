@@ -17,10 +17,11 @@ interface Props {
   image?: 'parlement' | 'couloir' | 'cite' | 'themis' | 'aucune';
   variante?: 'photo' | 'clair';
   position?: string; // object-position de la photo
+  photo?: ImageMetadata; // photo propre à la page (prime sur `image`)
 }
-const { surtitre, titre, chapo, image = 'parlement', variante = 'photo', position = '70% 45%' } = Astro.props;
+const { surtitre, titre, chapo, image = 'parlement', variante = 'photo', position = '70% 45%', photo: photoPropre } = Astro.props;
 const photos: Record<string, ImageMetadata> = { parlement, couloir, cite, themis };
-const photo = image === 'aucune' ? null : photos[image];
+const photo = photoPropre ?? (image === 'aucune' ? null : photos[image]);
 ---
 {variante === 'photo' ? (
   <section class="hero">
