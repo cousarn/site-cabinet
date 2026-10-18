@@ -61,7 +61,7 @@ const sources = [
     <div class="conteneur hero-amiable__in">
       <div class="hero-amiable__verre entree">
         <p class="surtitre" style="color: var(--laiton-clair); display: flex; align-items: center; gap: 14px"><span class="filet" style="background: var(--laiton-clair)"></span>Règlement amiable &amp; médiation</p>
-        <h1>La médiation, oui. Seul, non.</h1>
+        <h1 class="hero-amiable__titre">La médiation, oui.<br /><span style="white-space: nowrap">Seul, non.</span></h1>
         <p class="chapo">Les tribunaux renvoient de plus en plus les justiciables vers la médiation et la conciliation. C’est souvent une bonne nouvelle — à condition d’y aller préparé, conseillé et protégé. Le cabinet, rompu aux techniques de négociation, de médiation et de conciliation, est à vos côtés avant, pendant et après.</p>
         <div style="display: flex; flex-wrap: wrap; gap: 14px">
           <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
@@ -193,21 +193,24 @@ const sources = [
   .hero-amiable__fond { position: absolute; inset: 0; z-index: -1; }
   .hero-amiable__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-amiable__photo--avant { object-position: 15% 22%; filter: grayscale(1) contrast(1.1) brightness(1.05); opacity: .6; mix-blend-mode: luminosity; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 48%); mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 48%); }
-  .hero-amiable__photo--apres { object-position: 50% 30%; transform: scale(1.14); transform-origin: 22% center; -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 42%); mask-image: linear-gradient(90deg, transparent 18%, #000 42%); }
+  .hero-amiable__photo--apres { object-position: 50% 34%; transform: scale(1.22); transform-origin: 8% center; -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 42%); mask-image: linear-gradient(90deg, transparent 18%, #000 42%); }
   .hero-amiable__voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13, 38, 34, .35) 0%, rgba(13, 38, 34, .1) 40%, rgba(13, 38, 34, 0) 60%), linear-gradient(0deg, rgba(13, 38, 34, .55) 0%, rgba(13, 38, 34, 0) 32%); }
   .hero-amiable__in { position: relative; padding-top: 72px; padding-bottom: 36px; display: grid; gap: 22px; }
-  .hero-amiable__verre { max-width: 540px; display: grid; gap: 20px; padding: 32px 34px; border-radius: var(--r); background: rgba(13, 38, 34, .58); border: 1px solid rgba(244, 239, 230, .16); box-shadow: 0 30px 70px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06); -webkit-backdrop-filter: blur(16px) saturate(1.15); backdrop-filter: blur(16px) saturate(1.15); }
-  .hero-amiable__verre h1 { color: var(--sur-vert); }
+  .hero-amiable__verre { max-width: min(540px, 47vw); display: grid; gap: 18px; padding: 30px 32px; border-radius: var(--r); background: rgba(13, 38, 34, .58); border: 1px solid rgba(244, 239, 230, .16); box-shadow: 0 30px 70px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06); -webkit-backdrop-filter: blur(16px) saturate(1.15); backdrop-filter: blur(16px) saturate(1.15); }
+  .hero-amiable__verre h1 { color: var(--sur-vert); font-size: clamp(34px, 3.4vw, 52px); line-height: 1.05; }
+  .hero-amiable__verre .chapo { font-size: clamp(15px, 1.15vw, 18px); }
   .hero-amiable__verre .chapo { color: rgba(244, 239, 230, .9); }
   .hero-amiable__legende { justify-self: end; font-size: 14px; color: rgba(244, 239, 230, .78); padding: 8px 14px; border-radius: 999px; background: rgba(13, 38, 34, .4); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(244, 239, 230, .12); }
   .hero-amiable__legende em { color: var(--laiton-clair); font-style: italic; }
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .hero-amiable__verre { background: rgba(13, 38, 34, .82); } }
+  @media (min-width: 1600px) { .hero-amiable__photo--apres { transform: scale(1.08); transform-origin: 20% center; object-position: 50% 40%; } .hero-amiable__in { padding-top: 84px; padding-bottom: 48px; } }
   @media (max-width: 860px) {
     .hero-amiable__fond { position: relative; height: 240px; }
     .hero-amiable__photo--avant { -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 70%); mask-image: linear-gradient(90deg, #000 0%, #000 30%, transparent 70%); }
     .hero-amiable__photo--apres { -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 70%); mask-image: linear-gradient(90deg, transparent 30%, #000 70%); }
     .hero-amiable__in { padding-top: 0; margin-top: -56px; padding-bottom: 32px; }
-    .hero-amiable__verre { padding: 26px 22px; }
+    .hero-amiable__verre { padding: 26px 22px; max-width: none; }
+    .hero-amiable__verre h1 { font-size: 34px; }
     .hero-amiable__legende { justify-self: start; }
   }
   /* Peurs : le face-à-face en filigrane, cartes translucides */
