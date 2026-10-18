@@ -1,6 +1,6 @@
-/** Grille indicative — barème 2023 du cabinet, montants TTC. [Mise à jour 2026 à valider] */
+/** Grille indicative — barème 2026 du cabinet, montants TTC (validé le 19/10/2026). */
 export const bareme = {
-  millesime: 2023,
+  millesime: 2026,
   tauxHoraire: 192,
   lignes: [
     { famille: 'Consultations', items: [
