@@ -1,0 +1,201 @@
+# Administrer arnaudcousin-avocat.fr
+
+Mode d'emploi du site du Cabinet Arnaud Cousin, avocat au Barreau de Rennes. Il s'adresse à trois lecteurs : Arnaud lui-même, une session d'assistant IA (Claude ou autre) à qui il confie une tâche, et un éventuel agent local chargé de la veille. Tout ce qui suit est vérifiable dans le dépôt `cousarn/site-cabinet` (public) ; rien de secret n'y figure, et rien de secret ne doit jamais y entrer.
+
+> **Règle d'or pour un agent** : le site est statique et déployé par Git. On ne modifie jamais rien par FTP sur le serveur, sauf le fichier de configuration hors Git décrit au § 6. Toute modification = commit sur `main` → vérification en préprod → tag `vX.Y.Z` → production.
+
+---
+
+## 1. Vue d'ensemble
+
+| Élément | Valeur |
+|---|---|
+| Production | https://arnaudcousin-avocat.fr (et `www.`, redirigé en 301) — dossier OVH `./prod` |
+| Préproduction | https://preprod.arnaudcousin-avocat.fr — dossier OVH `./preprod`, balise `noindex` |
+| Ancien site TOWeb | conservé intact dans le dossier OVH `./www` (retour arrière possible : Multisite › Modifier le domaine › dossier racine `www`) |
+| Dépôt | `github.com/cousarn/site-cabinet`, branche de travail `main`, dossier `astro/` |
+| Générateur | Astro 5 (statique, `build.format: 'file'` → URL sans `.html`), Node 22 |
+| Hébergement | OVH mutualisé, cluster 105, utilisateur `arnaudcoqa`, PHP 8 pour les formulaires |
+| Déploiement | GitHub Actions construit `dist/` et le pousse sur `deploy-preprod` (push `main`) ou `deploy-prod` (tag `v*`) ; OVH tire la branche via webhook en 1 à 2 min |
+| Courriel | Microsoft 365 ; `site@arnaudcousin-avocat.fr` (expéditeur des formulaires) est un alias de `cabinet@` ; MX, SPF dans la zone DNS OVH |
+| Rendez-vous | Microsoft Bookings, page personnelle du compte `cabinet@` (3 types : cabinet, visio, téléphone — 1 h, 132 € TTC) |
+| Paiement | PayPal « Payments Standard » (lien hébergé, identifiant marchand public dans `_lib.php`), RIB en secours |
+| Référencement | Google Search Console (propriété domaine, validée par TXT DNS), Bing Webmaster (validé par CNAME DNS), sitemap `/sitemap-index.xml` |
+
+Vérifier d'un coup d'œil quelle version est en ligne : `https://arnaudcousin-avocat.fr/version.txt` (hash du commit, date, référence), idem sur la préprod.
+
+## 2. Où se trouve quoi
+
+```
+astro/
+├── src/data/cabinet.ts        coordonnées, horaires, confrères, SIRET/TVA, assureur, médiateur, accès,
+│                              navigation (menus), liens Bookings (`bookings`), année du serment
+├── src/data/honoraires.ts     grille indicative (`bareme`), barème de l'aide juridictionnelle (`aj`)
+├── src/content/domaines/*.md  les 5 pages « Domaines » : tout dans le frontmatter (situations, méthode, FAQ, fiches liées)
+├── src/content/fiches/*.md    fiches pratiques et billets : frontmatter + Markdown
+├── src/pages/*.astro          pages fixes (accueil, cabinet, honoraires, contact, mentions légales, règlement amiable…)
+├── src/pages/services/        rendez-vous, consultation écrite, devis divorce, dépôt de pièces (phase 2)
+├── src/layouts/Base.astro     <head>, SEO, JSON-LD (LegalService + BreadcrumbList), header, footer
+├── src/components/            Header, Footer, Hero, Faq, Cta, Icone
+├── src/styles/global.css      charte : vert #11352F, laiton #9A7B4F, papier #F4EFE6, Fraunces + Figtree (polices locales)
+├── src/assets/photos/         photos (WebP ; Astro génère les tailles responsives)
+├── public/.htaccess           HTTPS, sans www, URL sans .html, 301 de l'ancien site, en-têtes de sécurité (CSP stricte)
+├── public/api/*.php           formulaires : contact, saisine, devis, consultation ; `_lib.php` = réglages et utilitaires
+├── public/api/config.local.example.php   modèle du fichier serveur hors Git (§ 6)
+├── .github/workflows/deploy.yml          la chaîne de déploiement
+├── README.md                  documentation technique (déploiement, formulaires, paiement, historique des décisions)
+└── ADMINISTRATION.md          ce document
+```
+
+Règle de dépendance : une donnée affichée à plusieurs endroits vit dans `src/data/` (ex. : les horaires, le téléphone, les prix des rendez-vous). Ne jamais la dupliquer en dur dans une page.
+
+## 3. Les tâches courantes
+
+### 3.1 Publier une fiche pratique (actualité, note de jurisprudence)
+
+1. Créer `src/content/fiches/<slug>.md` (slug en minuscules, sans accent, tirets). Frontmatter obligatoire :
+   ```yaml
+   ---
+   title: "Titre de la fiche"                       # 50 à 65 caractères, mot-clé devant
+   description: "Une phrase de 170 caractères au plus (le build refuse au-delà)."
+   date: 2026-10-18
+   domaine: successions        # successions | separation-divorce | droit-du-travail | procedure-appel | cabinet
+   type: fiche                 # fiche | simulateur | checklist | billet
+   lecture: "7 min"
+   ---
+   ```
+2. Corps en Markdown : intertitres `##`, un encadré « Le réflexe » en fin de fiche (`<div class="encadre">…</div>`), un paragraphe *Sources* en italique.
+3. Jurisprudence : **chaque arrêt cité doit avoir été lu** sur Judilibre (`courdecassation.fr/decision/<id>`) ou Légifrance, avec date, numéro de pourvoi et lien. Pas de référence de mémoire. Préférer les arrêts publiés au Bulletin. Les textes de loi : lien vers l'article Légifrance dans sa version en vigueur.
+4. Lier la fiche à son domaine : ajouter le slug dans `fiches: [...]` du fichier `src/content/domaines/<domaine>.md` (en tête de liste si elle est récente).
+5. Vérifier, pousser, contrôler en préprod, puis passer en production (§ 4).
+
+La fiche apparaît automatiquement sur `/fiches`, sur l'accueil (trois dernières), dans le sitemap et avec un JSON-LD `Article`.
+
+### 3.2 Modifier un prix, un horaire, une coordonnée
+
+- Rendez-vous (cabinet, visio, téléphone) : `bookings.prix` dans `src/data/cabinet.ts` **et** le prix dans chaque type de réunion Bookings (titre et description) **et** `honoraires.ts` (ligne « Consultation d'orientation ») **et** la FAQ de `honoraires.astro`.
+- Consultation écrite : `$formules` dans `public/api/consultation.php` (montants TTC facturés), `services/consultation-ecrite.astro` (affichage), `services/index.astro` et `cabinet.ts › services` (« dès 80 € »), CGV dans `mentions-legales.astro`.
+- Horaires : `cabinet.horaires` et `cabinet.horairesSchema` ; puis fiche Google Business et page Bookings (heures de disponibilité).
+- Grille devis divorce (HT) : valeurs par défaut dans `_lib.php` (`devis`), surchargeables dans le fichier serveur (§ 6) ; l'affichage de `services/devis-divorce.astro` doit suivre.
+- Confrères du cabinet groupé, assureur RCP (notice annuelle du Barreau), médiateur : `cabinet.ts`.
+- Barème AJ : `aj` dans `honoraires.ts`, à mettre à jour **chaque janvier** d'après la circulaire du ministère (voir § 7).
+
+### 3.3 Ajouter ou modifier une page
+
+Copier la structure d'une page voisine (`reglement-amiable.astro` est un bon modèle : hero, sections, FAQ, CTA). Titre `<title>` de 50 à 65 caractères avec « | Arnaud Cousin », description de 120 à 160 caractères, un seul `h1`, fil d'Ariane `fil=[…]`. Ajouter l'entrée de menu dans `cabinet.ts › navigation` si la page doit être accessible depuis l'en-tête (le méga-menu « Domaines » et l'accueil se nourrissent de `navigation.domaines` : l'accueil attend aussi une icône, une accroche et une liste par entrée dans `index.astro`).
+
+### 3.4 Photos
+
+Déposer un WebP dans `src/assets/photos/` (1 536 à 2 400 px de large, qualité 80), l'importer dans la page et l'afficher avec `<Image>` d'Astro (`widths`, `sizes`, `alt` descriptif, `loading="lazy"` sauf dans le bandeau). Les images générées par IA doivent être inspectées à 100 % (mains, lunettes, verres, bijoux, texte) ; recadrer ou retoucher avant usage. Crédit : « Photos et illustrations © Cabinet Arnaud Cousin » (footer et mentions légales) — vérifier que la licence le permet pour toute image achetée.
+
+### 3.5 Formulaires et courriels
+
+Les quatre formulaires sont en PHP dans `public/api/` et envoient depuis `site@`. Pour tester sans polluer : envoyer depuis la préprod avec `cabinet@` comme adresse du client ; les deux mails arrivent dans la boîte du cabinet (référence du type `261018-747E`). Les pièces des consultations écrites sont stockées hors racine web dans `/home/arnaudcoqa/consultations/<réf>/`.
+
+## 4. Vérifier, puis mettre en ligne
+
+```bash
+cd astro
+npm ci                 # première fois
+npm run check          # types, schémas de contenu (descriptions trop longues, enum, etc.)
+npm run build          # génère dist/ ; échoue si une fiche ne respecte pas le schéma
+npm run preview        # http://localhost:4321 pour regarder
+git add -A && git commit -m "…" && git push origin main     # → préprod en ~2 min
+```
+
+Contrôles en préprod avant toute production :
+- la page nouvelle ou modifiée s'affiche, sur ordinateur et sur mobile (390 px) ;
+- `https://preprod.arnaudcousin-avocat.fr/version.txt` porte bien le dernier commit ;
+- aucun lien interne cassé (un script simple : extraire les `href="/…"` de `dist/` et vérifier que le fichier existe) ;
+- pas de texte « [à confirmer] », pas de prix contradictoire entre deux pages.
+
+Production : créer un tag `vX.Y.Z` sur le commit validé — soit `git tag vX.Y.Z && git push origin vX.Y.Z`, soit GitHub › Releases › *Draft a new release* (le tag est créé à la publication). L'environnement GitHub `production` n'accepte que les tags `v*`. Deux minutes plus tard, `/version.txt` en production doit afficher le commit. Numérotation : `v1.x.0` pour du contenu nouveau, `v1.x.y` pour une correction.
+
+**Interdit** : réécrire l'historique des branches `deploy-preprod` / `deploy-prod` (OVH fait un `git pull` ; une branche réécrite bloque tout). Si OVH reste bloqué sur « En cours » et que les webhooks répondent 400 : Multisite › ⋯ › *Supprimer Git* (cocher « vider le répertoire ») puis *Associer Git* à nouveau (même URL de webhook).
+
+## 5. Comptes et accès (qui fait quoi)
+
+| Service | Compte | Ce qu'un agent peut faire | Ce qui reste à Arnaud |
+|---|---|---|---|
+| GitHub | `cousarn` | lire, committer, pousser sur `main`, préparer une release | publier la release de production si l'outil le refuse ; gérer les webhooks (mode sudo) |
+| OVH (manager) | compte client Arnaud | zone DNS (TXT/CNAME de vérification), multisite, suivi des tâches | mot de passe, SFTP, facturation, certificats |
+| Serveur (SFTP) | `arnaudcoqa` | rien directement : passer par FileZilla sur le poste d'Arnaud, qui saisit lui-même le mot de passe | identifiants |
+| Microsoft 365 | `cabinet@…` (admin) | Bookings (types, disponibilités), lecture du calendrier pour vérifier les créneaux | connexion, alias, licences |
+| PayPal | compte du cabinet | rien (l'identifiant marchand suffit au site) | tout |
+| Google (Search Console, Business Profile) | compte Google d'Arnaud (`arnaudcousin00@gmail.com` porte la Search Console) | Search Console une fois connecté (sitemap, inspection d'URL, demandes d'indexation) | connexion, fiche Google Business |
+| Bing Webmaster | connecté via Google | sitemaps, inspection | connexion |
+
+Jamais : saisir un mot de passe, un code, une clé API, un IBAN dans une conversation ou un fichier du dépôt. Le RIB n'existe que dans le fichier serveur (§ 6).
+
+## 6. Le fichier serveur hors Git
+
+`/home/arnaudcoqa/config/site-cabinet.php` (modèle : `public/api/config.local.example.php`) contient : `cabinet_email`, `from_email`, `rib` (texte affiché dans les accusés de réception), `paiement` (`paypal` | `virement` | `stripe`), `paypal_id`, et optionnellement `devis`, `tva`. Il est lu par la préprod **et** la prod, jamais touché par les déploiements, protégé par un `try/catch` (une erreur de syntaxe n'empêche pas le site de fonctionner, elle est journalisée). Pour le modifier : FileZilla (SFTP, hôte du cluster 105) › clic droit › *Afficher/Éditer* › enregistrer › accepter le renvoi.
+
+## 7. Veille et actualisation — calendrier
+
+| Quand | Quoi | Où |
+|---|---|---|
+| Chaque semaine | Formulaires : un envoi test depuis la préprod ; Search Console › Pages (erreurs d'indexation) ; Bing idem | § 3.5, consoles |
+| Chaque semaine | Mentions « v*.txt » : prod et préprod portent le dernier commit attendu | `/version.txt` |
+| Chaque mois | Lien Bookings : réserver un créneau test et l'annuler ; vérifier que les RDV Outlook bloquent bien les créneaux | Bookings |
+| Chaque mois | Fiche Google Business : horaires, avis à répondre, photos | Google |
+| Chaque mois | Veille jurisprudentielle pour les fiches existantes (recel, délivrance de legs, indivision, salaire différé) : Judilibre, 1re civ., arrêts publiés ; mettre à jour la fiche (`updated:` dans le frontmatter) si un arrêt change la règle | Judilibre |
+| Janvier | Barème de l'aide juridictionnelle (circulaire du ministère de la Justice, NOR JUST…) → `aj` dans `honoraires.ts` | justice.gouv.fr |
+| Janvier | Notice RCP du Barreau de Rennes (assureur, n° de contrat) → `cabinet.assureur` ; millésime du barème d'honoraires si révisé | courrier de l'Ordre |
+| Janvier | Année du serment / ancienneté : automatique (`anneesExercice` dans `cabinet.ts`) ; vérifier l'affichage | accueil, cabinet |
+| Trimestre | Dépendances : `npm outdated`, `npm audit` ; mettre à jour Astro mineur, rebuild, préprod | dépôt |
+| Trimestre | Certificat SSL OVH (renouvellement automatique Let's Encrypt), expiration du domaine (déc. 2026), DMARC à envisager | OVH |
+| À chaque changement de prix, d'horaire, de confrère | Mettre à jour **toutes** les occurrences listées au § 3.2 et la page Bookings | — |
+| À chaque texte nouveau (loi, décret) touchant famille, successions, travail, procédure | Billet court sur `/fiches` (type `billet`), lié au domaine | § 3.1 |
+
+Sources de veille utiles : Judilibre (recherche par chambre + « publié au bulletin »), Légifrance (versions des articles), justice.gouv.fr (politique de l'amiable, AJ), Dalloz actualité / Actu-Juridique (abonnements du cabinet), bulletin de l'Ordre.
+
+## 8. Améliorer le référencement — méthode
+
+Le site est techniquement propre (URL courtes, 301 de l'ancien site, canonical, sitemap, JSON-LD `LegalService`/`Attorney`, `BreadcrumbList`, `FAQPage`, `Article`, CSP, images WebP/AVIF, polices locales). Le levier est maintenant **le contenu local et spécialisé**, puis la notoriété. Un agent peut conduire ce travail en boucle mensuelle.
+
+### 8.1 Mesurer (chaque mois, 20 min)
+- Search Console › *Performances* : requêtes et pages, filtrer les 90 derniers jours ; noter les requêtes en position 5–20 (gains rapides) et celles où le CTR est faible malgré une bonne position (titre/description à réécrire).
+- Search Console › *Pages* : erreurs, pages « explorées, non indexées » ; *Améliorations* : données structurées (FAQ, fil d'Ariane) sans erreur.
+- Bing Webmaster › *Search Performance* et *Site Scan* (audit technique gratuit).
+- Fiche Google Business : vues, appels, clics « itinéraire » et « site web » ; nombre et note des avis.
+- Tenir un tableau simple (date, requête, position, page) dans `docs/seo-suivi.md` ou un tableur du cabinet.
+
+### 8.2 Mots-clés visés (à affiner avec les données)
+Requêtes principales, toutes avec « Rennes » ou « avocat » : *avocat succession Rennes*, *avocat partage judiciaire*, *sortie d'indivision avocat*, *recel successoral avocat*, *délivrance de legs*, *avocat divorce Rennes*, *prestation compensatoire*, *avocat droit du travail Rennes*, *licenciement Rennes avocat*, *postulation Rennes*, *avocat médiation Rennes*, *conflit associés SCI familiale*, *salaire différé agricole*. Une page ou une fiche par intention de recherche ; ne pas créer deux pages concurrentes sur la même requête (cannibalisation).
+
+### 8.3 Produire (une à deux fiches par mois)
+- Sujets à forte demande et faible concurrence locale : procédure concrète + délais + coût + « quand consulter ». Modèle : les fiches *recel* et *délivrance du legs* (question du client dans le titre, jurisprudence sourcée, encadré « Le réflexe », appel à consulter).
+- Idées en réserve : pension alimentaire (barème, révision), prestation compensatoire (calcul, capital/rente), résidence alternée, liquidation du régime matrimonial après divorce, indemnité d'occupation en indivision, licitation (déroulé d'une vente aux enchères), rupture conventionnelle (délais, calcul), inaptitude, barème Macron, appel civil (délais, déclaration d'appel), postulation (mode d'emploi pour confrères), médiation familiale (déroulé, coût), SCI familiale bloquée (révocation du gérant, dissolution).
+- Chaque fiche : 1 200 à 2 000 mots, intertitres qui répondent à des questions, liens internes vers le domaine, le rendez-vous et une fiche voisine ; `description` qui donne envie ; date réelle ; `updated:` à chaque mise à jour substantielle (Google valorise la fraîcheur).
+- Mettre à jour les fiches existantes quand la jurisprudence bouge (voir veille § 7) plutôt que d'en créer une nouvelle sur le même sujet.
+
+### 8.4 Référencement local
+- Fiche Google Business : catégorie principale « Avocat », secondaires (droit de la famille, successions, droit du travail), horaires exacts (9h–12h / 14h–19h), lien *Prendre rendez-vous* vers la page Bookings, description de 750 caractères reprenant les domaines, photos du cabinet, publication mensuelle (« Google Posts ») reprenant une fiche. Répondre à **tous** les avis, y compris négatifs, sobrement et sans rien révéler d'un dossier (secret professionnel).
+- Cohérence NAP (nom, adresse, téléphone) partout : site, Google, Bing Places, annuaire de l'Ordre, avocat.fr, Pages Jaunes, Justifit/Alexia si présents. Un numéro, une graphie de l'adresse.
+- Liens entrants de qualité : annuaire de l'Ordre (déjà), avocat.fr (via l'Ordre), fiches partenaires (notaires, CMR 35 si réciprocité), interventions/publications (Gazette du Palais, revue du Barreau, conférences), article invité sur un site de notaires ou d'experts. Pas d'achat de liens, pas d'annuaires de masse.
+
+### 8.5 Technique (chaque trimestre)
+- PageSpeed Insights sur l'accueil, une page domaine et une fiche : viser LCP < 2,5 s, CLS ≈ 0 ; surveiller le poids de la photo du bandeau et le `fetchpriority="high"` sur la première image.
+- Test des résultats enrichis (search.google.com/test/rich-results) sur une page FAQ et une fiche.
+- Liens cassés internes (script du § 4) et externes (les URL Judilibre/Légifrance sont stables ; revérifier une fois par an).
+- Titres ≤ 65 caractères, descriptions ≤ 160 : `python3` sur `dist/` comme au § 4, après chaque série de modifications.
+- Ne jamais indexer la préprod (balise `noindex` posée par `PUBLIC_ENV=preprod`) ; vérifier qu'aucune URL `preprod.` n'apparaît dans Search Console.
+
+### 8.6 Ce qu'on ne fait pas
+Pas de texte généré en masse, pas de pages « ville » dupliquées (Rennes, Saint-Malo, Saint-Brieuc… : une mention naturelle du ressort suffit), pas de mots-clés cachés, pas d'avis sollicités en échange d'un avantage, pas de promesse de résultat (déontologie : RIN art. 10). Le contenu doit rester celui d'un avocat qui explique ; c'est ce qui le fait référencer et ce qui fait venir les clients.
+
+## 9. Ce qui n'est pas encore fait (phase 2)
+
+- Dépôt de pièces sécurisé (`/services/depot-pieces`, en `noindex`) : relais PHP → SharePoint.
+- Assistant de pré-entretien (bouton « bientôt » sur `/services`).
+- PayPal : notification IPN/webhook pour marquer une consultation « payée » sans intervention.
+- Page Bookings partagée (logo, couleurs) si Microsoft corrige l'erreur de création sur le tenant.
+- DMARC sur le domaine ; nettoyage des entrées DNS parasites `arnaudcousin-avocat.fr.arnaudcousin-avocat.fr`.
+- Avis à l'Ordre : e-mail affiché dans l'annuaire (`arnaud.cousin@avocat-conseil.fr`) et langue en double.
+
+## 10. Brief type pour une session IA
+
+> Tu administres le site statique Astro du Cabinet Arnaud Cousin (dépôt `cousarn/site-cabinet`, dossier `astro/`). Lis `ADMINISTRATION.md` puis `README.md`. Tâche : ___. Contraintes : aucun secret dans le dépôt ni dans la conversation ; ne jamais réécrire les branches `deploy-*` ; toute jurisprudence citée doit avoir été lue sur Judilibre ou Légifrance avec son lien ; descriptions ≤ 170 caractères ; vérifier `npm run check` et `npm run build` avant de pousser ; pousser sur `main`, contrôler la préprod, puis proposer le tag de production sans le poser toi-même sauf instruction expresse. Rends compte en français, en quelques lignes, avec les URL à vérifier.
+
+Historique des décisions et de la mise en ligne (18–19 octobre 2026) : voir `README.md`.
