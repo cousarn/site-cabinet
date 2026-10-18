@@ -61,7 +61,19 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: Vérifier la configuration OVH
+        id: cfg
+        env:
+          HOTE: ${{ secrets.OVH_FTP_HOST }}
+        run: |
+          if [ -z "$HOTE" ]; then
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Déploiement non configuré::Les secrets OVH_FTP_HOST / OVH_FTP_USER / OVH_FTP_PASSWORD ne sont pas encore renseignés (Settings › Secrets and variables › Actions). Le site est construit mais pas publié."
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Envoyer par FTPS
+        if: steps.cfg.outputs.ok == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.OVH_FTP_HOST }}
