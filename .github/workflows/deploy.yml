@@ -76,5 +76,6 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
-            api/**
+            api/config.local.php
+            api/.cache/**
             depot/**

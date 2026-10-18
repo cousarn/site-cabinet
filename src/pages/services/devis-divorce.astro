@@ -15,6 +15,7 @@ import Hero from '../../components/Hero.astro';
         <label class="champ">5. Entreprise, parts de société, profession libérale<select name="entreprise"><option>Non</option><option>Oui, l’un de nous</option><option>Oui, les deux</option></select></label>
         <label class="champ">6. Points d’accord<select name="accord"><option>Nous sommes d’accord sur tout</option><option>Il reste un ou deux points à régler</option><option>Nous sommes loin d’un accord</option></select></label>
         <label class="champ">Votre courriel pour recevoir l’estimation<input type="email" name="email" required autocomplete="email" /></label>
+        <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
         <button type="submit" class="btn btn--plein" style="align-self: flex-start">Recevoir mon estimation</button>
       </form>
       <div class="pile">

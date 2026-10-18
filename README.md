@@ -64,14 +64,27 @@ Pousser sur `main` : la préprod se met à jour en deux minutes. La fiche appara
 
 Les identifiants OVH ne figurent nulle part dans le code et ne sont jamais communiqués à des tiers.
 
-## Phase « services » (à venir, même dépôt)
+## Formulaires (PHP sur OVH — `public/api/`)
 
-- `api/contact.php`, `api/consultation.php`, `api/devis.php`, `api/saisine.php` : traitement des formulaires côté OVH (PHP 8), anti-spam honeypot + limite de débit, courriel au cabinet.
-- Paiement : Stripe Checkout (le site ne voit jamais la carte).
+| Point d'entrée | Rôle | Courriels |
+|---|---|---|
+| `contact.php` | formulaire de contact | cabinet (Reply-To client) + accusé de réception |
+| `saisine.php` | saisine notaires & confrères | cabinet + accusé « sous 24 h ouvrées » |
+| `devis.php` | estimation divorce par consentement mutuel (calcul serveur, grille dans `_lib.php` → `devis`) | client (détail ligne par ligne) + cabinet |
+| `consultation.php` | consultation écrite : formule, question, pièces (stockées hors racine web dans `../consultations/<réf>/`), instructions de règlement | client + cabinet |
+
+Protections : POST seul, pot de miel (`site`), limite de 6 envois/heure/IP, validation des courriels, types MIME des pièces vérifiés, 20 Mo max, `_lib.php` et `.cache/` inaccessibles en HTTP.
+Chaque envoi redirige vers `/merci?objet=…&ref=…` (référence du type `261018-6018`).
+
+**Sur le serveur, une fois** : copier `api/config.local.example.php` en `api/config.local.php` et renseigner l'IBAN, l'adresse d'expédition (`site@arnaudcousin-avocat.fr`, à créer dans OVH › Emails) et, si besoin, la grille du devis. Ce fichier n'est jamais écrasé par les déploiements.
+
+## Phase 2 (même dépôt)
+
+- Paiement par carte : Stripe Checkout (`paiement => 'stripe'` dans la config) — le site ne voit jamais la carte.
 - Rendez-vous : iframe Microsoft Bookings dans `/services/rendez-vous`.
 - Dépôt de pièces : `depot/<jeton>` → relais PHP → SharePoint → `agent-secib`.
 - Assistant de pré-entretien : serveur du cabinet, modèle sous contrôle de l'avocat, journalisation minimale.
 
 ## Points en attente (`[entre crochets]` dans le site)
 
-SIRET, TVA, assureur RC, médiateur, prix visio/téléphone, URL Bookings, places et horaires du parking Colombier, lignes de bus 9/57, accessibilité PMR, crédits photos (et mention IA le cas échéant), mise à jour du barème.
+SIRET, TVA, assureur RC, médiateur, prix visio/téléphone, URL Bookings, places et horaires du parking Colombier, lignes de bus 9/57, accessibilité PMR, crédits photos (et mention IA le cas échéant), mise à jour du barème, **grille du devis divorce** (`_lib.php` → `devis` : base 960 €, enfants +240/+360, immobilier +360/+720, entreprise +600/+900, désaccord partiel +240 — proposition à valider), IBAN dans `config.local.php`.

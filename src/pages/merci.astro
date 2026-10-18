@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { cabinet } from '../data/cabinet';
+---
+<Base title="Message envoyé | Cabinet Arnaud Cousin" description="Votre demande est bien arrivée au cabinet." noindex>
+  <section class="section"><div class="conteneur pile" style="gap: 18px; max-width: 720px; padding-top: 72px; padding-bottom: 72px">
+    <p class="surtitre">Merci</p>
+    <h1 id="merci-titre">Votre message est bien arrivé.</h1>
+    <p class="chapo" id="merci-texte">Vous serez rappelé(e) sous 48 heures ouvrées. Un accusé de réception vous a été adressé par courriel.</p>
+    <p id="merci-estimation" class="pile" style="display: none; gap: 6px; border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; background: var(--ivoire)"></p>
+    <p class="muet" style="font-size: 14px">Référence : <strong id="merci-ref">—</strong>. Urgence : <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a>, prise de message 24h/24.</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/" class="btn btn--plein">Retour à l’accueil</a><a href="/fiches" class="btn btn--contour">Lire les fiches pratiques</a></div>
+  </div></section>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const objet = q.get('objet');
+    const ref = q.get('ref');
+    if (ref) document.getElementById('merci-ref')!.textContent = ref;
+    const titre = document.getElementById('merci-titre')!;
+    const texte = document.getElementById('merci-texte')!;
+    const est = document.getElementById('merci-estimation')!;
+    if (objet === 'saisine') { titre.textContent = 'Votre saisine est bien reçue.'; texte.textContent = 'Le cabinet vous confirme sa disponibilité et le forfait applicable sous 24 heures ouvrées, avant toute diligence.'; }
+    if (objet === 'consultation') { titre.textContent = 'Votre demande de consultation est enregistrée.'; texte.textContent = `Les instructions de règlement (${q.get('prix') ?? ''} € TTC) viennent de vous être adressées par courriel. La réponse écrite de l’avocat vous parvient sous cinq jours ouvrés à compter du règlement.`; }
+    if (objet === 'devis') {
+      titre.textContent = 'Votre estimation vous attend dans votre boîte mail.';
+      const n = q.get('estimation');
+      if (n) { est.style.display = 'flex'; est.innerHTML = `<span class="surtitre">Estimation des honoraires du cabinet</span><strong style="font-family: var(--serif); font-size: 36px; color: var(--vert)">${Number(n).toLocaleString('fr-FR')} € TTC</strong><span class="muet" style="font-size: 14px">Ordre de grandeur, ni une promesse ni un plafond — hors avocat de votre conjoint et frais de notaire. Confirmé ou ajusté par écrit sous 48 h ouvrées.</span>`; texte.textContent = 'Le détail ligne par ligne vous a été envoyé par courriel.'; }
+      else if (q.get('dcm') === 'non') { texte.textContent = 'Vous indiquez être loin d’un accord : le divorce amiable suppose un accord complet. Le cabinet vous écrit sous 48 heures ouvrées pour proposer la démarche adaptée — négociation préalable ou divorce judiciaire.'; }
+    }
+  </script>
+</Base>

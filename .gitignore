@@ -6,3 +6,6 @@ dist/
 !.env.example
 .DS_Store
 Thumbs.db
+public/api/config.local.php
+public/api/.cache/
+consultations/
