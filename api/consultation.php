@@ -6,7 +6,7 @@ exiger_post();
 if (!honeypot_ok()) { merci('consultation'); }
 limiter_debit('consultation');
 
-$formules = ['simple' => ['Question simple', 100], 'consultation' => ['Consultation', 120], 'approfondie' => ['Consultation approfondie', 349]];
+$formules = ['simple' => ['Question simple', 80], 'consultation' => ['Consultation', 120], 'approfondie' => ['Consultation approfondie', 349]];
 $formule  = champ('formule', 20);
 if (!isset($formules[$formule])) { $formule = 'consultation'; }
 [$libelle, $prix] = $formules[$formule];
