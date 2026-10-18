@@ -52,14 +52,14 @@ Pousser sur `main` : la préprod se met à jour en deux minutes. La fiche appara
 | Déclencheur | Cible | Dossier OVH |
 |---|---|---|
 | push sur `main` | préproduction `preprod.arnaudcousin-avocat.fr` (noindex) | `www/preprod/` |
-| tag `v1.0.0`, ou lancement manuel « prod » | production `arnaudcousin-avocat.fr` | `www/` |
+| tag `v1.0.0` (seul moyen : l'environnement GitHub `production` n'accepte que les tags `v*`) | production `arnaudcousin-avocat.fr` | `www/` |
 
 ### Mise en place (une fois, par Me Cousin)
 
 1. **OVH — utilisateur FTP dédié** : Espace client › Hébergements › FTP-SSH › *Créer un utilisateur*, répertoire racine `www`. Noter hôte, identifiant, mot de passe.
 2. **OVH — sous-domaine de préprod** : Hébergements › Multisite › *Ajouter un domaine* `preprod.arnaudcousin-avocat.fr`, dossier racine `www/preprod`, SSL activé ; puis Noms de domaine › Zone DNS : enregistrement `preprod` CNAME vers le domaine (OVH le propose automatiquement).
 3. **GitHub — secrets** : Settings › Secrets and variables › Actions : `OVH_FTP_HOST`, `OVH_FTP_USER`, `OVH_FTP_PASSWORD`, `OVH_DIR_PREPROD` (`./www/preprod/`), `OVH_DIR_PROD` (`./www/`).
-4. **GitHub — environnements** : Settings › Environments › `production` : cocher *Required reviewers* (vous) pour qu'aucune mise en production ne parte sans votre clic.
+4. **GitHub — environnement `production`** : déjà créé et restreint aux tags `v*` ; aucune mise en production ne part sans un `git tag` explicite. (Les *required reviewers* ne sont pas disponibles sur un dépôt privé en offre gratuite.)
 5. Premier `git push` : la préprod se construit. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production.
 
 Les identifiants OVH ne figurent nulle part dans le code et ne sont jamais communiqués à des tiers.
