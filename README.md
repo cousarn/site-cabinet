@@ -56,6 +56,8 @@ Pousser sur `main` : la préprod se met à jour en deux minutes. La fiche appara
 
 GitHub Actions construit le site et pousse `dist/` sur la branche de déploiement ; OVH (fonction *Associer Git* du multisite) est prévenu par webhook et tire la branche. Aucun identifiant FTP n'est stocké nulle part.
 
+**Ne jamais réécrire l'historique des branches `deploy-*`** (pas de `force_orphan`, pas de `push --force`) : OVH fait un `git pull` dans son clone ; si la branche ne peut plus avancer en fast-forward, la tâche OVH reste « En cours » et tous les webhooks suivants sont refusés (400). Si cela arrive : OVH › Multisite › ⋯ › *Supprimer Git* (cocher « vider le répertoire »), puis *Associer Git* à nouveau — le clone initial prend quelques secondes et l'URL de webhook ne change pas.
+
 ### Mise en place (une fois par environnement)
 
 1. OVH › Hébergement › Multisite › ligne du domaine › ⋯ › **Associer Git** : dépôt `https://github.com/cousarn/site-cabinet.git` (HTTPS : le dépôt est public, aucune clé à échanger), branche `deploy-preprod` (préprod) ou `deploy-prod` (prod). OVH affiche une **URL de webhook**.

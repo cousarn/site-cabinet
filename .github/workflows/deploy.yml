@@ -53,7 +53,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: ${{ startsWith(github.ref, 'refs/tags/v') && 'deploy-prod' || 'deploy-preprod' }}
-          force_orphan: true
+          # Historique linéaire obligatoire : OVH fait un `git pull` dans son clone ; une branche
+          # réécrite (force_orphan) ne peut plus avancer et la tâche OVH reste « En cours ».
+          # Chaque déploiement est donc un commit de plus sur la branche (fast-forward côté OVH).
+          force_orphan: false
+          keep_files: false
           enable_jekyll: true   # pas de traitement Jekyll ; garde les fichiers commençant par un point (.htaccess)
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
