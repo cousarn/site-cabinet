@@ -6,6 +6,7 @@ import Cta from '../components/Cta.astro';
 import { cabinet, anneesExercice, anneesEnLettres } from '../data/cabinet';
 import portrait from '../assets/photos/couloir-portrait-753x941.webp';
 import parlementBandeau from '../assets/photos/parlement-bandeau-1536x640.webp';
+import parlement from '../assets/photos/parlement-1536.webp';
 const n = anneesExercice();
 ---
 <Base title="Le cabinet — Arnaud Cousin, avocat à Rennes depuis 2000" description={`Maître Arnaud Cousin, avocat au Barreau de Rennes depuis ${cabinet.sermentAnnee} : parcours, méthode, engagements. Un seul interlocuteur du premier rendez-vous à l’audience.`} fil={[{ label: 'Le cabinet', href: '/cabinet' }]}>
@@ -39,6 +40,23 @@ const n = anneesExercice();
           <div class="pile" style="gap: 8px; border-top: 1px solid var(--laiton); padding-top: 14px"><h3>Une liquidation se gagne sur les chiffres</h3><p class="muet" style="font-size: 15px">Entreprise, profession libérale, conjoint associé, immobilier : le cabinet produit la sienne, avec notaires, experts-comptables et fiscalistes.</p></div>
           <div class="pile" style="gap: 8px; border-top: 1px solid var(--laiton); padding-top: 14px"><h3>Stratégie et ténacité</h3><p class="muet" style="font-size: 15px">Successions bloquées, sorties contentieuses d’indivision, conflits d’associés de SCI familiales, séparations à haute tension : négocier ferme ; à défaut, assigner, conclure, plaider, jusqu’à la cour d’appel.</p></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="defense">
+    <div class="conteneur deux-colonnes" style="align-items: center">
+      <figure class="figure"><span class="cadre"><Image src={parlement} alt="Avocats en robe dans la salle des Procureurs du Parlement de Bretagne, à Rennes" widths={[600, 900, 1536]} sizes="(max-width: 720px) 90vw, 560px" loading="lazy" /></span><figcaption>La salle des Procureurs, Parlement de Bretagne — votre avocat à vos côtés aux moments décisifs</figcaption></figure>
+      <div class="pile" style="gap: 16px">
+        <p class="surtitre">Défense</p>
+        <h2>Quand il faut plaider</h2>
+        <p class="muet">L’amiable d’abord ; mais lorsque l’adversaire refuse, triche ou gagne du temps, le cabinet plaide — et prépare l’audience comme on prépare une négociation : chiffres, pièces, calendrier, et une stratégie arrêtée avec vous. Audience d’orientation, incident de mise en état, plaidoirie, référé, appel : à chaque moment décisif, le même avocat est à vos côtés, du premier rendez-vous au délibéré.</p>
+        <ul class="carte__liste">
+          <li>Tribunal judiciaire et conseil de prud’hommes de Rennes, tribunaux de Saint-Malo, Saint-Brieuc et Nantes, cour d’appel de Rennes</li>
+          <li>Conclusions remises dans les délais, pièces numérotées, dossier de plaidoirie remis au juge</li>
+          <li>Compte rendu écrit après chaque audience, décision expliquée et voies de recours chiffrées</li>
+        </ul>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/domaines/procedure-appel" class="btn btn--contour">Procédure, appel & postulation</a><a href="/reglement-amiable" class="lien" style="align-self: center">Et quand l’amiable est possible</a></div>
       </div>
     </div>
   </section>

@@ -5,7 +5,6 @@ import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
 import Icone from '../components/Icone.astro';
 import { cabinet } from '../data/cabinet';
-import parlement from '../assets/photos/parlement-1536.webp';
 import mediationTable from '../assets/photos/mediation-table-1536.webp';
 import mediationCouple from '../assets/photos/mediation-couple-1536.webp';
 
@@ -158,19 +157,18 @@ const sources = [
   </section>
 
   <section class="section" id="mediateurs">
-    <div class="conteneur deux-colonnes" style="align-items: start">
-      <div class="pile" style="gap: 18px">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="max-width: 760px; gap: 14px">
         <p class="surtitre">À Rennes</p>
         <h2>Où trouver un médiateur</h2>
         <p class="muet">Le choix du médiateur compte autant que celui de l’avocat : formation, expérience de la matière, méthode. Le cabinet travaille avec des médiateurs professionnels connus et reconnus, et vous oriente selon votre dossier. Trois points d’entrée à Rennes :</p>
-        <ul class="carte__liste" style="font-size: 15px">
-          <li><strong>Centre de Médiation Régional 35 (CMR 35)</strong> — Maison des Avocats, 6 rue Hoche, 35000 Rennes (courrier ; pas d’accueil du public) · 07 80 32 64 75 · info@mediation35.fr · <a href="https://www.mediation35.fr" class="lien" target="_blank" rel="noopener">mediation35.fr</a>. Médiations civiles, commerciales, familiales, du travail ; médiateurs formés, inscrits auprès de la cour d’appel.</li>
-          <li><strong>Amyable, cabinet de médiateurs</strong> — 62 rue de Châteaugiron, 35000 Rennes · 02 30 96 14 76 · <a href="https://amyable-mediation.fr" class="lien" target="_blank" rel="noopener">amyable-mediation.fr</a>. Médiation pour les particuliers et les entreprises.</li>
-          <li><strong>Liste officielle des médiateurs près la cour d’appel de Rennes</strong> — médiateurs personnes physiques et centres agréés, par matière, publiée par la cour : <a href="https://www.cours-appel.justice.fr/rennes" class="lien" target="_blank" rel="noopener">cours-appel.justice.fr/rennes</a>.</li>
-        </ul>
-        <p class="muet" style="font-size: 14px">Le cabinet ne perçoit aucune rémunération des médiateurs qu’il recommande.</p>
       </div>
-      <figure class="figure"><span class="cadre"><Image src={parlement} alt="La salle des Procureurs du Parlement de Bretagne, à Rennes, avocats en robe" widths={[600, 900, 1536]} sizes="(max-width: 720px) 90vw, 560px" loading="lazy" /></span><figcaption>La salle des Procureurs, Parlement de Bretagne — votre avocat à vos côtés aux moments décisifs</figcaption></figure>
+      <div class="grille grille--3">
+        <div class="carte" style="gap: 10px"><h3>Centre de Médiation Régional 35 (CMR 35)</h3><p class="muet" style="font-size: 15px">Maison des Avocats, 6 rue Hoche, 35000 Rennes (courrier ; pas d’accueil du public) · 07 80 32 64 75 · info@mediation35.fr</p><p class="muet" style="font-size: 15px">Médiations civiles, commerciales, familiales, du travail ; médiateurs formés, inscrits auprès de la cour d’appel.</p><a href="https://www.mediation35.fr" class="lien" style="margin-top: auto" target="_blank" rel="noopener">mediation35.fr</a></div>
+        <div class="carte" style="gap: 10px"><h3>Amyable, cabinet de médiateurs</h3><p class="muet" style="font-size: 15px">62 rue de Châteaugiron, 35000 Rennes · 02 30 96 14 76</p><p class="muet" style="font-size: 15px">Médiation pour les particuliers et les entreprises.</p><a href="https://amyable-mediation.fr" class="lien" style="margin-top: auto" target="_blank" rel="noopener">amyable-mediation.fr</a></div>
+        <div class="carte" style="gap: 10px"><h3>Liste officielle de la cour d’appel de Rennes</h3><p class="muet" style="font-size: 15px">Médiateurs personnes physiques et centres agréés, par matière, publiée par la cour d’appel.</p><a href="https://www.cours-appel.justice.fr/rennes" class="lien" style="margin-top: auto" target="_blank" rel="noopener">cours-appel.justice.fr/rennes</a></div>
+      </div>
+      <p class="muet" style="font-size: 14px">Le cabinet ne perçoit aucune rémunération des médiateurs qu’il recommande.</p>
     </div>
   </section>
 
