@@ -20,14 +20,14 @@ $CONFIG = [
     'taille_max_mo'   => 20,    // pièces jointes cumulées
     'paiement'        => 'virement', // 'virement' | 'stripe' (phase 2)
     'rib'             => '[RIB du cabinet — IBAN à insérer dans config.local.php]',
-    'devis'           => [ // forfaits divorce par consentement mutuel, TTC — [grille à valider par Me Cousin]
-        'base'            => 960,
-        'enfant'          => 240,   // par situation « un » ; « deux ou plus » = ×1.5
-        'immobilier_un'   => 360,
-        'immobilier_plus' => 720,
-        'entreprise_un'   => 600,
-        'entreprise_deux' => 900,
-        'desaccord_partiel' => 240,
+    'tva'             => 0.20,
+    'devis'           => [ // divorce par consentement mutuel — honoraires HT (grille du cabinet, oct. 2026)
+        'base'          => 800,  // sans enfant, sans partage, sans négociation, sans prestation compensatoire
+        'parentale'     => 400,  // convention parentale (enfants mineurs ou à charge)
+        'compensatoire' => 300,  // prestation compensatoire
+        'partage'       => 700,  // partage de régime matrimonial ou convention d'indivision
+        'negociation'   => 500,  // accord non encore obtenu à l'ouverture du dossier
+        // déplacement hors Rennes : en sus, au réel
     ],
 ];
 /* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),

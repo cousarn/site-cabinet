@@ -2,25 +2,26 @@
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
 ---
-<Base title="Devis divorce par consentement mutuel en ligne dès 960 € | Arnaud Cousin, Rennes" description="Estimez vos honoraires de divorce amiable en six questions : mariage, régime, enfants, biens, points d’accord. Dès 960 € TTC, estimation confirmée par l’avocat sous 48 h." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Devis divorce', href: '/services/devis-divorce' }]}>
-  <Hero variante="clair" surtitre="Divorce par consentement mutuel" titre="Divorce par consentement mutuel : estimez vos honoraires" chapo="Forfaits divorce amiable dès 960 € TTC pour les situations simples. Six questions pour situer la vôtre — mariage, régime, enfants, revenus, patrimoine, points de désaccord : c’est ce qui fait varier le travail, donc le prix." image="themis" />
+<Base title="Devis divorce par consentement mutuel en ligne dès 960 € | Arnaud Cousin, Rennes" description="Estimez vos honoraires de divorce amiable en sept questions : enfants, prestation compensatoire, partage, accord. Dès 960 € TTC, estimation confirmée par l’avocat sous 48 h." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Devis divorce', href: '/services/devis-divorce' }]}>
+  <Hero variante="clair" surtitre="Divorce par consentement mutuel" titre="Divorce par consentement mutuel : estimez vos honoraires" chapo="Forfaits divorce amiable dès 960 € TTC pour les situations simples. Sept questions pour situer la vôtre — enfants, prestation compensatoire, biens à partager, état de l’accord : c’est ce qui fait varier le travail, donc le prix." image="themis" />
   <section class="section">
     <div class="conteneur deux-colonnes" style="align-items: start">
       <!-- Formulaire traité par /api/devis.php : calcul côté serveur, courriel à l'avocat et au demandeur -->
       <form class="pile" method="post" action="/api/devis.php" style="gap: 16px">
         <label class="champ">1. Date du mariage<input type="month" name="mariage" required /></label>
         <label class="champ">2. Régime matrimonial<select name="regime"><option>Communauté légale (sans contrat)</option><option>Séparation de biens</option><option>Participation aux acquêts</option><option>Communauté universelle</option><option>Je ne sais pas</option></select></label>
-        <label class="champ">3. Enfants mineurs ou à charge<select name="enfants"><option>Aucun</option><option>Un</option><option>Deux ou plus</option></select></label>
-        <label class="champ">4. Biens immobiliers communs ou indivis<select name="immobilier"><option>Aucun</option><option>Un bien (résidence principale)</option><option>Plusieurs biens</option></select></label>
-        <label class="champ">5. Entreprise, parts de société, profession libérale<select name="entreprise"><option>Non</option><option>Oui, l’un de nous</option><option>Oui, les deux</option></select></label>
-        <label class="champ">6. Points d’accord<select name="accord"><option>Nous sommes d’accord sur tout</option><option>Il reste un ou deux points à régler</option><option>Nous sommes loin d’un accord</option></select></label>
+        <label class="champ">3. Enfants mineurs ou à charge (convention parentale)<select name="enfants"><option>Non</option><option>Oui</option></select></label>
+        <label class="champ">4. Une prestation compensatoire est-elle envisagée ?<select name="compensatoire"><option>Non</option><option>Oui</option><option>Je ne sais pas</option></select></label>
+        <label class="champ">5. Y a-t-il des biens à partager (immobilier, comptes, dettes communes) ?<select name="partage"><option>Non</option><option>Oui — partage du régime matrimonial ou convention d’indivision</option></select></label>
+        <label class="champ">6. Où en est votre accord ?<select name="accord"><option>Nous sommes d’accord sur tout</option><option>Il reste des points à négocier</option><option>Nous sommes loin d’un accord</option></select></label>
+        <label class="champ">7. Signature de la convention<select name="lieu"><option>Au cabinet, à Rennes</option><option>Hors Rennes (déplacement en sus)</option></select></label>
         <label class="champ">Votre courriel pour recevoir l’estimation<input type="email" name="email" required autocomplete="email" /></label>
         <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
         <button type="submit" class="btn btn--plein" style="align-self: flex-start">Recevoir mon estimation</button>
       </form>
       <div class="pile">
         <div class="carte"><h3>Ce que vous recevez</h3><p class="muet" style="font-size: 15px">Un ordre de grandeur, ni une promesse ni un plafond : les honoraires réels peuvent être inférieurs (dénouement rapide) ou supérieurs (conflit imprévu). L’avocat confirme ou ajuste par écrit sous 48 h ouvrées.</p></div>
-        <div class="carte"><h3>Ce que comprend le forfait</h3><ul class="carte__liste"><li>Rendez-vous de cadrage, puis rédaction de la convention</li><li>Échanges avec l’avocat de votre conjoint</li><li>Signature électronique et dépôt chez le notaire</li><li>Hors : frais de notaire (≈ 50 € HT), liquidation notariée si immobilier, actes d’huissier</li></ul></div>
+        <div class="carte"><h3>La grille du cabinet</h3><ul class="carte__liste"><li>Forfait de base : <strong>960 € TTC</strong> (800 € HT) — sans enfant, sans partage, sans négociation, sans prestation compensatoire</li><li>Convention parentale : + 480 € TTC</li><li>Prestation compensatoire : + 360 € TTC</li><li>Partage du régime matrimonial ou convention d’indivision : + 840 € TTC</li><li>Négociation, accord non encore obtenu : + 600 € TTC</li><li>Déplacement hors Rennes : en sus</li></ul><p class="muet" style="font-size: 13px">TVA 20 % incluse dans les montants TTC. Hors honoraires de l’avocat de votre conjoint, émoluments du notaire et actes d’huissier.</p></div>
       </div>
     </div>
   </section>

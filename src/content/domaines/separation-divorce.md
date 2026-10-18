@@ -20,12 +20,12 @@ situations:
     texte: "Révision de pension, modification de la résidence, exécution forcée, recouvrement des impayés : le divorce prononcé n’est pas toujours la fin de l’histoire."
 methode:
   - titre: "Sans juge, en quelques semaines, dès 960 € TTC"
-    texte: "Divorce par consentement mutuel : chaque époux a son avocat ; la convention est déposée chez le notaire. Forfaits pour les divorces amiables simples, estimation en ligne en six questions, confirmée par l’avocat."
+    texte: "Divorce par consentement mutuel : chaque époux a son avocat ; la convention est déposée chez le notaire. Forfaits pour les divorces amiables simples, estimation en ligne en sept questions, confirmée par l’avocat."
   - titre: "Devant le juge aux affaires familiales"
     texte: "Divorce accepté, pour altération définitive du lien conjugal ou pour faute : audience d’orientation et mesures provisoires, mise en état, plaidoirie. Le cabinet négocie à chaque étape ce qui peut l’être."
 encadre:
   titre: "Estimez vos honoraires de divorce amiable"
-  texte: "Six questions — mariage, régime, enfants, biens, points d’accord — et un ordre de grandeur des honoraires, dès 960 € TTC. L’avocat confirme ou ajuste : ni une promesse ni un plafond."
+  texte: "Sept questions — enfants, prestation compensatoire, biens à partager, état de l’accord — et un ordre de grandeur des honoraires, dès 960 € TTC. L’avocat confirme ou ajuste : ni une promesse ni un plafond."
   lien: "/services/devis-divorce"
   libelle: "Obtenir une estimation"
 faq:
