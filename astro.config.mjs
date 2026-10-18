@@ -17,4 +17,6 @@ export default defineConfig({
   ],
   image: { domains: [] },
   compressHTML: true,
+  // Jamais de script ni de police en ligne (data:) : la CSP n'autorise que 'self'.
+  vite: { build: { assetsInlineLimit: 0 } },
 });

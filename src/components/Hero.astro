@@ -24,7 +24,7 @@ const photo = image === 'aucune' ? null : photos[image];
 ---
 {variante === 'photo' ? (
   <section class="hero">
-    {photo && <Image src={photo} alt="" class="hero__photo" style={`object-position:${position}`} widths={[800, 1200, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />}
+    {photo && <Image src={photo} alt="" class="hero__photo" style={`object-position:${position}`} widths={[800, 1200, 1600, 2400]} sizes="100vw" quality={68} loading="eager" fetchpriority="high" />}
     <div class="hero__voile" aria-hidden="true"></div>
     <div class="conteneur hero__contenu hero__grille">
       <div class="pile entree" style="gap: 24px; max-width: 680px">
