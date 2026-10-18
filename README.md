@@ -89,7 +89,10 @@ Chaque envoi redirige vers `/merci?objet=…&ref=…` (référence du type `2610
 - Dépôt de pièces : `depot/<jeton>` → relais PHP → SharePoint → `agent-secib`.
 - Assistant de pré-entretien : serveur du cabinet, modèle sous contrôle de l'avocat, journalisation minimale.
 
-## Points en attente (`[entre crochets]` dans le site)
+## Points en attente
 
-SIRET, TVA, assureur RC, médiateur, prix visio/téléphone, URL Bookings, places et horaires du parking Colombier, lignes de bus 9/57, accessibilité PMR, crédits photos (et mention IA le cas échéant), mise à jour du barème, grille du devis divorce validée le 18/10/2026 (`_lib.php` → `devis`, en HT : base 800, convention parentale 400, prestation compensatoire 300, partage 700, négociation 500 ; déplacement hors Rennes en sus), IBAN dans `config.local.php`.
+- **URL Microsoft Bookings** (page `/services/rendez-vous`, cadre pointillé) — à créer par le cabinet, puis à coller dans `rendez-vous.astro`.
+- **Prix visio / téléphone** : affichés au même tarif que la consultation au cabinet (150 € TTC, 1 h au plus) — à confirmer ou ajuster.
+- Assistant de pré-entretien (phase 2).
 
+Réglé le 18/10/2026 : SIRET 429 772 940 00038 et TVA FR70 429 772 940 (avis SIRENE / factures), assureur RCP (notice 2026 du Barreau : MMA IARD apériteur + AXA France IARD, monde entier hors établissement permanent USA/Canada), médiateur CNB, horaires 9h–12h / 14h–19h, accès PMR par ascenseur, bus C5/C6/9/57, parking Colombier (1 150 places), crédits photos © Cabinet Arnaud Cousin, barème inchangé depuis 2023, grille devis DCM en HT dans `_lib.php`, alias `site@` (Microsoft 365), fichier serveur `/config/site-cabinet.php` déposé (RIB).

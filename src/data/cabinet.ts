@@ -1,6 +1,6 @@
 /**
  * Données de référence du cabinet — une seule source de vérité.
- * Tout ce qui est entre crochets […] reste à confirmer par Me Cousin.
+ * Mentions légales vérifiées le 18/10/2026 (avis SIRENE, factures du cabinet, notice RCP 2026 du Barreau).
  */
 export const cabinet = {
   nom: 'Cabinet Arnaud Cousin',
@@ -20,15 +20,16 @@ export const cabinet = {
   telephone: '02 30 96 33 35',
   telephoneE164: '+33230963335',
   email: 'cabinet@arnaudcousin-avocat.fr',
-  horaires: 'Lundi–vendredi 9h–12h · 14h–18h',
-  horairesSchema: ['Mo-Fr 09:00-12:00', 'Mo-Fr 14:00-18:00'],
+  horaires: 'Lundi–vendredi 9h–12h · 14h–19h',
+  horairesSchema: ['Mo-Fr 09:00-12:00', 'Mo-Fr 14:00-19:00'],
   siteUrl: 'https://arnaudcousin-avocat.fr',
-  confreres: ['Bagot', 'Simon', 'Piperaud', 'Dolivet', 'Lévêque'],
-  // Mentions légales — à compléter
-  siret: '[SIRET]',
-  tva: '[n° TVA intracommunautaire]',
-  assureur: '[assureur RC professionnelle — nom, adresse]',
-  mediateur: '[médiateur de la consommation de la profession d’avocat — coordonnées]',
+  confreres: ['I. Bagot', 'F. Barbier', 'A.-C. Simon', 'S. Pellen', 'S. Piperaud', 'C. Dolivet'], // cabinet groupé (en-tête du cabinet, 2026)
+  // Mentions légales
+  siret: '429 772 940 00038',
+  tva: 'FR70 429 772 940',
+  assureur: 'contrat groupe n° 114247874 souscrit par le Barreau de Rennes auprès de MMA IARD Assurances Mutuelles et MMA IARD SA (apériteur), 160 rue Henri Champion, 72030 Le Mans Cedex 9, en coassurance avec AXA France IARD SA',
+  assureurCouverture: 'monde entier, à l’exception des activités exercées au sein d’un établissement permanent situé aux États-Unis d’Amérique ou au Canada',
+  mediateur: 'Médiateur de la consommation de la profession d’avocat, 180 boulevard Haussmann, 75008 Paris — mediateur@mediateur-consommation-avocat.fr',
 } as const;
 
 /** Nombre d'années d'exercice, calculé automatiquement (serment janvier 2000). */
@@ -85,15 +86,15 @@ export const acces = {
     { ligne: 'b', station: 'Colombier', distance: '50 m', temps: '1 min' },
     { ligne: 'a', station: 'Charles-de-Gaulle', distance: '450 m', temps: '6 min' },
   ],
-  bus: { arrets: ['Cité Judiciaire', 'Colombier'], lignes: ['C5', 'C6'], aConfirmer: '[+ 9, 57 à confirmer]' },
+  bus: { arrets: ['Cité Judiciaire', 'Colombier'], lignes: ['C5', 'C6', '9', '57'] },
   train: 'Gare de Rennes — 10 min à pied, ou métro Gares → Colombier (1 station)',
   parkings: [
-    { nom: 'Colombier', operateur: 'Citédia', detail: '4 rue de Plélo — 100 m', note: '[places, 24h/24 à confirmer]' },
+    { nom: 'Colombier', operateur: 'C-Park / Citédia', detail: 'sous la dalle du Colombier — 100 m · 1 150 places sur deux niveaux', note: 'entrée sud rue du Capitaine Maignan' },
     { nom: 'Halles centrales', operateur: 'Citédia', detail: '330 m · 40 places', note: '' },
     { nom: 'Charles-de-Gaulle', operateur: 'Citédia', detail: 'esplanade — 450 m · 800 places', note: '' },
     { nom: 'Gare Sud', operateur: 'Citédia', detail: '750 m · 1 000 places', note: '' },
   ],
   voirie: 'Voirie payante rue du Puits Mauger et rues voisines · dépose-minute devant l’immeuble · bornes de recharge Rennes Métropole, esplanade Charles-de-Gaulle (400 m).',
   velo: { stations: ['Colombier', 'Cité Judiciaire', 'La Rotonde', 'Charles-de-Gaulle'], note: 'arceaux devant le centre Colombia' },
-  accessibilite: '[à préciser : étage, ascenseur, accès PMR]',
+  accessibilite: 'Cabinet accessible aux personnes à mobilité réduite : accès par ascenseur. Signalez tout besoin particulier lors de la prise de rendez-vous.',
 } as const;
