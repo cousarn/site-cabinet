@@ -1,27 +1,30 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
-import { cabinet } from '../../data/cabinet';
+import { cabinet, bookings } from '../../data/cabinet';
 const formats = [
-  ['Au cabinet', '15 rue du Puits Mauger, Rennes — à 50 m du métro Colombier.', '150 € TTC · 1 h au plus'],
-  ['En visioconférence', 'Lien envoyé avec la confirmation ; un ordinateur ou un téléphone suffit.', '150 € TTC · 1 h au plus'],
-  ['Par téléphone', 'Le cabinet vous appelle à l’heure convenue.', '150 € TTC · 1 h au plus'],
+  ['Au cabinet', '15 rue du Puits Mauger, Rennes — à 50 m du métro Colombier, accès par ascenseur.', bookings.cabinet],
+  ['En visioconférence', 'Lien Microsoft Teams envoyé avec la confirmation ; un ordinateur ou un téléphone suffit, sans installation.', bookings.visio],
+  ['Par téléphone', 'Le cabinet vous appelle à l’heure convenue, au numéro indiqué lors de la réservation.', bookings.telephone],
 ];
 ---
-<Base title="Prendre rendez-vous — avocat à Rennes, cabinet, visio ou téléphone | Arnaud Cousin" description="Choisissez votre créneau en ligne avec Maître Arnaud Cousin : au cabinet à Rennes, en visioconférence ou par téléphone. Confirmation immédiate, rappel automatique." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Rendez-vous', href: '/services/rendez-vous' }]}>
+<Base title="Prendre rendez-vous — avocat à Rennes, cabinet, visio ou téléphone | Arnaud Cousin" description="Choisissez votre créneau en ligne avec Maître Arnaud Cousin : au cabinet à Rennes, en visioconférence ou par téléphone. Consultation d’une heure, 132 € TTC, confirmation immédiate, rappel la veille." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Rendez-vous', href: '/services/rendez-vous' }]}>
   <Hero variante="clair" surtitre="Rendez-vous" titre="Prendre rendez-vous" chapo="Cabinet, visio ou téléphone : choisissez le format et le créneau, c’est confirmé. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier." image="couloir" />
   <section class="section">
     <div class="conteneur pile" style="gap: 32px">
-      <h2 style="font-size: 28px">1. Quel format ?</h2>
+      <h2 style="font-size: 28px">Choisissez le format, puis votre créneau</h2>
       <div class="grille">
-        {formats.map(([t, x, p]) => <div class="carte"><h3>{t}</h3><p class="muet" style="font-size: 15px">{x}</p><p style="margin-top: auto; font-weight: 600; color: var(--vert)">{p}</p></div>)}
+        {formats.map(([t, x, url]) => (
+          <div class="carte">
+            <h3>{t}</h3>
+            <p class="muet" style="font-size: 15px">{x}</p>
+            <p style="margin-top: auto; font-weight: 600; color: var(--vert)">{bookings.prix}</p>
+            <a href={url} class="btn btn--plein" target="_blank" rel="noopener" style="margin-top: 12px">Réserver {t.toLowerCase()}</a>
+          </div>
+        ))}
       </div>
-      <h2 style="font-size: 28px">2. Quel créneau ?</h2>
-      <!-- Microsoft Bookings : l'iframe est insérée à la mise en ligne (URL de la page Bookings du cabinet). -->
-      <div class="carte" style="min-height: 420px; align-items: center; justify-content: center; text-align: center; border-style: dashed">
-        <p class="muet">Calendrier de réservation (Microsoft Bookings) — <span class="a-confirmer">[URL Bookings à fournir]</span></p>
-        <p class="muet" style="font-size: 14px">Sans accès en ligne : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>, {cabinet.horaires.toLowerCase()}.</p>
-      </div>
+      <!-- Microsoft Bookings (page de réservation personnelle du cabinet) : s'ouvre dans un nouvel onglet, la page ne s'intègre pas en iframe. -->
+      <p class="muet" style="font-size: 14px; max-width: 760px">Créneaux du lundi au vendredi : 10 h le matin, l’après-midi à partir de 14 h 30. Le calendrier n’affiche que les horaires réellement libres ; réservation au plus tôt pour le lendemain, jusqu’à trois mois à l’avance. Vous pouvez aussi <a href={bookings.page} class="lien" target="_blank" rel="noopener">voir tous les formats sur une seule page</a>. Sans accès en ligne : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>, {cabinet.horaires.toLowerCase()}.</p>
       <p class="muet" style="font-size: 14px; max-width: 760px">Vous recevez une confirmation par courriel et un rappel la veille. Pour préparer le rendez-vous : la convocation ou la lettre reçue, le jugement s’il en existe, vos trois derniers bulletins de salaire en droit du travail, le contrat de mariage ou l’acte notarié en matière familiale et successorale. <a href="/fiches/pieces-premier-rendez-vous" class="lien">Les pièces à réunir</a></p>
     </div>
   </section>

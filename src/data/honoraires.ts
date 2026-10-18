@@ -4,9 +4,9 @@ export const bareme = {
   tauxHoraire: 192,
   lignes: [
     { famille: 'Consultations', items: [
-      { label: 'Consultation au cabinet (orientation, 1 h au plus)', prix: '150 €' },
+      { label: 'Consultation d’orientation — cabinet, visioconférence ou téléphone (1 h au plus)', prix: '132 €' },
       { label: 'Consultation au cabinet avec avis écrit', prix: '350 €' },
-      { label: 'Consultation écrite par internet', prix: 'dès 100 €' },
+      { label: 'Consultation écrite par internet', prix: 'dès 80 €' },
     ]},
     { famille: 'Famille', items: [
       { label: 'Divorce par consentement mutuel', prix: 'dès 960 €' },

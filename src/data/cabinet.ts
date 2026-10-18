@@ -32,6 +32,22 @@ export const cabinet = {
   mediateur: 'Médiateur de la consommation de la profession d’avocat, 180 boulevard Haussmann, 75008 Paris — mediateur@mediateur-consommation-avocat.fr',
 } as const;
 
+/**
+ * Prise de rendez-vous en ligne : page de réservation personnelle Microsoft Bookings (« Bookings with me »)
+ * du compte cabinet@. Les créneaux (lun–ven 10 h, puis l’après-midi à partir de 14 h 30, pas de 30 min) sont
+ * masqués dès qu’un rendez-vous ou une audience figure dans le calendrier Outlook. Liens publics, sans secret.
+ * Les trois liens « type » ouvrent directement le format choisi ; `page` les présente tous.
+ */
+const bookingsBase = 'https://bookings.cloud.microsoft/bookwithme/user/1b837552a8724b3389750385d7d2b910@arnaudcousin-avocat.fr';
+export const bookings = {
+  page: `${bookingsBase}?anonymous&ep=plink`,
+  cabinet: `${bookingsBase}/meetingtype/WVhQj8HnQkWwka4vXXl_ZA2?anonymous&ep=mLinkFromTile`,
+  visio: `${bookingsBase}/meetingtype/7r6ub-rr_kOYFlJqr2YP2Q2?anonymous&ep=mLinkFromTile`,
+  telephone: `${bookingsBase}/meetingtype/asah2_KYrEan3uNgg1MXLw2?anonymous&ep=mLinkFromTile`,
+  /** Prix affiché pour les trois formats (110 € HT). */
+  prix: '132 € TTC · 1 h au plus',
+} as const;
+
 /** Nombre d'années d'exercice, calculé automatiquement (serment janvier 2000). */
 export function anneesExercice(date = new Date()): number {
   return date.getFullYear() - cabinet.sermentAnnee;
@@ -65,7 +81,7 @@ export const navigation = {
   ],
   services: [
     { href: '/services/rendez-vous', titre: 'Prendre rendez-vous', accroche: 'Cabinet, visio ou téléphone, créneau choisi en ligne.' },
-    { href: '/services/consultation-ecrite', titre: 'Consultation écrite en ligne', accroche: 'Une réponse d’avocat par écrit, sans vous déplacer. Dès 100 €.' },
+    { href: '/services/consultation-ecrite', titre: 'Consultation écrite en ligne', accroche: 'Une réponse d’avocat par écrit, sans vous déplacer. Dès 80 €.' },
     { href: '/services/devis-divorce', titre: 'Devis divorce amiable', accroche: 'Votre estimation en sept questions, confirmée par l’avocat.' },
     { href: '/services/depot-pieces', titre: 'Déposer des pièces', accroche: 'Vos documents, en sécurité, directement dans votre dossier.' },
     { href: '/services#assistant', titre: 'Assistant de pré-entretien', accroche: 'Préparer votre rendez-vous, repérer un délai urgent.' },

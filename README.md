@@ -89,14 +89,16 @@ La consultation écrite se règle sur la page de paiement hébergée par PayPal 
 ## Phase 2 (même dépôt)
 
 - Paiement par carte : Stripe Checkout (`paiement => 'stripe'` dans la config) — le site ne voit jamais la carte.
-- Rendez-vous : iframe Microsoft Bookings dans `/services/rendez-vous`.
 - Dépôt de pièces : `depot/<jeton>` → relais PHP → SharePoint → `agent-secib`.
 - Assistant de pré-entretien : serveur du cabinet, modèle sous contrôle de l'avocat, journalisation minimale.
 
+## Rendez-vous en ligne (Microsoft Bookings)
+
+Page de réservation **personnelle** du compte `cabinet@` (« Bookings with me » — la création d'une page partagée échoue sur ce tenant, à réessayer plus tard). Trois types de réunion publics : cabinet, visioconférence Teams, téléphone — 1 h, 132 € TTC (110 € HT). Disponibilités personnalisées lun–ven 10 h–11 h et 14 h 30–19 h, pas de 30 min, délai minimal 1 jour, maximal 90 jours, rappel courriel la veille. Les rendez-vous et audiences déjà dans le calendrier Outlook (Secib, secrétariat) masquent les créneaux. Liens publics dans `src/data/cabinet.ts` (`bookings`), utilisés par `/services/rendez-vous` (boutons, nouvel onglet : la page personnelle ne s'intègre pas en iframe, la CSP reste donc `frame-src 'self'`). Les deux types par défaut en anglais (« 15/30 minutes meeting ») sont passés en privé.
+
 ## Points en attente
 
-- **URL Microsoft Bookings** (page `/services/rendez-vous`, cadre pointillé) — à créer par le cabinet, puis à coller dans `rendez-vous.astro`.
-- **Prix visio / téléphone** : affichés au même tarif que la consultation au cabinet (150 € TTC, 1 h au plus) — à confirmer ou ajuster.
 - Assistant de pré-entretien (phase 2).
+- Page Bookings partagée (logo, couleurs du cabinet, formulaire personnalisé) si Microsoft corrige l'erreur de création.
 
-Réglé le 18/10/2026 : SIRET 429 772 940 00038 et TVA FR70 429 772 940 (avis SIRENE / factures), assureur RCP (notice 2026 du Barreau : MMA IARD apériteur + AXA France IARD, monde entier hors établissement permanent USA/Canada), médiateur CNB, horaires 9h–12h / 14h–19h, accès PMR par ascenseur, bus C5/C6/9/57, parking Colombier (1 150 places), crédits photos © Cabinet Arnaud Cousin, barème inchangé depuis 2023, grille devis DCM en HT dans `_lib.php`, alias `site@` (Microsoft 365), fichier serveur `/config/site-cabinet.php` déposé (RIB).
+Réglé le 18/10/2026 : Bookings (page personnelle, 3 formats à 132 € TTC), question simple écrite à 80 € TTC, SIRET 429 772 940 00038 et TVA FR70 429 772 940 (avis SIRENE / factures), assureur RCP (notice 2026 du Barreau : MMA IARD apériteur + AXA France IARD, monde entier hors établissement permanent USA/Canada), médiateur CNB, horaires 9h–12h / 14h–19h, accès PMR par ascenseur, bus C5/C6/9/57, parking Colombier (1 150 places), crédits photos © Cabinet Arnaud Cousin, barème inchangé depuis 2023, grille devis DCM en HT dans `_lib.php`, alias `site@` (Microsoft 365), fichier serveur `/config/site-cabinet.php` déposé (RIB).
