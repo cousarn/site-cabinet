@@ -23,7 +23,7 @@ export const cabinet = {
   horaires: 'Lundi–vendredi 9h–12h · 14h–19h',
   horairesSchema: ['Mo-Fr 09:00-12:00', 'Mo-Fr 14:00-19:00'],
   siteUrl: 'https://arnaudcousin-avocat.fr',
-  confreres: ['I. Bagot', 'F. Barbier', 'A.-C. Simon', 'S. Pellen', 'S. Piperaud', 'C. Dolivet'], // cabinet groupé (en-tête du cabinet, 2026)
+  confreres: ['I. Bagot', 'A.-C. Simon', 'S. Piperaud', 'C. Dolivet', 'C. Levêque'], // cabinet groupé (mise à jour 18/10/2026 : F. Barbier et S. Pellen partis, C. Levêque arrivé)
   // Mentions légales
   siret: '429 772 940 00038',
   tva: 'FR70 429 772 940',
