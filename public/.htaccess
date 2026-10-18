@@ -3,6 +3,7 @@
 # redirections 301 depuis l'ancien site TOWeb, en-têtes de sécurité, cache.
 
 Options -Indexes -MultiViews
+DirectorySlash Off
 AddDefaultCharset UTF-8
 ErrorDocument 404 /404.html
 
@@ -42,6 +43,11 @@ ErrorDocument 404 /404.html
   # 3. Pas de barre finale (sauf racine), pas d'extension visible
   #    Les redirections externes ne s'appliquent qu'à la requête d'origine (REDIRECT_STATUS vide),
   #    jamais après la réécriture interne vers le .html ni pour la page d'erreur 404.
+  #    Cas des pages qui ont un dossier homonyme de sous-pages (/domaines + /domaines/*) :
+  #    DirectorySlash est coupé pour qu'Apache n'ajoute pas lui-même la barre finale.
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+)/$ https://%{HTTP_HOST}/$1 [R=301,L]
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.+)/$ https://%{HTTP_HOST}/$1 [R=301,L]
@@ -49,8 +55,7 @@ ErrorDocument 404 /404.html
   RewriteCond %{THE_REQUEST} \s/+([^\s?]+)\.html[\s?] [NC]
   RewriteRule ^ https://%{HTTP_HOST}/%1 [R=301,L]
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^(.+?)/?$ $1.html [L]
 </IfModule>
 
