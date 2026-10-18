@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import { cabinet, acces } from '../data/cabinet';
 ---
-<Base title="Contact et accès — avocat à Rennes, quartier Colombier | Arnaud Cousin" description={`Cabinet Arnaud Cousin, ${cabinet.adresse.rue}, Rennes — métro Colombier à 50 m, parkings, bus, vélo. Rendez-vous au cabinet, en visio ou par téléphone : ${cabinet.telephone}.`} fil={[{ label: 'Contact', href: '/contact' }]}>
+<Base title="Contact et accès : avocat à Rennes, Colombier | Arnaud Cousin" description={`Cabinet Arnaud Cousin, ${cabinet.adresse.rue}, Rennes — métro Colombier à 50 m, parkings, bus, vélo. Rendez-vous au cabinet, en visio ou par téléphone : ${cabinet.telephone}.`} fil={[{ label: 'Contact', href: '/contact' }]}>
   <Hero variante="clair" surtitre="Contact" titre="Parlons de votre situation" chapo="Réception sur rendez-vous uniquement — cabinet, visio ou téléphone. Un courriel ou le formulaire valent mieux qu’un appel impromptu : vous serez rappelé." image="cite">
     <div slot="actions" class="pile" style="gap: 14px">
       <div style="display: flex; flex-wrap: wrap; gap: 14px">

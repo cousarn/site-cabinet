@@ -10,7 +10,8 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/mentions-legales') && !page.includes('/depot/'),
+      // Pages noindex hors du sitemap : mentions légales, page « merci », dépôt de pièces (phase 2), 404.
+      filter: (page) => !/\/(mentions-legales|merci|services\/depot-pieces|depot|404)(\/|$)/.test(page),
       changefreq: 'monthly',
       lastmod: new Date(),
     }),

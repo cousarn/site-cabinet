@@ -1,5 +1,5 @@
 ---
-title: "Salaire différé agricole : qui peut le réclamer, et jusqu’à quand"
+title: "Salaire différé agricole : qui peut le réclamer"
 description: "Les enfants qui ont travaillé sans rémunération sur l’exploitation familiale disposent d’une créance souvent ignorée au moment du partage. Conditions, calcul, délai."
 date: 2026-10-01
 domaine: successions

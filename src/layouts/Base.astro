@@ -34,7 +34,11 @@ const organisation = {
   geo: { '@type': 'GeoCoordinates', latitude: cabinet.geo.lat, longitude: cabinet.geo.lon },
   openingHours: cabinet.horairesSchema,
   areaServed: ['Rennes', 'Ille-et-Vilaine', 'Bretagne'],
-  knowsAbout: ['Droit de la famille', 'Divorce', 'Successions', 'Partage judiciaire', 'Sortie contentieuse d’indivision', 'Licitation', 'Conflits d’associés de SCI familiale', 'Droit du travail', 'Procédure civile', 'Postulation'],
+  knowsAbout: ['Droit de la famille', 'Divorce', 'Successions', 'Partage judiciaire', 'Sortie contentieuse d’indivision', 'Licitation', 'Recel successoral', 'Délivrance de legs', 'Conflits d’associés de SCI familiale', 'Droit du travail', 'Procédure civile', 'Postulation', 'Médiation et règlement amiable'],
+  hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cabinet.nom}, ${cabinet.adresse.rue}, ${cabinet.adresse.cp} ${cabinet.adresse.ville}`)}`,
+  currenciesAccepted: 'EUR',
+  paymentAccepted: 'Virement, chèque, carte bancaire et PayPal (consultation en ligne)',
+  availableLanguage: 'fr',
   founder: { '@type': 'Person', name: cabinet.avocat, jobTitle: 'Avocat', memberOf: { '@type': 'Organization', name: `Ordre des avocats du ${cabinet.barreau}` } },
   priceRange: '€€',
 };

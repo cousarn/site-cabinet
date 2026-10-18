@@ -1,5 +1,5 @@
 ---
-title: "Indivision bloquée : comment en sortir quand un héritier refuse tout"
+title: "Indivision bloquée : comment en sortir"
 description: "Ce que l’article 815 du Code civil permet concrètement : voies amiables, vente aux deux tiers, partage judiciaire, licitation — avant d’assigner."
 date: 2026-10-01
 domaine: successions

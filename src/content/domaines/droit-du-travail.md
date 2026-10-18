@@ -1,5 +1,5 @@
 ---
-title: "Avocat droit du travail à Rennes — salariés et employeurs | Arnaud Cousin"
+title: "Avocat droit du travail à Rennes | Arnaud Cousin"
 h1: "Avocat en droit du travail à Rennes"
 description: "Licenciement, inaptitude, harcèlement, rupture conventionnelle, prud’hommes de Rennes. Avocat pour salariés et employeurs : contester, négocier, sécuriser."
 accroche: "Vous avez reçu une lettre de licenciement, une convocation, une proposition de rupture — ou vous devez en envoyer une — et vous voulez savoir vite ce que vous pouvez accepter, contester, négocier."

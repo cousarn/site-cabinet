@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import { cabinet } from '../data/cabinet';
 ---
-<Base title="Notaires et confrères — postulation et partage judiciaire à Rennes | Arnaud Cousin" description="Postulation devant le tribunal judiciaire et la cour d’appel de Rennes (540 € / 700 € TTC), partage judiciaire en relais de l’étude, séparation d’un chef d’entreprise. Saisir le cabinet en ligne." fil={[{ label: 'Notaires & confrères', href: '/notaires-confreres' }]}>
+<Base title="Notaires et confrères : postulation à Rennes | Arnaud Cousin" description="Postulation devant le tribunal judiciaire et la cour d’appel de Rennes (540 € / 700 € TTC), partage judiciaire en relais de l’étude notariale. Saisir le cabinet en ligne." fil={[{ label: 'Notaires & confrères', href: '/notaires-confreres' }]}>
   <Hero surtitre="Notaires & confrères" titre="Un partenaire judiciaire à Rennes pour débloquer vos dossiers" chapo="Partenaire des notaires et des professionnels face à un blocage : un relais judiciaire efficace, avec réactivité et célérité. Pour les confrères : postulation et suivi devant le tribunal judiciaire et la cour d’appel de Rennes, à tarifs connus d’avance." image="parlement" position="50% 40%">
     <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px"><a href="#saisine" class="btn btn--clair">Saisir le cabinet</a><a href={`tel:${cabinet.telephoneE164}`} class="btn btn--contour-clair">{cabinet.telephone}</a></div>
   </Hero>

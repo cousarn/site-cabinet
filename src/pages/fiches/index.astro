@@ -6,7 +6,7 @@ import Cta from '../../components/Cta.astro';
 const fiches = (await getCollection('fiches', (f) => !f.data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title="Fiches pratiques, simulateurs et actualités juridiques | Arnaud Cousin, avocat à Rennes" description="Indivision bloquée, pension alimentaire, délais de licenciement, salaire différé agricole, recel successoral : fiches pratiques et simulateurs rédigés par un avocat rennais." fil={[{ label: 'Fiches & actualités', href: '/fiches' }]}>
+<Base title="Fiches pratiques et actualités juridiques | Arnaud Cousin" description="Indivision bloquée, recel successoral, délivrance de legs, licenciement, salaire différé : fiches pratiques rédigées par un avocat à Rennes." fil={[{ label: 'Fiches & actualités', href: '/fiches' }]}>
   <Hero variante="clair" surtitre="Fiches & actualités" titre="…Et écrire" chapo="Des fiches courtes, des simulateurs et des billets sur ce que le cabinet plaide. Une fois par trimestre, pas plus." image="parlement" />
   <section class="section">
     <div class="conteneur grille">
