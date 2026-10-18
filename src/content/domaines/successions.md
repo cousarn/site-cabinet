@@ -29,7 +29,7 @@ methode:
     texte: "Assignation en partage, désignation d’un notaire commis, incidents de mise en état, homologation ou licitation : jusqu’à la cour d’appel, avec la même personne du début à la fin."
 encadre:
   titre: "Notaires : un dossier qui n’avance plus ?"
-  texte: "Le cabinet est le partenaire judiciaire de l’étude : il reçoit la partie qui veut avancer, assigne en partage, fait désigner votre étude comme notaire commis et conduit la procédure jusqu’à l’homologation ou la licitation. Sans empiéter sur votre rôle."
+  texte: "Le cabinet remet le dossier sur la voie de l’accord : il reçoit la partie qui veut avancer, rouvre la discussion et, si besoin, apporte l’appui du judiciaire — assignation en partage, désignation de votre étude comme notaire commis — pour revenir ensuite sur le chemin amiable et parachever, entre vos mains, un règlement conventionnel. Sans empiéter sur votre rôle."
   lien: "/notaires-confreres#partage"
   libelle: "Saisir le cabinet"
 faq:
