@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
-import { bareme } from '../data/honoraires';
+import { bareme, aj } from '../data/honoraires';
 import themis from '../assets/photos/themis-1600.jpg';
 
 const modes = [
@@ -62,6 +62,27 @@ const faq = [
     <div class="conteneur deux-colonnes" style="align-items: start">
       <div class="pile"><p class="surtitre">Protection juridique</p><h2>Vous l’ignorez peut-être, mais vous cotisez</h2><p class="muet">Multirisque habitation, contrat auto ou bancaire : une protection juridique peut couvrir les frais de justice et une part des honoraires, et avancer des frais élevés (expertise). Vous choisissez librement votre avocat ; le cabinet vérifie avec vous.</p></div>
       <div class="pile"><p class="surtitre">Aide juridictionnelle</p><h2>Un engagement militant, une mission de service public</h2><p class="muet">Revenus modestes, pas de patrimoine : l’État peut prendre en charge tout ou partie des frais, par une indemnité forfaitaire versée à l’avocat — un défraiement, pas une rémunération. Le cabinet accepte en principe l’aide juridictionnelle, hors successions. Demandez-le dès le rendez-vous.</p></div>
+    </div>
+    <div class="conteneur" style="margin-top: 40px">
+      <div class="carte" id="aide-juridictionnelle" style="gap: 18px">
+        <h3>Aide juridictionnelle : barème {aj.annee} et demande en ligne</h3>
+        <p class="muet" style="font-size: 15px; max-width: 820px">Les plafonds s’apprécient sur le <strong>revenu fiscal de référence</strong> du foyer (dernier avis d’imposition) et sur le patrimoine, hors résidence principale et biens professionnels. Barème {aj.annee} pour une personne seule :</p>
+        <div class="tableau-defilant">
+          <table class="grille-tarifs" style="max-width: 640px">
+            <thead><tr><th scope="col">Revenu fiscal de référence</th><th scope="col">Prise en charge par l’État</th></tr></thead>
+            <tbody>
+              {aj.tranches.map(([plafond, part]) => <tr><td>{plafond}</td><td>{part}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <p class="muet" style="font-size: 14px; max-width: 820px">Plafonds majorés de {aj.majoration1} pour chacune des deux premières personnes à charge, puis de {aj.majoration2} par personne supplémentaire. Patrimoine mobilier (épargne) : {aj.mobilier} au plus ; patrimoine immobilier hors résidence principale : {aj.immobilier} au plus. En cas d’aide partielle, le complément d’honoraires fait l’objet d’une convention écrite. Source : {aj.source}.</p>
+        <p style="font-size: 15px; max-width: 820px"><strong>Avant de déposer une demande, l’accord préalable du cabinet est nécessaire</strong> : l’avocat doit avoir accepté le dossier et figurer sur la demande, faute de quoi le bureau d’aide juridictionnelle en désigne un d’office. Parlez-en dès le premier rendez-vous ; le cabinet vous remet ensuite son acceptation et vous indique les pièces à joindre.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <a href="https://www.aidejuridictionnelle.justice.fr/simulateur" class="btn btn--contour" target="_blank" rel="noopener">Simuler mes droits</a>
+          <a href="https://www.aidejuridictionnelle.justice.fr/" class="btn btn--plein" target="_blank" rel="noopener">Déposer la demande en ligne (justice.fr)</a>
+          <a href="https://www.service-public.fr/particuliers/vosdroits/F18074" class="btn btn--contour" target="_blank" rel="noopener">La fiche Service-Public</a>
+        </div>
+      </div>
     </div>
   </section>
 

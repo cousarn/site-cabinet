@@ -34,3 +34,23 @@ export const bareme = {
   ],
   resultat: '5 % HT des sommes obtenues ou économisées, sauf convention contraire',
 } as const;
+
+/**
+ * Aide juridictionnelle — plafonds de ressources (personne seule), revalorisés chaque janvier.
+ * Source : circulaire du ministère de la Justice NOR JUST2601659C du 16 janvier 2026 (justice.gouv.fr).
+ * À mettre à jour chaque année en janvier.
+ */
+export const aj = {
+  annee: 2026,
+  tranches: [
+    ['Jusqu’à 12 957 €', 'Aide totale (100 %)'],
+    ['De 12 958 € à 15 316 €', 'Aide partielle : 55 %'],
+    ['De 15 317 € à 19 433 €', 'Aide partielle : 25 %'],
+    ['Au-delà de 19 433 €', 'Pas d’aide juridictionnelle'],
+  ],
+  majoration1: '2 332 €',
+  majoration2: '1 473 €',
+  mobilier: '12 957 €',
+  immobilier: '38 866 €',
+  source: 'circulaire du ministère de la Justice du 16 janvier 2026 (NOR JUST2601659C)',
+} as const;
