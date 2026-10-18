@@ -75,7 +75,7 @@ export const navigation = {
   ],
   domaines: [
     { href: '/domaines/separation-divorce', titre: 'Séparation & divorce', accroche: 'Enfants, pension, patrimoine : préserver l’essentiel, vite.' },
-    { href: '/domaines/successions', titre: 'Successions, partages & indivision', accroche: 'Un héritier bloque, le notaire attend : en sortir sans y laisser votre part.' },
+    { href: '/domaines/successions', titre: 'Successions, partages & indivision', accroche: 'Sortie contentieuse d’indivision, conflits d’associés de SCI familiale : en sortir sans y laisser votre part.' },
     { href: '/domaines/droit-du-travail', titre: 'Droit du travail', accroche: 'Licenciement, rupture : accepter, contester ou négocier ?' },
     { href: '/domaines/procedure-appel', titre: 'Procédure civile, appel & postulation', accroche: 'Un jugement à contester, un délai qui court.' },
   ],

@@ -7,7 +7,7 @@ import Cta from '../../components/Cta.astro';
 const domaines = (await getCollection('domaines')).sort((a, b) => a.data.ordre - b.data.ordre);
 const icones: Record<string, any> = { 'separation-divorce': 'famille', successions: 'succession', 'droit-du-travail': 'travail', 'procedure-appel': 'procedure' };
 ---
-<Base title="Domaines d’intervention — avocat à Rennes | Arnaud Cousin" description="Famille et patrimoine, successions et indivision, droit du travail, procédure civile et appel : les domaines d’intervention du cabinet Arnaud Cousin à Rennes." fil={[{ label: 'Domaines', href: '/domaines' }]}>
+<Base title="Domaines d’intervention — avocat à Rennes | Arnaud Cousin" description="Famille et patrimoine, successions, sortie d’indivision et SCI familiales, droit du travail, procédure civile et appel : les domaines d’intervention du cabinet Arnaud Cousin à Rennes." fil={[{ label: 'Domaines', href: '/domaines' }]}>
   <Hero variante="clair" surtitre="Domaines d’intervention" titre="Contentieux des familles et du patrimoine familial, conflits du travail, droit civil" chapo="En demande comme en défense, pour les particuliers, les familles et les chefs d’entreprise, devant les juridictions de Rennes et de Bretagne. Votre situation n’entre dans aucune case ? Décrivez-la : vous orienter fait partie du conseil." image="parlement" />
   <section class="section">
     <div class="conteneur grille grille--2">

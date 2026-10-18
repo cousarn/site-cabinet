@@ -13,7 +13,7 @@ situations:
   - titre: "Prestation compensatoire"
     texte: "Capital ou rente, barèmes indicatifs et réalité du dossier : la prestation compensatoire se calcule, se négocie et se plaide."
   - titre: "Liquidation du régime matrimonial"
-    texte: "Communauté, participation aux acquêts, séparation de biens, pacs ou concubinage : récompenses, créances entre époux, indivision post-communautaire. Une liquidation se gagne sur les chiffres."
+    texte: "Communauté, participation aux acquêts, séparation de biens, pacs ou concubinage : récompenses, créances entre époux, indivision post-communautaire et sortie contentieuse de l’indivision (partage, licitation, indemnité d’occupation). Une liquidation se gagne sur les chiffres."
   - titre: "Violences et urgence"
     texte: "Ordonnance de protection, mesures urgentes, résidence séparée : certaines situations ne peuvent pas attendre l’audience ordinaire."
   - titre: "Après le jugement"

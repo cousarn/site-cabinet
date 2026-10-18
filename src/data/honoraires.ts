@@ -19,7 +19,8 @@ export const bareme = {
     ]},
     { famille: 'Successions', items: [
       { label: 'Envoi en possession', prix: '480 €' },
-      { label: 'Partage judiciaire, licitation', prix: 'au temps passé' },
+      { label: 'Sortie contentieuse d’indivision (partage judiciaire, licitation)', prix: 'au temps passé' },
+      { label: 'Conflit d’associés de SCI familiale', prix: 'au temps passé' },
     ]},
     { famille: 'Travail', items: [
       { label: 'Conseil de prud’hommes', prix: '1 800 – 3 000 € + 10 % HT du résultat' },

@@ -1,13 +1,15 @@
 ---
-title: "Avocat successions, partage et indivision à Rennes | Arnaud Cousin"
+title: "Avocat successions, partage et sortie d’indivision à Rennes | Arnaud Cousin"
 h1: "Avocat en successions, partages et indivision à Rennes"
-description: "Succession bloquée, indivision paralysée, testament contesté : partage judiciaire, licitation, recel, salaire différé. Avocat à Rennes, partenaire des notaires."
+description: "Succession bloquée, sortie contentieuse d’indivision, conflit d’associés de SCI familiale, testament contesté : partage judiciaire, licitation, recel. Avocat à Rennes."
 accroche: "Succession bloquée, héritier qui ne répond plus, testament contesté, assurance-vie qui vide la masse : quand le notaire ne peut plus avancer seul, il faut un partenaire judiciaire. Rennes, Saint-Malo, Saint-Brieuc, Nantes et la cour d’appel."
 image: parlement
 ordre: 2
 situations:
-  - titre: "Partage judiciaire et licitation"
-    texte: "Nul ne peut être contraint de demeurer dans l’indivision (art. 815 C. civ.). À défaut d’accord : partage judiciaire, vente autorisée malgré un minoritaire, licitation. Souvent, une mise en demeure chiffrée suffit."
+  - titre: "Sortie contentieuse d’indivision"
+    texte: "Nul ne peut être contraint de demeurer dans l’indivision (art. 815 C. civ.). Indivision successorale, post-communautaire, entre concubins ou entre associés d’une acquisition commune : à défaut d’accord, le cabinet assigne en partage, fait autoriser la vente malgré un minoritaire ou ordonner la licitation, règle les comptes d’indivision (indemnité d’occupation, dépenses de conservation). Une activité centrale du cabinet — et souvent, une mise en demeure chiffrée suffit."
+  - titre: "Conflits d’associés de SCI familiales"
+    texte: "La SCI créée pour transmettre devient le lieu du blocage : gérant qui ne rend pas de comptes, assemblées fantômes, associé minoritaire tenu à l’écart, parts héritées en indivision, retrait ou dissolution refusés. Le cabinet obtient communication des comptes, fait désigner un administrateur provisoire ou un mandataire ad hoc, agit en révocation du gérant, en retrait d’associé ou en dissolution pour mésentente (art. 1844-7 C. civ.)."
   - titre: "Testament, donations, réserve"
     texte: "Réduction des libéralités excessives, rapport des donations, nullité d’un testament, recel successoral : la part de chacun se calcule avant de se discuter."
   - titre: "Assurance-vie"
