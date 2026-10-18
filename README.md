@@ -52,7 +52,7 @@ Pousser sur `main` : la préprod se met à jour en deux minutes. La fiche appara
 | Déclencheur | Branche publiée | Cible OVH |
 |---|---|---|
 | push sur `main` | `deploy-preprod` | `preprod.arnaudcousin-avocat.fr` → dossier `./preprod` (noindex) |
-| tag `v1.0.0` (seul moyen : l'environnement GitHub `production` n'accepte que les tags `v*`) | `deploy-prod` | `arnaudcousin-avocat.fr` → dossier `./www` |
+| tag `v1.0.0` (seul moyen : l'environnement GitHub `production` n'accepte que les tags `v*`) | `deploy-prod` | `arnaudcousin-avocat.fr` et `www.` → dossier `./prod` |
 
 GitHub Actions construit le site et pousse `dist/` sur la branche de déploiement ; OVH (fonction *Associer Git* du multisite) est prévenu par webhook et tire la branche. Aucun identifiant FTP n'est stocké nulle part.
 
@@ -64,9 +64,11 @@ GitHub Actions construit le site et pousse `dist/` sur la branche de déploiemen
 2. GitHub › Settings › **Webhooks** › Add : coller l'URL OVH, content type `application/json`, événement *push*. (Un webhook par environnement.)
 3. Premier `git push` : la préprod se construit et se publie. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production (après avoir associé Git au domaine principal de la même façon).
 
-Pourquoi HTTPS et non SSH : la clé SSH générée par OVH est RSA 2048 bits et GitHub refuse les clés RSA de moins de 3072 bits depuis le 14 octobre 2026. Fait le 18/10/2026 : préprod associée, webhook posé.
+**Production, fait le 18/10/2026 (v1.0.0)** : OVH exige un dossier vide pour associer Git, et `www` contenait l'ancien site TOWeb. Les deux entrées multisite (`arnaudcousin-avocat.fr`, `www.`) ont donc été basculées vers un nouveau dossier **`./prod`** (Multisite › Modifier le domaine), Git associé dessus (branche `deploy-prod`), second webhook GitHub. L'ancien site reste intact dans `./www` : retour arrière = rebasculer le dossier racine sur `www`. Mises en production suivantes : `git tag vX.Y.Z && git push --tags` (le tag doit pointer sur un commit déjà validé en préprod).
 
-Fichiers propres au serveur, hors racine web, jamais écrasés : `/config/site-cabinet.php` (IBAN, adresse d'expédition — modèle dans `public/api/config.local.example.php`), `/cache/site-cabinet/` (compteurs anti-abus), `/consultations/` (pièces des consultations en ligne).
+Pourquoi HTTPS et non SSH : la clé SSH générée par OVH est RSA 2048 bits et GitHub refuse les clés RSA de moins de 3072 bits depuis le 14 octobre 2026. Fait le 18/10/2026 : préprod et prod associées, deux webhooks posés.
+
+Fichiers propres au serveur, hors racine web, jamais écrasés, communs à la préprod et à la prod : `/config/site-cabinet.php` (IBAN, adresse d'expédition — modèle dans `public/api/config.local.example.php`), `/cache/site-cabinet/` (compteurs anti-abus), `/consultations/` (pièces des consultations en ligne).
 
 ## Formulaires (PHP sur OVH — `public/api/`)
 

@@ -4,7 +4,7 @@
 # OVH, prévenu par webhook, tire cette branche dans le dossier du site. Aucun mot de passe FTP nulle part.
 #
 # - push sur `main`  → branche `deploy-preprod` → preprod.arnaudcousin-avocat.fr (dossier ./preprod, noindex)
-# - tag `v*`         → branche `deploy-prod`    → arnaudcousin-avocat.fr          (dossier ./www)
+# - tag `v*`         → branche `deploy-prod`    → arnaudcousin-avocat.fr          (dossier ./prod ; ./www = ancien site TOWeb, conservé)
 #
 # Côté OVH (une fois par environnement) : Hébergement › Multisite › ⋯ › Associer Git :
 #   dépôt https://github.com/cousarn/site-cabinet.git (dépôt public → HTTPS, aucune clé),
