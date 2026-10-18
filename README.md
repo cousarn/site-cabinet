@@ -92,3 +92,4 @@ Chaque envoi redirige vers `/merci?objet=…&ref=…` (référence du type `2610
 ## Points en attente (`[entre crochets]` dans le site)
 
 SIRET, TVA, assureur RC, médiateur, prix visio/téléphone, URL Bookings, places et horaires du parking Colombier, lignes de bus 9/57, accessibilité PMR, crédits photos (et mention IA le cas échéant), mise à jour du barème, grille du devis divorce validée le 18/10/2026 (`_lib.php` → `devis`, en HT : base 800, convention parentale 400, prestation compensatoire 300, partage 700, négociation 500 ; déplacement hors Rennes en sus), IBAN dans `config.local.php`.
+
