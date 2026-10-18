@@ -69,6 +69,7 @@ address { font-style: normal; }
 .pile { display: flex; flex-direction: column; gap: 16px; }
 .grille { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 .grille--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); }
+.grille--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
 .grille--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
 .deux-colonnes { display: grid; gap: 48px 64px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: center; }
 

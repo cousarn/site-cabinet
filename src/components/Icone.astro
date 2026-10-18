@@ -1,6 +1,6 @@
 ---
 /** Icônes au trait, cohérentes avec la maquette (jamais d'emoji). */
-interface Props { nom: 'famille' | 'succession' | 'travail' | 'procedure' | 'globe' | 'livre' | 'puce' | 'horloge' | 'calendrier' | 'ecrit' | 'depot' | 'devis' | 'assistant' | 'bouclier'; taille?: number; }
+interface Props { nom: 'famille' | 'succession' | 'travail' | 'procedure' | 'globe' | 'livre' | 'puce' | 'horloge' | 'calendrier' | 'ecrit' | 'depot' | 'devis' | 'assistant' | 'bouclier' | 'amiable'; taille?: number; }
 const { nom, taille = 26 } = Astro.props;
 const trace: Record<Props['nom'], string> = {
   famille: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.6-4.5 3.8-4.5S21 17.5 21 20"/>',
@@ -17,6 +17,7 @@ const trace: Record<Props['nom'], string> = {
   devis: '<path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5M9 13h6M9 17h6"/>',
   assistant: '<path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4z"/><path d="M8 8h8M8 11h5"/>',
   bouclier: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  amiable: '<path d="M2 9l4-3 4 3-1 6.5L5 18l-3-2.5z"/><path d="M22 9l-4-3-4 3 1 6.5 4 2.5 3-2.5z"/><path d="M9 14l3 3 3-3"/>',
 };
 ---
 <svg width={taille} height={taille} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={trace[nom]} />

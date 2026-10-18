@@ -14,18 +14,20 @@ import themis from '../assets/photos/themis-1600.jpg';
 
 const n = anneesExercice();
 const fiches = (await getCollection('fiches', (f) => !f.data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
-const icones = ['famille', 'succession', 'travail', 'procedure'] as const;
+const icones = ['famille', 'succession', 'travail', 'procedure', 'amiable'] as const;
 const listes = [
   ['Divorce amiable ou contentieux', 'Prestation compensatoire, pension alimentaire', 'Liquidation du régime matrimonial', 'Résidence des enfants, autorité parentale'],
   ['Partage judiciaire, licitation', 'Recel, rapport, réduction, testament', 'Assurance-vie, donations', 'Salaire différé agricole'],
   ['Licenciement, inaptitude, prise d’acte', 'Harcèlement, travail dissimulé', 'Rupture conventionnelle, transaction', 'Salariés et employeurs'],
   ['Appels devant la cour de Rennes', 'Référés, incidents, exécution', 'Postulation pour les confrères', 'Renvoi après cassation'],
+  ['Médiation judiciaire ou conventionnelle', 'Conciliation, procédure participative', 'Rédaction et homologation des accords', 'Liaison avec le médiateur, l’adversaire, le tribunal'],
 ];
 const leads = [
   ['Vous vous séparez', ' : préserver vos enfants, vos droits et ce que vous avez construit.'],
   ['Succession, indivision ou SCI familiale bloquée', ' : un héritier, un ex-conjoint ou un associé bloque, le notaire attend. En sortir sans y laisser votre part.'],
   ['Licenciement, convocation, rupture proposée', ' : savoir vite ce que vous pouvez accepter, contester, négocier.'],
   ['Un jugement à contester', ', un délai qui court. Ou un confrère qui cherche un relais fiable à Rennes.'],
+  ['On vous propose une médiation', ' — ou le juge vous y envoie. Peur du rapport de force, d’un mauvais accord ? Le cabinet vous accompagne à chaque étape.'],
 ];
 ---
 <Base
@@ -85,7 +87,7 @@ const leads = [
       </div>
       <div class="grille grille--2">
         {navigation.domaines.map((d, i) => (
-          <a href={d.href} class="carte carte--lien">
+          <a href={d.href} class="carte carte--lien" style={i === 4 ? 'grid-column: 1 / -1' : undefined}>
             <span class="carte__icone"><Icone nom={icones[i]} /></span>
             <h3>{d.titre}</h3>
             <p style="font-size: 15px"><strong>{leads[i][0]}</strong>{leads[i][1]}</p>

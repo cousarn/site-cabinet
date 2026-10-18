@@ -1,0 +1,149 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Faq from '../components/Faq.astro';
+import Cta from '../components/Cta.astro';
+import Icone from '../components/Icone.astro';
+import { cabinet } from '../data/cabinet';
+import parlement from '../assets/photos/parlement-1536.webp';
+
+const peurs = [
+  ['« Le rapport de force n’est pas en ma faveur. »', 'L’autre parle mieux, connaît mieux le dossier, ou vous impressionne. En médiation, vous n’êtes pas seul : votre avocat est à vos côtés, prépare chaque séance avec vous, demande une suspension quand il le faut, et peut parler à votre place sur les points techniques. Le médiateur, de son côté, est tenu de rétablir l’équilibre de la parole.'],
+  ['« J’ai peur de me retrouver face à lui, face à elle. »', 'Quand il y a eu de la violence ou de l’emprise, la médiation n’est pas obligatoire et le juge ne peut l’imposer. Si vous souhaitez malgré tout tenter l’amiable, elle peut se dérouler en séances séparées, ou par avocats interposés. Le cabinet évalue avec vous, avant toute chose, si le processus est sain pour vous.'],
+  ['« Je vais signer un mauvais accord. »', 'Un accord se mesure à ce qu’un juge aurait décidé. Avant de signer, le cabinet chiffre vos droits, compare avec l’issue probable d’un procès, relit chaque clause et refuse ce qui ne tient pas. Un accord mal rédigé se renégocie pendant des années ; un bon accord s’exécute.'],
+  ['« Ça va coûter du temps et de l’argent pour rien. »', 'Une médiation dure de un à quatre mois, là où un procès dure de dix-huit mois à trois ans. Elle suspend les délais de prescription (art. 2238 C. civ.). Et si elle échoue, rien de ce qui s’y est dit ne peut être utilisé devant le juge : vous repartez au contentieux sans avoir rien perdu.'],
+];
+
+const etapes = [
+  ['Avant', 'Décider, préparer', ['Opportunité de l’amiable au regard de votre dossier et de l’adversaire', 'Choix du mode : médiation, conciliation, procédure participative, négociation directe', 'Choix et saisine du médiateur ; réponse à une injonction du juge', 'Chiffrage de vos droits, dossier de pièces, objectifs et lignes rouges', 'Convention de médiation, répartition des frais']],
+  ['Pendant', 'Vous appuyer, vous guider', ['Présence aux séances, apartés de conseil à tout moment', 'Traduction du droit en options concrètes, simulations chiffrées', 'Liaison avec la partie adverse et son conseil, le médiateur, le juge saisi', 'Gestion du calendrier judiciaire parallèle (audiences, délais)', 'Recadrage si la médiation dérive ou s’enlise']],
+  ['Après', 'Sécuriser, exécuter', ['Rédaction du protocole ou de l’accord : clair, complet, exécutable', 'Homologation par le juge pour lui donner force exécutoire (art. 1565 CPC), ou acte d’avocat', 'Transformation en divorce par consentement mutuel, en acte de partage, en transaction', 'Suivi de l’exécution : paiements, actes notariés, modalités enfants', 'Si échec : reprise ou introduction du contentieux, sans perte de temps']],
+];
+
+const modes = [
+  ['Médiation', 'Un tiers indépendant aide les parties à construire elles-mêmes la solution. Conventionnelle (à votre initiative) ou judiciaire (ordonnée par le juge avec votre accord). Confidentielle.', 'Conflits familiaux, successoraux, de voisinage, entre associés, entre employeur et salarié.'],
+  ['Conciliation', 'Un conciliateur de justice, bénévole, propose une solution. Gratuite. Obligatoire avant de saisir le juge pour les petits litiges (moins de 5 000 €) et les troubles de voisinage (art. 750-1 CPC).', 'Litiges de consommation, impayés, voisinage.'],
+  ['Procédure participative', 'Les parties, assistées de leurs avocats, s’engagent par convention à travailler ensemble à la résolution du litige, y compris pour la mise en état d’un procès déjà engagé.', 'Liquidations de régime matrimonial, partages, dossiers techniques.'],
+  ['Audience de règlement amiable', 'Depuis novembre 2023, un juge, autre que celui qui tranchera, réunit les parties pour les aider à s’accorder. Confidentielle elle aussi.', 'Litiges civils en cours devant le tribunal judiciaire.'],
+];
+
+const faq = [
+  { q: 'Le juge peut-il m’obliger à faire une médiation ?', r: '<p>Il peut vous enjoindre de rencontrer un médiateur pour une séance d’information, et sanctionner un refus abusif. Il ne peut pas vous imposer de poursuivre : la médiation reste volontaire. En matière familiale, l’injonction est exclue si des violences sont alléguées ou en cas d’emprise manifeste (art. 373-2-10 C. civ.).</p>' },
+  { q: 'Mon avocat peut-il être présent pendant la médiation ?', r: '<p>Oui, et c’est recommandé. Le médiateur conduit les échanges ; l’avocat conseille son client, vérifie la portée juridique de ce qui se dessine et rédige l’accord. Beaucoup de médiations échouent faute de ce relais technique, ou aboutissent à des accords inapplicables.</p>' },
+  { q: 'Que vaut un accord de médiation ?', r: '<p>C’est un contrat : il engage. Pour pouvoir le faire exécuter de force, on le fait homologuer par le juge (requête simple, sans audience en principe) ou on le signe en acte d’avocat, qui peut recevoir la force exécutoire. Le cabinet choisit la voie adaptée.</p>' },
+  { q: 'Combien coûte une médiation ?', r: '<p>Les honoraires du médiateur sont partagés entre les parties, le plus souvent de 150 à 300 € par heure de séance selon le centre ; une médiation familiale conventionnée est tarifée selon vos revenus. L’accompagnement du cabinet fait l’objet d’une convention d’honoraires distincte, au forfait ou au temps passé. L’aide juridictionnelle peut couvrir la médiation.</p>' },
+  { q: 'Et si la médiation échoue ?', r: '<p>Rien n’est perdu : les échanges sont confidentiels et ne peuvent être produits devant le juge, les délais ont été suspendus, et le travail de préparation sert directement au contentieux. Souvent, une médiation « ratée » a réduit le désaccord à un ou deux points, que le juge tranche vite.</p>' },
+];
+
+const sources = [
+  ['Ministère de la Justice — lancement de la politique de l’amiable (13 janvier 2023)', 'https://www.justice.gouv.fr/actualites/actualite/lancement-politique-lamiable'],
+  ['F. Vert, « La loi du 8 février 1995 sur la médiation judiciaire fête ses 30 ans », Actu-Juridique, 8 février 2025', 'https://www.actu-juridique.fr/marl/la-loi-du-8-fevrier-1995-sur-la-mediation-judiciaire-fete-ses-30-ans/'],
+  ['Ordre des avocats de Rennes — la médiation', 'https://www.ordre-avocats-rennes.fr/particuliers/la-mediation/comment'],
+];
+---
+<Base title="Médiation et règlement amiable à Rennes — accompagnement par un avocat | Arnaud Cousin" description="Médiation, conciliation, procédure participative : le cabinet vous accompagne à chaque étape — préparation, séances, rédaction et exécution de l’accord. N’y allez pas seul." fil={[{ label: 'Règlement amiable & médiation', href: '/reglement-amiable' }]}>
+  <Hero surtitre="Règlement amiable & médiation" titre="La médiation, oui. Seul, non." chapo="Les tribunaux renvoient de plus en plus les justiciables vers la médiation et la conciliation. C’est souvent une bonne nouvelle — à condition d’y aller préparé, conseillé et protégé. Le cabinet, rompu aux techniques de négociation, de médiation et de conciliation, est à vos côtés avant, pendant et après." image="couloir" position="60% 40%">
+    <div slot="actions" style="display: flex; flex-wrap: wrap; gap: 14px">
+      <a href="/services/rendez-vous" class="btn btn--clair btn--grand">Prendre rendez-vous</a>
+      <a href="#peurs" class="btn btn--contour-clair btn--grand">Ce qui vous retient</a>
+    </div>
+  </Hero>
+
+  <section class="section">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile" style="gap: 18px">
+        <p class="surtitre">Pourquoi on vous en parle</p>
+        <h2>Les pouvoirs publics veulent sortir les affaires des prétoires</h2>
+        <p class="muet">Depuis le 13 janvier 2023, la Chancellerie conduit une « politique de l’amiable » : objectif affiché, diviser par deux les délais des procédures civiles d’ici 2027. Le décret du 29 juillet 2023 a créé l’audience de règlement amiable et la césure du procès ; celui du 11 mai 2023 a rétabli la tentative amiable obligatoire pour les petits litiges et les conflits de voisinage. Les juges, à Rennes comme ailleurs, enjoignent désormais couramment aux parties de rencontrer un médiateur. Là où la médiation est pratiquée avec méthode, elle aboutit dans environ huit cas sur dix.</p>
+        <p class="muet">Cette politique répond à un vrai problème — une justice civile saturée, des délais qui ruinent l’utilité des décisions — et offre aux justiciables une chance réelle : une solution plus rapide, moins coûteuse, qu’ils ont construite et qu’ils appliqueront d’autant mieux. Mais elle a un angle mort : on envoie en médiation des personnes qui en ont peur, qui ne savent pas ce qu’elles peuvent accepter, et qui s’y présentent parfois sans conseil. C’est précisément là que le cabinet intervient.</p>
+        <p class="muet" style="font-size: 14px">Sources : {sources.map(([l, u], i) => <Fragment>{i > 0 && ' · '}<a href={u} class="lien" target="_blank" rel="noopener">{l}</a></Fragment>)}.</p>
+      </div>
+      <div class="pile" style="gap: 16px">
+        <div class="carte" style="gap: 10px"><span class="carte__icone"><Icone nom="horloge" /></span><h3>Délais divisés par deux</h3><p class="muet" style="font-size: 15px">L’objectif que le ministère de la Justice s’est fixé pour 2027, en misant sur l’amiable. Une médiation se conclut en quelques semaines à quelques mois.</p></div>
+        <div class="carte" style="gap: 10px"><span class="carte__icone"><Icone nom="procedure" /></span><h3>Le juge garde la main</h3><p class="muet" style="font-size: 15px">Injonction de rencontrer un médiateur, audience de règlement amiable, homologation de l’accord : l’amiable s’articule avec le procès, il ne le remplace pas.</p></div>
+        <div class="carte" style="gap: 10px"><span class="carte__icone"><Icone nom="bouclier" /></span><h3>Confidentiel et sans risque</h3><p class="muet" style="font-size: 15px">Ce qui se dit en médiation ne peut être utilisé devant le juge. Les délais de prescription sont suspendus. L’échec ne coûte aucun droit.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire" id="peurs">
+    <div class="conteneur pile" style="gap: 36px">
+      <div class="pile" style="max-width: 720px; gap: 14px">
+        <p class="surtitre">Ce qui vous retient</p>
+        <h2>Les quatre peurs de la médiation — et ce que le cabinet en fait</h2>
+        <p class="chapo">Elles sont légitimes. Aucune n’est une raison d’y aller seul, ni de refuser sans réfléchir.</p>
+      </div>
+      <div class="grille grille--2">
+        {peurs.map(([t, x]) => <div class="carte" style="gap: 12px"><h3 style="font-style: italic">{t}</h3><p class="muet" style="font-size: 15px">{x}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="conteneur pile" style="gap: 36px">
+      <div class="pile" style="max-width: 760px; gap: 14px">
+        <p class="surtitre">À tous les stades</p>
+        <h2>Le cabinet au cœur du règlement amiable</h2>
+        <p class="chapo">Vingt-six ans de négociations familiales et patrimoniales à haute tension, une pratique quotidienne de la conciliation devant les juges aux affaires familiales et les conseils de prud’hommes, et la conviction qu’un bon accord vaut mieux qu’un bon jugement. L’accompagnement de médiation est un service à part entière du cabinet.</p>
+      </div>
+      <div class="grille grille--3">
+        {etapes.map(([quand, titre, items]) => (
+          <div class="carte" style="gap: 12px">
+            <p class="surtitre">{quand}</p>
+            <h3>{titre}</h3>
+            <ul class="carte__liste">{(items as string[]).map((l) => <li>{l}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p class="muet" style="font-size: 15px; max-width: 820px">Le cabinet assure la liaison avec tous les intervenants : la partie adverse et son avocat, le médiateur ou le conciliateur, la juridiction saisie, le notaire, l’expert-comptable, le service de médiation familiale. Vous n’avez qu’un seul interlocuteur, et vous comprenez à chaque instant où vous en êtes.</p>
+    </div>
+  </section>
+
+  <section class="section section--ivoire">
+    <div class="conteneur pile" style="gap: 32px">
+      <div class="pile" style="max-width: 720px; gap: 14px">
+        <p class="surtitre">S’y retrouver</p>
+        <h2>Médiation, conciliation, procédure participative : lequel pour vous ?</h2>
+      </div>
+      <div class="tableau-defilant">
+        <table class="grille-tarifs">
+          <thead><tr><th scope="col">Mode</th><th scope="col">Principe</th><th scope="col">Quand</th></tr></thead>
+          <tbody>{modes.map(([m, p, q]) => <tr><td><strong>{m}</strong></td><td>{p}</td><td>{q}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="muet" style="font-size: 14px">Le divorce par consentement mutuel par acte d’avocats, la transaction et l’acte de partage amiable sont les formes que prennent, le plus souvent, les accords obtenus. <a href="/services/devis-divorce" class="lien">Estimer un divorce amiable</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="mediateurs">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <div class="pile" style="gap: 18px">
+        <p class="surtitre">À Rennes</p>
+        <h2>Où trouver un médiateur</h2>
+        <p class="muet">Le choix du médiateur compte autant que celui de l’avocat : formation, expérience de la matière, méthode. Le cabinet travaille avec des médiateurs professionnels qu’il connaît et vous oriente selon votre dossier. Trois points d’entrée à Rennes :</p>
+        <ul class="carte__liste" style="font-size: 15px">
+          <li><strong>Centre de Médiation Régional 35 (CMR 35)</strong> — Maison des Avocats, 6 rue Hoche, 35000 Rennes (courrier ; pas d’accueil du public) · 07 80 32 64 75 · info@mediation35.fr · <a href="https://www.mediation35.fr" class="lien" target="_blank" rel="noopener">mediation35.fr</a>. Médiations civiles, commerciales, familiales, du travail ; médiateurs formés, inscrits auprès de la cour d’appel.</li>
+          <li><strong>Amyable, cabinet de médiateurs</strong> — 62 rue de Châteaugiron, 35000 Rennes · 02 30 96 14 76 · <a href="https://amyable-mediation.fr" class="lien" target="_blank" rel="noopener">amyable-mediation.fr</a>. Médiation pour les particuliers et les entreprises.</li>
+          <li><strong>Liste officielle des médiateurs près la cour d’appel de Rennes</strong> — médiateurs personnes physiques et centres agréés, par matière, publiée par la cour : <a href="https://www.cours-appel.justice.fr/rennes" class="lien" target="_blank" rel="noopener">cours-appel.justice.fr/rennes</a>.</li>
+        </ul>
+        <p class="muet" style="font-size: 14px">Le cabinet ne perçoit aucune rémunération des médiateurs qu’il recommande.</p>
+      </div>
+      <figure class="figure"><span class="cadre"><Image src={parlement} alt="Salle des pas perdus du Parlement de Bretagne, à Rennes" widths={[600, 900, 1536]} sizes="(max-width: 720px) 90vw, 560px" loading="lazy" /></span><figcaption>Le Parlement de Bretagne — où l’on plaide quand on n’a pas pu s’entendre</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section section--ivoire">
+    <div class="conteneur deux-colonnes" style="align-items: start">
+      <Faq items={faq} />
+      <div class="carte" style="gap: 14px">
+        <p class="surtitre">Le bon réflexe</p>
+        <h3>Consultez avant d’accepter — ou de refuser</h3>
+        <p class="muet" style="font-size: 15px">Une proposition de médiation de l’autre partie, une injonction du juge, une convocation d’un conciliateur : une consultation d’une heure suffit pour décider en connaissance de cause, fixer vos objectifs et préparer la première séance. Au cabinet, en visioconférence ou par téléphone, 132 € TTC, déduits si le cabinet vous accompagne ensuite.</p>
+        <a href="/services/rendez-vous" class="btn btn--plein">Prendre rendez-vous</a>
+        <p class="muet" style="font-size: 14px">Urgence (audience proche, délai qui court) : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>.</p>
+      </div>
+    </div>
+  </section>
+  <Cta />
+</Base>

@@ -78,6 +78,7 @@ export const navigation = {
     { href: '/domaines/successions', titre: 'Successions, partages & indivision', accroche: 'Sortie contentieuse d’indivision, conflits d’associés de SCI familiale : en sortir sans y laisser votre part.' },
     { href: '/domaines/droit-du-travail', titre: 'Droit du travail', accroche: 'Licenciement, rupture : accepter, contester ou négocier ?' },
     { href: '/domaines/procedure-appel', titre: 'Procédure civile, appel & postulation', accroche: 'Un jugement à contester, un délai qui court.' },
+    { href: '/reglement-amiable', titre: 'Règlement amiable & médiation', accroche: 'Médiation, conciliation, négociation : y aller accompagné, en sortir avec un bon accord.' },
   ],
   services: [
     { href: '/services/rendez-vous', titre: 'Prendre rendez-vous', accroche: 'Cabinet, visio ou téléphone, créneau choisi en ligne.' },
