@@ -194,11 +194,11 @@ const sources = [
   .hero-amiable { position: relative; overflow: hidden; background: var(--vert-nuit); color: var(--sur-vert); isolation: isolate; }
   .hero-amiable__fond { position: absolute; inset: 0; z-index: -1; }
   .hero-amiable__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hero-amiable__photo--avant { object-position: 15% 22%; filter: grayscale(1) contrast(1.1) brightness(1.05); opacity: .72; mix-blend-mode: luminosity; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 34%, transparent 66%); mask-image: linear-gradient(90deg, #000 0%, #000 34%, transparent 66%); }
-  .hero-amiable__photo--apres { object-position: 50% 32%; -webkit-mask-image: linear-gradient(90deg, transparent 36%, #000 64%); mask-image: linear-gradient(90deg, transparent 36%, #000 64%); }
-  .hero-amiable__voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13, 38, 34, .35) 0%, rgba(13, 38, 34, .15) 45%, rgba(13, 38, 34, 0) 70%), linear-gradient(0deg, rgba(13, 38, 34, .65) 0%, rgba(13, 38, 34, 0) 40%); }
+  .hero-amiable__photo--avant { object-position: 15% 22%; filter: grayscale(1) contrast(1.1) brightness(1.05); opacity: .6; mix-blend-mode: luminosity; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 48%); mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 48%); }
+  .hero-amiable__photo--apres { object-position: 50% 30%; transform: scale(1.14); transform-origin: 22% center; -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 42%); mask-image: linear-gradient(90deg, transparent 18%, #000 42%); }
+  .hero-amiable__voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13, 38, 34, .35) 0%, rgba(13, 38, 34, .1) 40%, rgba(13, 38, 34, 0) 60%), linear-gradient(0deg, rgba(13, 38, 34, .55) 0%, rgba(13, 38, 34, 0) 32%); }
   .hero-amiable__in { position: relative; padding-top: 72px; padding-bottom: 36px; display: grid; gap: 22px; }
-  .hero-amiable__verre { max-width: 640px; display: grid; gap: 22px; padding: 36px 38px; border-radius: var(--r); background: rgba(13, 38, 34, .46); border: 1px solid rgba(244, 239, 230, .16); box-shadow: 0 30px 70px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06); -webkit-backdrop-filter: blur(16px) saturate(1.15); backdrop-filter: blur(16px) saturate(1.15); }
+  .hero-amiable__verre { max-width: 540px; display: grid; gap: 20px; padding: 32px 34px; border-radius: var(--r); background: rgba(13, 38, 34, .58); border: 1px solid rgba(244, 239, 230, .16); box-shadow: 0 30px 70px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06); -webkit-backdrop-filter: blur(16px) saturate(1.15); backdrop-filter: blur(16px) saturate(1.15); }
   .hero-amiable__verre h1 { color: var(--sur-vert); }
   .hero-amiable__verre .chapo { color: rgba(244, 239, 230, .9); }
   .hero-amiable__legende { justify-self: end; font-size: 14px; color: rgba(244, 239, 230, .78); padding: 8px 14px; border-radius: 999px; background: rgba(13, 38, 34, .4); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(244, 239, 230, .12); }
@@ -213,6 +213,6 @@ const sources = [
     .hero-amiable__legende { justify-self: start; }
   }
   /* Peurs : le face-à-face en filigrane, cartes translucides */
-  .peurs__decor img { width: 58%; opacity: .16; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); }
-  .carte--verre { background: rgba(251, 249, 244, .78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(154, 123, 79, .28); }
+  .peurs__decor img { width: 58%; opacity: .3; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); }
+  .carte--verre { background: rgba(251, 249, 244, .84); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(154, 123, 79, .28); }
 </style>
