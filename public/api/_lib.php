@@ -18,8 +18,9 @@ $CONFIG = [
     'stockage'        => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/consultations', // hors racine web
     'rate_par_heure'  => 6,     // envois max par IP et par formulaire
     'taille_max_mo'   => 20,    // pièces jointes cumulées
-    'paiement'        => 'virement', // 'virement' | 'stripe' (phase 2)
-    'rib'             => '[RIB du cabinet — IBAN à insérer dans config.local.php]',
+    'paiement'        => 'paypal',   // 'paypal' (PayPal ou carte, page hébergée par PayPal ; RIB en secours) | 'virement' (RIB seul) | 'stripe' (phase 2)
+    'paypal_id'       => 'YKJVL9Z4Z43ZQ', // identifiant marchand PayPal du cabinet (public : il figure dans tout bouton de paiement)
+    'rib'             => '[RIB du cabinet — IBAN à insérer dans /config/site-cabinet.php]',
     'tva'             => 0.20,
     'devis'           => [ // divorce par consentement mutuel — honoraires HT (grille du cabinet, oct. 2026)
         'base'          => 800,  // sans enfant, sans partage, sans négociation, sans prestation compensatoire
@@ -123,6 +124,29 @@ function journal(string $formulaire, string $etat): void {
     $dir = DOSSIER_CACHE;
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
     @file_put_contents($dir . '/journal.log', date('c') . " $formulaire $etat\n", FILE_APPEND | LOCK_EX);
+}
+
+/** Lien de paiement PayPal (page hébergée : compte PayPal ou carte bancaire sans compte).
+ *  Aucun secret : seul l'identifiant marchand public est utilisé. La référence voyage dans `invoice` et `custom`. */
+function lien_paypal(string $libelle, int $montant, string $ref, string $formule = ''): string {
+    global $CONFIG;
+    $hote = 'https://' . ($_SERVER['HTTP_HOST'] ?? parse_url(SITE_URL, PHP_URL_HOST));
+    return 'https://www.paypal.com/cgi-bin/webscr?' . http_build_query([
+        'cmd'           => '_xclick',
+        'business'      => $CONFIG['paypal_id'],
+        'item_name'     => 'Cabinet Arnaud Cousin — ' . $libelle . ' (réf. ' . $ref . ')',
+        'item_number'   => $formule,
+        'amount'        => number_format($montant, 2, '.', ''),
+        'currency_code' => 'EUR',
+        'invoice'       => $ref,
+        'custom'        => $ref,
+        'no_shipping'   => '1',
+        'no_note'       => '1',
+        'lc'            => 'fr_FR',
+        'charset'       => 'utf-8',
+        'return'        => $hote . '/merci?objet=paiement&ref=' . $ref,
+        'cancel_return' => $hote . '/merci?objet=consultation&ref=' . $ref . '&prix=' . $montant . '&annule=1',
+    ], '', '&', PHP_QUERY_RFC3986);
 }
 
 /** Redirection vers la page de remerciement. */

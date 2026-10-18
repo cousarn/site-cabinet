@@ -8,6 +8,12 @@ import { cabinet } from '../data/cabinet';
     <h1 id="merci-titre">Votre message est bien arrivé.</h1>
     <p class="chapo" id="merci-texte">Vous serez rappelé(e) sous 48 heures ouvrées. Un accusé de réception vous a été adressé par courriel.</p>
     <p id="merci-estimation" class="pile" style="display: none; gap: 6px; border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; background: var(--ivoire)"></p>
+    <div id="merci-paiement" class="pile" style="display: none; gap: 14px; border: 1px solid var(--laiton-clair); border-radius: var(--r); padding: 22px 24px; background: var(--ivoire)">
+      <span class="surtitre">Régler la consultation</span>
+      <strong id="merci-montant" style="font-family: var(--serif); font-size: 32px; color: var(--vert)"></strong>
+      <a id="merci-payer" href="#" class="btn btn--plein" rel="noopener">Payer par PayPal ou carte bancaire</a>
+      <span class="muet" style="font-size: 14px">Page de paiement sécurisée PayPal — carte bancaire acceptée sans compte PayPal. Le cabinet ne voit jamais votre numéro de carte. Vous préférez un virement ? Le RIB est dans le courriel que vous venez de recevoir.</span>
+    </div>
     <p class="muet" style="font-size: 14px">Référence : <strong id="merci-ref">—</strong>. Urgence : <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a>, prise de message 24h/24.</p>
     <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/" class="btn btn--plein">Retour à l’accueil</a><a href="/fiches" class="btn btn--contour">Lire les fiches pratiques</a></div>
   </div></section>
@@ -20,7 +26,21 @@ import { cabinet } from '../data/cabinet';
     const texte = document.getElementById('merci-texte')!;
     const est = document.getElementById('merci-estimation')!;
     if (objet === 'saisine') { titre.textContent = 'Votre saisine est bien reçue.'; texte.textContent = 'Le cabinet vous confirme sa disponibilité et le forfait applicable sous 24 heures ouvrées, avant toute diligence.'; }
-    if (objet === 'consultation') { titre.textContent = 'Votre demande de consultation est enregistrée.'; texte.textContent = `Les instructions de règlement (${q.get('prix') ?? ''} € TTC) viennent de vous être adressées par courriel. La réponse écrite de l’avocat vous parvient sous cinq jours ouvrés à compter du règlement.`; }
+    if (objet === 'consultation') {
+      titre.textContent = q.get('annule') ? 'Votre demande est enregistrée, le paiement n’a pas été effectué.' : 'Votre demande de consultation est enregistrée.';
+      texte.textContent = `Les instructions de règlement (${q.get('prix') ?? ''} € TTC) viennent de vous être adressées par courriel. La réponse écrite de l’avocat vous parvient sous cinq jours ouvrés à compter du règlement.`;
+      const payer = q.get('payer');
+      if (payer && /^https:\/\/www\.paypal\.com\//.test(payer)) {
+        const bloc = document.getElementById('merci-paiement')!;
+        (document.getElementById('merci-payer') as HTMLAnchorElement).href = payer;
+        document.getElementById('merci-montant')!.textContent = `${q.get('prix') ?? ''} € TTC`;
+        bloc.style.display = 'flex';
+      }
+    }
+    if (objet === 'paiement') {
+      titre.textContent = 'Merci, votre paiement est en cours de confirmation.';
+      texte.textContent = 'PayPal vous adresse un reçu par courriel. Dès confirmation, le délai de cinq jours ouvrés démarre pour la réponse écrite de l’avocat. Référence à conserver pour tout échange avec le cabinet.';
+    }
     if (objet === 'devis') {
       titre.textContent = 'Votre estimation vous attend dans votre boîte mail.';
       const n = q.get('estimation');
