@@ -19,14 +19,24 @@ ErrorDocument 404 /404.html
   RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
   # 2. Anciennes adresses TOWeb → nouvelles pages (301 permanentes)
+  #    Garde REDIRECT_STATUS : ne jamais rejouer ces règles après la réécriture interne /contact → contact.html
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^index\.html$ https://%{HTTP_HOST}/ [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^nous-connaitre\.html$ https://%{HTTP_HOST}/cabinet [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^domaines-dintervention\.html$ https://%{HTTP_HOST}/domaines [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^tarifs-et-couts-justesse-et-transparence\.html$ https://%{HTTP_HOST}/honoraires [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^consultez-le-cabinet-par-internet\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^_checkout\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^infos-pratiques\.html$ https://%{HTTP_HOST}/contact [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^contact\.html$ https://%{HTTP_HOST}/contact [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^mentions-legales\.html$ https://%{HTTP_HOST}/mentions-legales [R=301,L]
 
   # 3. Pas de barre finale (sauf racine), pas d'extension visible
