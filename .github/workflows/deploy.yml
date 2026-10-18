@@ -7,9 +7,11 @@
 # - tag `v*`         → branche `deploy-prod`    → arnaudcousin-avocat.fr          (dossier ./www)
 #
 # Côté OVH (une fois par environnement) : Hébergement › Multisite › ⋯ › Associer Git :
-#   dépôt git@github.com:cousarn/site-cabinet.git, branche deploy-preprod (ou deploy-prod),
-#   puis ajouter la clé SSH fournie par OVH dans GitHub › Settings › Deploy keys (lecture seule)
-#   et l'URL de webhook OVH dans GitHub › Settings › Webhooks (événement push).
+#   dépôt https://github.com/cousarn/site-cabinet.git (dépôt public → HTTPS, aucune clé),
+#   branche deploy-preprod (ou deploy-prod), puis l'URL de webhook OVH dans
+#   GitHub › Settings › Webhooks (content type application/json, événement push).
+# NB : la clé SSH d'OVH est RSA 2048 bits ; GitHub refuse les clés RSA < 3072 bits depuis le 14/10/2026,
+#   d'où le choix d'un dépôt public tiré en HTTPS. Aucun secret ne figure dans ce dépôt.
 
 name: Déployer sur OVH
 

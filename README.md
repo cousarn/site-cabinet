@@ -1,7 +1,7 @@
 # Site du Cabinet Arnaud Cousin — avocat à Rennes
 
 Site statique construit avec [Astro](https://astro.build), hébergé chez OVH (mutualisé), déployé par GitHub Actions.
-Dépôt privé. Le contenu éditorial est en Markdown ; les données du cabinet dans `src/data/`.
+Dépôt **public** (il ne contient que ce que tout visiteur du site voit ; IBAN, adresses d'expédition et compteurs vivent hors dépôt, sur le serveur). Le contenu éditorial est en Markdown ; les données du cabinet dans `src/data/`.
 
 ## Démarrer en local
 
@@ -58,10 +58,11 @@ GitHub Actions construit le site et pousse `dist/` sur la branche de déploiemen
 
 ### Mise en place (une fois par environnement)
 
-1. OVH › Hébergement › Multisite › ligne du domaine › ⋯ › **Associer Git** : dépôt `git@github.com:cousarn/site-cabinet.git`, branche `deploy-preprod` (préprod) ou `deploy-prod` (prod). OVH affiche une **clé SSH publique** et une **URL de webhook**.
-2. GitHub › Settings › **Deploy keys** › Add : coller la clé OVH, lecture seule.
-3. GitHub › Settings › **Webhooks** › Add : coller l'URL OVH, content type `application/json`, événement *push*.
-4. Premier `git push` : la préprod se construit et se publie. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production (après avoir associé Git au domaine principal de la même façon).
+1. OVH › Hébergement › Multisite › ligne du domaine › ⋯ › **Associer Git** : dépôt `https://github.com/cousarn/site-cabinet.git` (HTTPS : le dépôt est public, aucune clé à échanger), branche `deploy-preprod` (préprod) ou `deploy-prod` (prod). OVH affiche une **URL de webhook**.
+2. GitHub › Settings › **Webhooks** › Add : coller l'URL OVH, content type `application/json`, événement *push*. (Un webhook par environnement.)
+3. Premier `git push` : la préprod se construit et se publie. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production (après avoir associé Git au domaine principal de la même façon).
+
+Pourquoi HTTPS et non SSH : la clé SSH générée par OVH est RSA 2048 bits et GitHub refuse les clés RSA de moins de 3072 bits depuis le 14 octobre 2026. Fait le 18/10/2026 : préprod associée, webhook posé.
 
 Fichiers propres au serveur, hors racine web, jamais écrasés : `/config/site-cabinet.php` (IBAN, adresse d'expédition — modèle dans `public/api/config.local.example.php`), `/cache/site-cabinet/` (compteurs anti-abus), `/consultations/` (pièces des consultations en ligne).
 
