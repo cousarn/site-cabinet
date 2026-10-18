@@ -213,6 +213,8 @@ const sources = [
     .hero-amiable__legende { justify-self: start; }
   }
   /* Peurs : le face-à-face en filigrane, cartes translucides */
-  .peurs__decor img { width: 58%; opacity: .3; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000 40%, #000 85%, transparent 100%); }
-  .carte--verre { background: rgba(251, 249, 244, .84); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(154, 123, 79, .28); }
+  .peurs__decor img { width: 58%; opacity: .92; filter: saturate(.85) contrast(1.02); mix-blend-mode: normal; object-position: 50% 20%; -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 30%, #000 55%, #000 100%), linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,.35) 100%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 30%, #000 55%, #000 100%), linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,.35) 100%); mask-composite: intersect; }
+  .peurs h2, .peurs .chapo, .peurs .surtitre { position: relative; }
+  .peurs .pile > .chapo { max-width: 560px; }
+  .carte--verre { background: rgba(251, 249, 244, .9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(154, 123, 79, .28); }
 </style>
