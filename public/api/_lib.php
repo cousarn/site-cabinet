@@ -30,10 +30,18 @@ $CONFIG = [
         'desaccord_partiel' => 240,
     ],
 ];
-if (is_file(__DIR__ . '/config.local.php')) {
-    $local = require __DIR__ . '/config.local.php';
-    if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+/* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),
+   sinon api/config.local.php (ancien emplacement). */
+$racineHebergement = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..');
+foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $fichierConfig) {
+    if (is_file($fichierConfig)) {
+        $local = require $fichierConfig;
+        if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+        break;
+    }
 }
+/* Dossier de travail (compteurs anti-abus, journal) hors racine web. */
+define('DOSSIER_CACHE', $racineHebergement . '/cache/site-cabinet');
 
 /** Méthode POST obligatoire. */
 function exiger_post(): void {
@@ -70,7 +78,7 @@ function honeypot_ok(): bool {
 /** Limite de débit par IP et par formulaire, fichiers dans api/.cache (interdit en HTTP par .htaccess). */
 function limiter_debit(string $formulaire): void {
     global $CONFIG;
-    $dir = __DIR__ . '/.cache';
+    $dir = DOSSIER_CACHE;
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
     $ip  = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     $f   = $dir . '/' . $formulaire . '-' . hash('sha256', $ip) . '.json';
@@ -106,7 +114,7 @@ function envoyer_mail(string $a, string $sujet, string $corps, ?string $repondre
 
 /** Journal minimal (sans contenu personnel) pour le suivi. */
 function journal(string $formulaire, string $etat): void {
-    $dir = __DIR__ . '/.cache';
+    $dir = DOSSIER_CACHE;
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
     @file_put_contents($dir . '/journal.log', date('c') . " $formulaire $etat\n", FILE_APPEND | LOCK_EX);
 }

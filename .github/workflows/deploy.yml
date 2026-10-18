@@ -1,15 +1,15 @@
-# Déploiement du site sur OVH (hébergement mutualisé) par FTPS (FTP chiffré TLS, port 21 — disponible sur toutes les offres OVH).
+# Déploiement du site sur OVH par Git (fonction « Associer Git » du multisite OVH).
 #
-# - push sur `main`            → préproduction  (sous-domaine preprod.arnaudcousin-avocat.fr → dossier www/preprod)
-# - tag `v*`                    → production     (arnaudcousin-avocat.fr → dossier www) — l'environnement GitHub « production » n'accepte que les tags v*
+# GitHub Actions construit le site, puis publie le dossier dist/ sur une branche de déploiement ;
+# OVH, prévenu par webhook, tire cette branche dans le dossier du site. Aucun mot de passe FTP nulle part.
 #
-# Secrets à créer dans GitHub › Settings › Secrets and variables › Actions
-# (Me Cousin les saisit lui-même ; ils ne transitent jamais par ailleurs) :
-#   OVH_FTP_HOST       ex. ftp.cluster0xx.hosting.ovh.net (Espace client OVH › Hébergement › FTP-SSH)
-#   OVH_FTP_USER       utilisateur FTP dédié au déploiement, limité au dossier www (à créer dans l'espace client)
-#   OVH_FTP_PASSWORD   mot de passe de cet utilisateur
-#   OVH_DIR_PREPROD    ex. ./www/preprod/
-#   OVH_DIR_PROD       ex. ./www/
+# - push sur `main`  → branche `deploy-preprod` → preprod.arnaudcousin-avocat.fr (dossier ./preprod, noindex)
+# - tag `v*`         → branche `deploy-prod`    → arnaudcousin-avocat.fr          (dossier ./www)
+#
+# Côté OVH (une fois par environnement) : Hébergement › Multisite › ⋯ › Associer Git :
+#   dépôt git@github.com:cousarn/site-cabinet.git, branche deploy-preprod (ou deploy-prod),
+#   puis ajouter la clé SSH fournie par OVH dans GitHub › Settings › Deploy keys (lecture seule)
+#   et l'URL de webhook OVH dans GitHub › Settings › Webhooks (événement push).
 
 name: Déployer sur OVH
 
@@ -19,14 +19,18 @@ on:
     tags: ['v*']
   workflow_dispatch: {}   # lancement manuel → préproduction
 
+permissions:
+  contents: write   # pour pousser les branches deploy-*
+
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Construire le site
+  build-deploy:
+    name: Construire et publier
     runs-on: ubuntu-latest
+    environment: ${{ startsWith(github.ref, 'refs/tags/v') && 'production' || 'preproduction' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,53 +39,20 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - name: Construire (préprod → noindex via variable d'environnement)
+      - name: Construire (préprod → noindex)
         run: npm run build
         env:
           PUBLIC_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'prod' || 'preprod' }}
-      - uses: actions/upload-artifact@v4
+      - name: Ajouter le marqueur de version
+        run: echo "${{ github.sha }} $(date -u +%FT%TZ) ${{ github.ref_name }}" > dist/version.txt
+      - name: Publier dist/ sur la branche de déploiement
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: dist
-          path: dist
-          retention-days: 7
-
-  deploy:
-    name: Publier
-    needs: build
-    runs-on: ubuntu-latest
-    environment: ${{ startsWith(github.ref, 'refs/tags/v') && 'production' || 'preproduction' }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - name: Vérifier la configuration OVH
-        id: cfg
-        env:
-          HOTE: ${{ secrets.OVH_FTP_HOST }}
-        run: |
-          if [ -z "$HOTE" ]; then
-            echo "ok=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Déploiement non configuré::Les secrets OVH_FTP_HOST / OVH_FTP_USER / OVH_FTP_PASSWORD ne sont pas encore renseignés (Settings › Secrets and variables › Actions). Le site est construit mais pas publié."
-          else
-            echo "ok=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Envoyer par FTPS
-        if: steps.cfg.outputs.ok == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.OVH_FTP_HOST }}
-          port: 21
-          username: ${{ secrets.OVH_FTP_USER }}
-          password: ${{ secrets.OVH_FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          server-dir: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.OVH_DIR_PROD || secrets.OVH_DIR_PREPROD }}
-          state-name: .deploy-state.json
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            api/config.local.php
-            api/.cache/**
-            depot/**
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: ${{ startsWith(github.ref, 'refs/tags/v') && 'deploy-prod' || 'deploy-preprod' }}
+          force_orphan: true
+          enable_jekyll: true   # pas de traitement Jekyll ; garde les fichiers commençant par un point (.htaccess)
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Déploiement ${{ github.ref_name }} — ${{ github.sha }}"

@@ -1,6 +1,7 @@
 <?php
 /**
- * Copier en `config.local.php` SUR LE SERVEUR OVH (jamais dans le dépôt Git) et compléter.
+ * À copier SUR LE SERVEUR OVH, hors racine web : `/config/site-cabinet.php` (à côté de `www/` et `preprod/`),
+ * via le gestionnaire de fichiers ou FTP. Jamais dans le dépôt Git. Les deux environnements (préprod, prod) le lisent.
  * Les clés absentes gardent la valeur par défaut de _lib.php.
  */
 return [

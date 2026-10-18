@@ -47,22 +47,23 @@ Texte…
 
 Pousser sur `main` : la préprod se met à jour en deux minutes. La fiche apparaît sur `/fiches`, sur l'accueil (trois dernières) et dans le sitemap.
 
-## Déploiement
+## Déploiement (Git, sans mot de passe)
 
-| Déclencheur | Cible | Dossier OVH |
+| Déclencheur | Branche publiée | Cible OVH |
 |---|---|---|
-| push sur `main` | préproduction `preprod.arnaudcousin-avocat.fr` (noindex) | `www/preprod/` |
-| tag `v1.0.0` (seul moyen : l'environnement GitHub `production` n'accepte que les tags `v*`) | production `arnaudcousin-avocat.fr` | `www/` |
+| push sur `main` | `deploy-preprod` | `preprod.arnaudcousin-avocat.fr` → dossier `./preprod` (noindex) |
+| tag `v1.0.0` (seul moyen : l'environnement GitHub `production` n'accepte que les tags `v*`) | `deploy-prod` | `arnaudcousin-avocat.fr` → dossier `./www` |
 
-### Mise en place (une fois, par Me Cousin)
+GitHub Actions construit le site et pousse `dist/` sur la branche de déploiement ; OVH (fonction *Associer Git* du multisite) est prévenu par webhook et tire la branche. Aucun identifiant FTP n'est stocké nulle part.
 
-1. **OVH — utilisateur FTP dédié** : Espace client › Hébergements › FTP-SSH › *Créer un utilisateur*, répertoire racine `www`. Noter hôte, identifiant, mot de passe.
-2. **OVH — sous-domaine de préprod** : Hébergements › Multisite › *Ajouter un domaine* `preprod.arnaudcousin-avocat.fr`, dossier racine `www/preprod`, SSL activé ; puis Noms de domaine › Zone DNS : enregistrement `preprod` CNAME vers le domaine (OVH le propose automatiquement).
-3. **GitHub — secrets** : Settings › Secrets and variables › Actions : `OVH_FTP_HOST`, `OVH_FTP_USER`, `OVH_FTP_PASSWORD`, `OVH_DIR_PREPROD` (`./www/preprod/`), `OVH_DIR_PROD` (`./www/`).
-4. **GitHub — environnement `production`** : déjà créé et restreint aux tags `v*` ; aucune mise en production ne part sans un `git tag` explicite. (Les *required reviewers* ne sont pas disponibles sur un dépôt privé en offre gratuite.)
-5. Premier `git push` : la préprod se construit. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production.
+### Mise en place (une fois par environnement)
 
-Les identifiants OVH ne figurent nulle part dans le code et ne sont jamais communiqués à des tiers.
+1. OVH › Hébergement › Multisite › ligne du domaine › ⋯ › **Associer Git** : dépôt `git@github.com:cousarn/site-cabinet.git`, branche `deploy-preprod` (préprod) ou `deploy-prod` (prod). OVH affiche une **clé SSH publique** et une **URL de webhook**.
+2. GitHub › Settings › **Deploy keys** › Add : coller la clé OVH, lecture seule.
+3. GitHub › Settings › **Webhooks** › Add : coller l'URL OVH, content type `application/json`, événement *push*.
+4. Premier `git push` : la préprod se construit et se publie. Vérifier, puis `git tag v1.0.0 && git push --tags` pour la production (après avoir associé Git au domaine principal de la même façon).
+
+Fichiers propres au serveur, hors racine web, jamais écrasés : `/config/site-cabinet.php` (IBAN, adresse d'expédition — modèle dans `public/api/config.local.example.php`), `/cache/site-cabinet/` (compteurs anti-abus), `/consultations/` (pièces des consultations en ligne).
 
 ## Formulaires (PHP sur OVH — `public/api/`)
 
@@ -76,7 +77,7 @@ Les identifiants OVH ne figurent nulle part dans le code et ne sont jamais commu
 Protections : POST seul, pot de miel (`site`), limite de 6 envois/heure/IP, validation des courriels, types MIME des pièces vérifiés, 20 Mo max, `_lib.php` et `.cache/` inaccessibles en HTTP.
 Chaque envoi redirige vers `/merci?objet=…&ref=…` (référence du type `261018-6018`).
 
-**Sur le serveur, une fois** : copier `api/config.local.example.php` en `api/config.local.php` et renseigner l'IBAN, l'adresse d'expédition (`site@arnaudcousin-avocat.fr`, à créer dans OVH › Emails) et, si besoin, la grille du devis. Ce fichier n'est jamais écrasé par les déploiements.
+**Sur le serveur, une fois** : déposer `/config/site-cabinet.php` (modèle : `public/api/config.local.example.php`) avec l'IBAN, l'adresse d'expédition (`site@arnaudcousin-avocat.fr`, à créer dans OVH › Emails) et, si besoin, la grille du devis. Hors racine web, il n'est jamais touché par les déploiements.
 
 ## Phase 2 (même dépôt)
 
