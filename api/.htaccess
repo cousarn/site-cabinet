@@ -1,0 +1,9 @@
+# Points d'entrée PHP des formulaires — seuls contact/saisine/devis/consultation sont appelables.
+<FilesMatch "^(_lib|config\.local|config)\.php$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(log|json|txt|md)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 ^/api/\.cache(/|$)
+Options -Indexes
