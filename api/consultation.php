@@ -27,9 +27,16 @@ $fichier = rtrim($CONFIG['stockage'], '/') . '/consultation-' . $ref . '/demande
 @mkdir(dirname($fichier), 0700, true);
 @file_put_contents($fichier, "Réf. $ref — " . date('c') . "\nFormule : $libelle ($prix €)\nDomaine : $domaine\nNom : $nom\nCourriel : $email\n\nQuestion :\n$question\n\nPièces : " . (implode(', ', $pieces) ?: 'aucune') . "\n");
 
-$instructions = $CONFIG['paiement'] === 'stripe'
-    ? "Le lien de règlement par carte vous est adressé dans un courriel séparé." // phase 2 : Stripe Checkout
-    : "Règlement par virement de $prix € TTC, référence « $ref » :\n$CONFIG[rib]\nLa consultation est lancée dès réception du virement (délai de 5 jours ouvrés à compter de celle-ci). Vous pouvez aussi régler par chèque à l'ordre de Maître Arnaud Cousin.";
+$virement = "Par virement de $prix € TTC, référence « $ref » :\n$CONFIG[rib]\nou par chèque à l'ordre de Maître Arnaud Cousin.";
+$payer = null;
+if ($CONFIG['paiement'] === 'paypal' && !empty($CONFIG['paypal_id'])) {
+    $payer = lien_paypal($libelle, $prix, $ref, $formule);
+    $instructions = "RÈGLEMENT DE $prix € TTC\n\n1. En ligne, par PayPal ou par carte bancaire (sans compte PayPal), en quelques secondes :\n$payer\n\n2. $virement\n\nLa consultation est lancée dès réception du règlement (délai de 5 jours ouvrés à compter de celle-ci).";
+} elseif ($CONFIG['paiement'] === 'stripe') {
+    $instructions = "Le lien de règlement par carte vous est adressé dans un courriel séparé."; // phase 2 : Stripe Checkout
+} else {
+    $instructions = "Règlement de $prix € TTC. $virement\nLa consultation est lancée dès réception du règlement (délai de 5 jours ouvrés à compter de celle-ci).";
+}
 
 $corpsClient = "Bonjour,\n\nVotre demande de consultation écrite est bien enregistrée (référence $ref).\n\nFormule : $libelle — $prix € TTC\nDomaine : $domaine\nPièces reçues : " . (implode(', ', $pieces) ?: 'aucune') . "\n\n"
     . "$instructions\n\n"
@@ -42,4 +49,4 @@ $corpsCabinet = "Consultation écrite — réf. $ref\n\nFormule : $libelle ($pri
 $envoye = envoyer_mail($CONFIG['cabinet_email'], "[SITE] Consultation écrite — $libelle — $nom ($ref)", $corpsCabinet, $email);
 
 journal('consultation', $envoye ? 'ok' : 'echec-mail');
-merci('consultation', ['ref' => $ref, 'prix' => $prix]);
+merci('consultation', ['ref' => $ref, 'prix' => $prix] + ($payer ? ['payer' => $payer] : []));
