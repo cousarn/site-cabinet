@@ -2,6 +2,7 @@
 title: "Indivision bloquée : comment en sortir"
 description: "Ce que l’article 815 du Code civil permet concrètement : voies amiables, vente aux deux tiers, partage judiciaire, licitation — avant d’assigner."
 date: 2026-10-01
+updated: 2026-10-19
 domaine: successions
 type: fiche
 lecture: "7 min"
@@ -25,7 +26,7 @@ Avant d’assigner, trois voies :
 
 Deux outils, souvent confondus :
 
-- **La vente à la majorité des deux tiers** (art. 815-5-1). Les indivisaires titulaires d’au moins deux tiers des droits expriment devant notaire leur intention de vendre ; le notaire la signifie aux autres ; en cas d’opposition ou de silence dans les trois mois, le tribunal judiciaire peut autoriser la vente si elle « ne porte pas une atteinte excessive aux droits des autres indivisaires ». La vente a lieu par licitation (adjudication). Exclu si le bien est occupé par un indivisaire au titre de son droit d’usage et d’habitation.
+- **La vente à la majorité des deux tiers** (art. 815-5-1). Les indivisaires titulaires d’au moins deux tiers des droits expriment devant notaire leur intention de vendre ; le notaire la signifie aux autres ; en cas d’opposition ou de silence dans les trois mois, le tribunal judiciaire peut autoriser la vente si elle « ne porte pas une atteinte excessive aux droits des autres indivisaires ». La vente a lieu par licitation (adjudication). Exclu en cas de démembrement de propriété (usufruit) et lorsqu’un indivisaire est présumé absent, hors d’état de manifester sa volonté ou majeur protégé (art. 836).
 - **L’autorisation judiciaire** (art. 815-5). Un indivisaire, même minoritaire, demande au tribunal l’autorisation de passer seul un acte lorsque le refus d’un autre « met en péril l’intérêt commun » : vendre un bien qui se dégrade, régler une dette fiscale, éviter une saisie.
 
 ## 4. Le partage judiciaire, étape par étape
@@ -41,9 +42,9 @@ Le notaire commis n’est pas un arbitre : il constate et propose. C’est le tr
 
 ## 5. Combien de temps, combien ça coûte
 
-**Durée.** De dix-huit mois à plusieurs années, selon la complexité, l’attitude des indivisaires et l’encombrement de la juridiction. Les délais procéduraux de l’article 1365 CPC (un an pour le notaire, prorogeable) sont rarement tenus en pratique.
+**Durée.** De dix-huit mois à plusieurs années, selon la complexité, l’attitude des indivisaires et l’encombrement de la juridiction. Les délais procéduraux de l’article 1368 CPC (un an pour le notaire, prorogeable) sont rarement tenus en pratique.
 
-**Coût.** Les honoraires de l’avocat au temps passé ou au forfait négocié ; les émoluments du notaire commis, proportionnels à l’actif ; les frais d’expertise si le tribunal en ordonne ; le droit de partage de 1,10 % sur l’actif net partagé (hors séparation de couples). Les frais de partage sont **à la charge de l’indivision**, donc répartis entre tous — ce qui, dit à l’indivisaire récalcitrant dans la mise en demeure, fait souvent réfléchir.
+**Coût.** Les honoraires de l’avocat au temps passé ou au forfait négocié ; les émoluments du notaire commis, proportionnels à l’actif ; les frais d’expertise si le tribunal en ordonne ; le droit de partage de 2,5 % sur l’actif net partagé (1,1 % pour les partages consécutifs à une séparation de couple). Les frais de partage sont **à la charge de l’indivision**, donc répartis entre tous — ce qui, dit à l’indivisaire récalcitrant dans la mise en demeure, fait souvent réfléchir.
 
 <div class="encadre">
 

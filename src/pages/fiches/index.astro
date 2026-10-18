@@ -7,7 +7,7 @@ const fiches = (await getCollection('fiches', (f) => !f.data.draft)).sort((a, b)
 const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <Base title="Fiches pratiques et actualités juridiques | Arnaud Cousin" description="Indivision bloquée, recel successoral, délivrance de legs, licenciement, salaire différé : fiches pratiques rédigées par un avocat à Rennes." fil={[{ label: 'Fiches & actualités', href: '/fiches' }]}>
-  <Hero variante="clair" surtitre="Fiches & actualités" titre="…Et écrire" chapo="Des fiches courtes, des simulateurs et des billets sur ce que le cabinet plaide. Une fois par trimestre, pas plus." image="parlement" />
+  <Hero variante="clair" surtitre="Fiches & actualités" titre="Comprendre avant d’agir" chapo="Des fiches courtes et des billets sur ce que le cabinet plaide, avec les textes et les arrêts qui comptent — mis à jour au fil de la jurisprudence." image="parlement" />
   <section class="section">
     <div class="conteneur grille">
       {fiches.map((f) => (

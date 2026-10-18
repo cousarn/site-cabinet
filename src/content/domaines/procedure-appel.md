@@ -16,7 +16,7 @@ situations:
     texte: "Saisine de la cour de renvoi, articulation avec l’avocat aux Conseils, périmètre de la cassation : une étape technique où l’expérience compte."
 methode:
   - titre: "Le délai court, et il ne pardonne pas"
-    texte: "Un mois pour l’appel (quinze jours en référé), trois mois pour conclure (art. 908 CPC), des délais de réponse qui s’enchaînent : la caducité et l’irrecevabilité sont des sanctions définitives. Le cabinet calendrier chaque dossier dès son ouverture."
+    texte: "Un mois pour l’appel (quinze jours en référé), trois mois pour conclure (art. 908 CPC), des délais de réponse qui s’enchaînent : la caducité et l’irrecevabilité sont des sanctions définitives. Le cabinet établit le calendrier de chaque dossier dès son ouverture."
   - titre: "Pour les confrères des autres barreaux"
     texte: "Vous plaidez, le cabinet postule : actes, délais, mise en état, audiences, compte rendu. Forfaits connus d’avance — 540 € TTC au tribunal judiciaire, 700 € TTC en appel, 192 € TTC la vacation. Saisine par formulaire, pièces en ligne."
 encadre:
@@ -31,5 +31,5 @@ faq:
     r: "<p>Plus par principe : depuis 2020, les jugements de première instance sont exécutoires de droit à titre provisoire, sauf exceptions. L’arrêt de l’exécution provisoire peut être demandé au premier président sous conditions strictes.</p>"
   - q: "Faut-il un avocat pour faire appel ?"
     r: "<p>Devant la cour d’appel, la représentation par avocat est obligatoire dans la plupart des matières civiles, et cet avocat doit être inscrit à un barreau du ressort de la cour — d’où la postulation pour les confrères extérieurs.</p>"
-fiches: ["indivision-bloquee"]
+fiches: ["pieces-premier-rendez-vous"]
 ---

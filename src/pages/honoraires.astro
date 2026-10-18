@@ -11,7 +11,7 @@ const modes = [
   ['Au temps passé', 'Taux horaire × temps passé : le plus juste — tout le travail, rien que le travail. Le temps s’estime avec vous, sachant que l’adversaire, le juge et l’encombrement des juridictions ne se maîtrisent pas.', `${bareme.tauxHoraire} € TTC / heure`],
   ['Au forfait', 'Lorsque les diligences sont prévisibles — divorce amiable, postulation, procédure simple —, un prix convenu d’avance, détaillé dans la convention.', 'Grille ci-dessous'],
   ['Honoraire de résultat', 'Un complément proportionnel aux sommes obtenues ou économisées, dans le respect de la loi : jamais seul, toujours en plus d’un honoraire de base.', bareme.resultat],
-  ['Honoraire de transaction', 'Appliqué lorsque le cabinet négocie l’accord qui met fin au litige : l’amiable est valorisé, votre avocat reste neutre.', 'Prévu dans chaque convention'],
+  ['Honoraire de transaction', 'Appliqué lorsque le cabinet négocie l’accord qui met fin au litige : l’amiable est rémunéré comme le procès, rien ne pousse à faire durer.', 'Prévu dans chaque convention'],
 ];
 const faq = [
   { q: 'La première consultation est-elle gratuite ?', r: '<p>Non. Elle est payante (132 € TTC au cabinet, en visioconférence ou par téléphone ; dès 80 € par écrit sur internet) et vous repartez avec un avis, pas seulement un devis. Son coût est déduit des honoraires si vous confiez ensuite votre dossier au cabinet.</p>' },
@@ -26,7 +26,7 @@ const faq = [
 
   <section class="section" id="modes">
     <div class="conteneur pile" style="gap: 28px">
-      <div class="pile" style="max-width: 720px; gap: 10px"><h2>Rémunération obligatoire, mais pas n’importe comment</h2><p class="muet">La loi impose de facturer toute intervention, quel que soit le résultat, et interdit la rémunération au seul succès. Mais le résultat peut peser. D’où quatre modes de calcul, combinés selon le dossier.</p></div>
+      <div class="pile" style="max-width: 720px; gap: 10px"><h2>Rémunération obligatoire, mais pas n’importe comment</h2><p class="muet">La loi interdit l’honoraire fixé uniquement en fonction du résultat (pacte de quota litis) : un honoraire de base est toujours dû, quelle que soit l’issue. Mais le résultat peut s’y ajouter. D’où quatre modes de calcul, combinés selon le dossier.</p></div>
       <div class="grille grille--4">
         {modes.map(([t, x, v]) => <div class="carte"><h3>{t}</h3><p class="muet" style="font-size: 15px">{x}</p><p style="margin-top: auto; font-weight: 600; color: var(--vert)">{v}</p></div>)}
       </div>

@@ -21,9 +21,9 @@ methode:
     texte: "TPE, professions libérales, associations : sécuriser licenciements et ruptures conventionnelles, négocier les départs, répondre aux saisines prud’homales, organiser les élections du personnel. Un litige évité vaut souvent mieux qu’un litige gagné."
 encadre:
   titre: "Un délai court ? Dites-le tout de suite."
-  texte: "L’assistant du cabinet repère les délais urgents à partir de quelques dates et prépare votre rendez-vous. Il ne donne aucun conseil juridique : c’est le rôle de l’avocat."
-  lien: "/services#assistant"
-  libelle: "Vérifier mes délais"
+  texte: "Indiquez la date de la lettre, de la convocation ou de la rupture dans le formulaire de contact ou la consultation écrite : le cabinet vérifie les délais en priorité et vous répond sous 48 h ouvrées."
+  lien: "/contact"
+  libelle: "Signaler un délai"
 faq:
   - q: "Combien de temps ai-je pour contester mon licenciement ?"
     r: "<p>Douze mois à compter de la notification pour saisir le conseil de prud’hommes (art. L. 1471-1 C. trav.). D’autres délais sont plus courts : quinze jours pour contester un avis du médecin du travail, quinze jours calendaires pour se rétracter d’une rupture conventionnelle.</p>"
@@ -31,5 +31,5 @@ faq:
     r: "<p>La question se tranche sur la lettre de licenciement, les faits reprochés et la procédure suivie. Apportez la lettre, votre contrat, vos trois derniers bulletins et tout écrit de l’employeur : une consultation suffit souvent à y voir clair.</p>"
   - q: "Que peut m’apporter un avocat dans une rupture conventionnelle ?"
     r: "<p>Un chiffrage : indemnité légale ou conventionnelle, supplément négocié, sort de la clause de non-concurrence, date de rupture optimisée au regard du chômage. Et la relecture de la convention avant signature.</p>"
-fiches: ["indivision-bloquee"]
+fiches: ["pieces-premier-rendez-vous"]
 ---

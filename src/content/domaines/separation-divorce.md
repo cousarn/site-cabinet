@@ -7,7 +7,7 @@ image: couloir
 ordre: 1
 situations:
   - titre: "Divorce et conséquences"
-    texte: "Divorce et ses conséquences — pension, prestation compensatoire, logement, dettes, enfants —, séparation des concubins et des pacsés. Tarifs compétitifs pour les séparations simples ; pratique principale des séparations patrimoniales complexes : chefs d’entreprise, professions libérales, conjoint associé, immobilier."
+    texte: "Divorce et ses conséquences — pension, prestation compensatoire, logement, dettes, enfants —, séparation des concubins et des pacsés. Forfaits pour les séparations simples ; pratique principale des séparations patrimoniales complexes : chefs d’entreprise, professions libérales, conjoint associé, immobilier."
   - titre: "Enfants"
     texte: "Résidence, droit de visite et d’hébergement, autorité parentale, contribution à l’entretien et à l’éducation : l’intérêt de l’enfant d’abord, vos droits de parent ensuite — les deux ensemble, le plus souvent."
   - titre: "Prestation compensatoire"

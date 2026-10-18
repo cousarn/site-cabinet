@@ -17,7 +17,7 @@ situations:
   - titre: "Salaire différé agricole"
     texte: "Les enfants qui ont travaillé sans rémunération sur l’exploitation familiale disposent d’une créance souvent ignorée au moment du partage."
   - titre: "Liquidation du régime matrimonial"
-    texte: "Divorce, séparation de concubins ou de pacsés, succession : le partage est une matière de chiffres et de procédure. L’essentiel de l’activité du cabinet depuis vingt-six ans — pour les parties comme pour les notaires."
+    texte: "Divorce, séparation de concubins ou de pacsés, succession : le partage est une matière de chiffres et de procédure. Au cœur de l’activité du cabinet depuis vingt-six ans — pour les parties comme pour les notaires."
   - titre: "Conjoint survivant, envoi en possession"
     texte: "Droits du conjoint, usufruit, droit viager au logement, envoi en possession du légataire universel : sécuriser la situation avant qu’elle ne se fige."
 methode:

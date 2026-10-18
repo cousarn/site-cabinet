@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import { cabinet, acces } from '../data/cabinet';
 ---
 <Base title="Contact et accès : avocat à Rennes, Colombier | Arnaud Cousin" description={`Cabinet Arnaud Cousin, ${cabinet.adresse.rue}, Rennes — métro Colombier à 50 m, parkings, bus, vélo. Rendez-vous au cabinet, en visio ou par téléphone : ${cabinet.telephone}.`} fil={[{ label: 'Contact', href: '/contact' }]}>
-  <Hero variante="clair" surtitre="Contact" titre="Parlons de votre situation" chapo="Réception sur rendez-vous uniquement — cabinet, visio ou téléphone. Un courriel ou le formulaire valent mieux qu’un appel impromptu : vous serez rappelé." image="cite">
+  <Hero variante="clair" surtitre="Contact" titre="Parlons de votre situation" chapo="Réception sur rendez-vous uniquement — cabinet, visio ou téléphone. Au téléphone, le secrétariat prend votre message et vous êtes rappelé ; par courriel ou par le formulaire, première réponse sous 48 h ouvrées." image="cite">
     <div slot="actions" class="pile" style="gap: 14px">
       <div style="display: flex; flex-wrap: wrap; gap: 14px">
         <a href="/services/rendez-vous" class="btn btn--plein">Prendre rendez-vous</a>
@@ -45,7 +45,7 @@ import { cabinet, acces } from '../data/cabinet';
     <div class="conteneur deux-colonnes" style="align-items: start">
       <figure style="margin: 0" class="pile" >
         <img src="/plan-acces.svg" alt="Plan d’accès : le cabinet rue du Puits Mauger, la station de métro Colombier à 50 mètres, les arrêts de bus Cité judiciaire et Colombier, la Cité judiciaire, le centre Colombia et l’esplanade Charles-de-Gaulle" width="1200" height="900" style="width: 100%; height: auto; border-radius: var(--r); border: 1px solid rgba(244,239,230,.25); background: var(--papier)" loading="lazy" />
-        <figcaption class="muet" style="font-size: 13px">Plan dessiné par le cabinet sur fond de données OpenStreetMap. Aucun service cartographique tiers, aucun traceur.</figcaption>
+        <figcaption class="muet" style="font-size: 13px">Plan dessiné par le cabinet à partir de données © les contributeurs d’OpenStreetMap (ODbL). Aucun service cartographique tiers, aucun traceur.</figcaption>
       </figure>
       <div class="pile" style="gap: 18px">
         <p class="surtitre">Venir au cabinet</p>
