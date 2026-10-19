@@ -13,7 +13,29 @@ declare(strict_types=1);
 function graph_configure(): bool {
     global $CONFIG;
     $g = $CONFIG['graph'] ?? [];
-    return !empty($g['tenant']) && !empty($g['client_id']) && !empty($g['client_secret']) && !empty($g['drive_id']);
+    return !empty($g['tenant']) && !empty($g['client_id']) && !empty($g['client_secret']) && (!empty($g['drive_id']) || !empty($g['site']));
+}
+
+/**
+ * Identifiant de la bibliothèque cible : `drive_id` s'il est donné, sinon résolu depuis `site`
+ * (ex. `cabinetcousin.sharepoint.com:/sites/DepotsClients` → bibliothèque de documents par défaut) et gardé en cache.
+ */
+function graph_drive(): string {
+    global $CONFIG;
+    $g = $CONFIG['graph'];
+    if (!empty($g['drive_id'])) { return (string)$g['drive_id']; }
+    $cache = DOSSIER_CACHE . '/graph-drive.json';
+    if (is_file($cache)) {
+        $j = json_decode((string)file_get_contents($cache), true);
+        if (is_array($j) && ($j['site'] ?? '') === $g['site'] && !empty($j['drive'])) { return (string)$j['drive']; }
+    }
+    [$code, $s] = graph_appel('GET', '/sites/' . str_replace(' ', '%20', (string)$g['site']) . '?$select=id,webUrl');
+    if ($code !== 200 || empty($s['id'])) { throw new RuntimeException('Site SharePoint introuvable ' . graph_message($s, $code)); }
+    [$code, $d] = graph_appel('GET', '/sites/' . rawurlencode((string)$s['id']) . '/drive?$select=id,name,webUrl');
+    if ($code !== 200 || empty($d['id'])) { throw new RuntimeException('Bibliothèque du site introuvable ' . graph_message($d, $code)); }
+    if (!is_dir(DOSSIER_CACHE)) { @mkdir(DOSSIER_CACHE, 0700, true); }
+    @file_put_contents($cache, json_encode(['site' => $g['site'], 'site_id' => $s['id'], 'drive' => $d['id'], 'nom' => $d['name'] ?? '', 'url' => $d['webUrl'] ?? '']), LOCK_EX);
+    return (string)$d['id'];
 }
 
 /** Jeton applicatif (client credentials), gardé en cache hors racine web jusqu'à cinq minutes avant expiration. */
@@ -78,7 +100,7 @@ function graph_chemin(string $chemin): string {
 /** Crée au besoin le dossier $chemin (relatif à la racine de la bibliothèque) et renvoie [id, webUrl]. */
 function graph_dossier(string $chemin): array {
     global $CONFIG;
-    $drive = $CONFIG['graph']['drive_id'];
+    $drive = graph_drive();
     [$code, $j] = graph_appel('GET', "/drives/$drive/root:/" . graph_chemin($chemin) . '?$select=id,webUrl');
     if ($code === 200 && !empty($j['id'])) { return [(string)$j['id'], (string)($j['webUrl'] ?? '')]; }
     $parent = ''; $url = ''; $courant = '';
@@ -104,7 +126,7 @@ function graph_dossier(string $chemin): array {
  */
 function graph_envoyer(string $local, string $chemin, string $nom): array {
     global $CONFIG;
-    $drive = $CONFIG['graph']['drive_id'];
+    $drive = graph_drive();
     $taille = (int)filesize($local);
     $item = "/drives/$drive/root:/" . graph_chemin($chemin) . '/' . rawurlencode($nom);
     if ($taille <= 4 * 1024 * 1024) {
@@ -144,7 +166,7 @@ function graph_tester(): array {
     global $CONFIG;
     if (!graph_configure()) { return ['ok' => false, 'erreur' => 'Relais non configuré (clé graph de la configuration serveur).']; }
     try {
-        [$code, $j] = graph_appel('GET', '/drives/' . $CONFIG['graph']['drive_id'] . '?$select=id,name,webUrl');
+        [$code, $j] = graph_appel('GET', '/drives/' . graph_drive() . '?$select=id,name,webUrl');
         if ($code !== 200) { return ['ok' => false, 'erreur' => 'Bibliothèque inaccessible ' . graph_message($j, $code)]; }
         [, $url] = graph_dossier((string)$CONFIG['graph']['racine']);
         return ['ok' => true, 'nom' => (string)($j['name'] ?? ''), 'url' => $url ?: (string)($j['webUrl'] ?? '')];

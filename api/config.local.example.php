@@ -29,7 +29,8 @@ return [
         'tenant'        => 'arnaudcousin-avocat.fr',     // ou l'identifiant du locataire (GUID)
         'client_id'     => '',                            // Identifiant d'application (client) de l'inscription Entra
         'client_secret' => '',                            // Valeur du secret client (copiée une seule fois depuis Entra) — JAMAIS dans Git
-        'drive_id'      => '',                            // Identifiant de la bibliothèque « Documents » du site Dépôts clients (b!…)
+        'site'          => 'cabinetcousin.sharepoint.com:/sites/DepotsClients', // site « Dépôts clients » (bibliothèque Documents, résolue automatiquement)
+        // 'drive_id'   => '',                            // facultatif : identifiant explicite de la bibliothèque (b!…), prime sur `site`
         'racine'        => 'Dépôts du site',              // dossier racine dans la bibliothèque ; un sous-dossier par affaire
     ],
     // Assistant de pré-entretien (/services/pre-entretien) : analyse préparatoire pour l'avocat, inactive tant que cle_api est vide.
