@@ -51,15 +51,19 @@ $CONFIG = [
 /* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),
    sinon api/config.local.php (ancien emplacement). */
 $racineHebergement = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..');
+/** État de la configuration serveur : 'lue' | 'illisible' (faute de syntaxe) | 'absente' — affiché par la console, sans contenu. */
+$CONFIG_ETAT = 'absente';
 foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $fichierConfig) {
     if (is_file($fichierConfig)) {
         try {
             $local = require $fichierConfig;
-            if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+            if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); $CONFIG_ETAT = 'lue'; }
+            else { $CONFIG_ETAT = 'illisible'; }
         } catch (\Throwable $e) {
             /* Fichier de configuration invalide (faute de frappe) : on garde les valeurs par défaut
                plutôt que de casser les formulaires ; l'erreur est journalisée. */
             error_log('site-cabinet : configuration serveur illisible (' . $e->getMessage() . ')');
+            $CONFIG_ETAT = 'illisible';
         }
         break;
     }
