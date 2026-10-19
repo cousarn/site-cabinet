@@ -1,26 +1,304 @@
 ---
+/**
+ * Dépôt de pièces par lien personnel.
+ * Sans jeton (/services/depot-pieces) : explication du service. Avec jeton (/depot/<jeton>, réécrit par le .htaccess
+ * vers cette page, ou ?j=<jeton>) : espace de dépôt — glisser-déposer, envoi par morceaux de 4 Mo avec progression,
+ * pièces déjà reçues, message au cabinet, bouton « Terminer » qui prévient le cabinet. API : /api/depot.php.
+ */
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
+import Icone from '../../components/Icone.astro';
 import { cabinet } from '../../data/cabinet';
+const accept = '.pdf,image/*,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.txt,.rtf,.csv,.eml,.msg,.zip,audio/*,video/*';
 ---
-<Base title="Déposer des pièces pour votre dossier | Cabinet Arnaud Cousin" description="Clients du cabinet : transmettez vos documents par le lien personnel reçu pour votre dossier. Chiffrés, classés directement dans votre dossier, sans service tiers." noindex fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Dépôt de pièces', href: '/services/depot-pieces' }]}>
-  <Hero surtitre="Dépôt de pièces" titre="Déposer des pièces pour votre dossier" chapo="Service en préparation. En attendant : fini les pièces jointes trop lourdes et les mails perdus — le cabinet vous adresse un lien de partage sécurisé propre à votre dossier. À terme, depuis votre lien personnel, déposez PDF, photos et scans, de l’ordinateur ou du téléphone. Chiffrés, classés dans votre dossier, sans service tiers." image="couloir" />
-  <section class="section">
-    <div class="conteneur deux-colonnes" style="align-items: start">
-      <div class="pile">
-        <h2 style="font-size: 28px">Vous avez reçu un lien personnel ?</h2>
-        <p class="muet">Il figure dans le courriel d’ouverture de votre dossier et dans chaque demande de pièces du cabinet. Il est propre à votre dossier : ne le transmettez pas.</p>
-        <p class="muet">Vous ne le retrouvez pas ? Écrivez à <a href={`mailto:${cabinet.email}`} class="lien">{cabinet.email}</a> en indiquant votre nom : un nouveau lien vous est renvoyé.</p>
+<Base title="Déposer des pièces pour votre dossier | Arnaud Cousin" description="Clients du cabinet : déposez vos pièces depuis votre lien personnel — PDF, photos, documents — classées directement dans votre dossier, sans service tiers." noindex fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Dépôt de pièces', href: '/services/depot-pieces' }]}>
+  <Hero variante="clair" surtitre="Dépôt de pièces" titre="Déposer des pièces pour votre dossier" chapo="Depuis votre lien personnel, de l’ordinateur ou du téléphone : PDF, photos, scans, courriels. Chiffrées en transit, classées directement dans votre dossier au cabinet, sans service tiers." image="couloir" />
+
+  <section class="section" id="depot">
+    <div class="conteneur">
+      <!-- Sans lien : mode d'emploi -->
+      <div id="depot-sans-lien" class="deux-colonnes" style="align-items: start">
+        <div class="pile">
+          <h2 style="font-size: 28px">Vous avez reçu un lien personnel ?</h2>
+          <p class="muet">Il figure dans le courriel que le cabinet vous a adressé pour votre dossier. Il est propre à ce dossier et valable un mois : ne le transmettez pas.</p>
+          <p class="muet">Vous ne le retrouvez pas ? Écrivez à <a href={`mailto:${cabinet.email}`} class="lien">{cabinet.email}</a> en indiquant votre nom : un nouveau lien vous est renvoyé.</p>
+        </div>
+        <div class="carte pile">
+          <h3>Comment ça marche</h3>
+          <ol class="muet" style="font-size: 15px; display: flex; flex-direction: column; gap: 8px; padding-left: 20px">
+            <li>Ouvrez votre lien personnel (il commence par <code>{cabinet.siteUrl}/depot/</code>).</li>
+            <li>Glissez vos fichiers ou prenez-les en photo depuis le téléphone ; nommez-les si vous le pouvez (« bulletin mars 2026 »).</li>
+            <li>Cliquez sur « Terminer » : le cabinet est prévenu, vous recevez un accusé de réception, les pièces sont classées dans votre dossier.</li>
+          </ol>
+          <p class="muet" style="font-size: 13px">Formats : PDF, photos (JPG, PNG, HEIC), documents Word et Excel, courriels, enregistrements — 50 Mo par fichier. Chiffrées en transit, hébergées en France et dans l’Union européenne, couvertes par le secret professionnel.</p>
+        </div>
       </div>
-      <div class="carte pile">
-        <h3>Comment ça marche</h3>
-        <ol class="muet" style="font-size: 15px; display: flex; flex-direction: column; gap: 8px">
-          <li>Ouvrez votre lien personnel (il commence par <code>{cabinet.siteUrl}/depot/</code>).</li>
-          <li>Glissez vos fichiers ou prenez-les en photo depuis le téléphone ; nommez-les si vous le pouvez (« bulletin mars 2026 »).</li>
-          <li>Validez : un accusé de réception vous est adressé, les pièces sont classées dans votre dossier au cabinet.</li>
-        </ol>
-        <p class="muet" style="font-size: 13px">Formats : PDF, JPG, PNG, HEIC, DOCX — 50 Mo par fichier. Les pièces sont chiffrées en transit, conservées sur les serveurs du cabinet en France et supprimées du site après classement.</p>
+
+      <!-- Avec lien : espace de dépôt -->
+      <div id="depot-app" class="pile" style="gap: 28px; max-width: 880px" hidden>
+        <div id="depot-message" class="carte pile" style="gap: 8px" hidden>
+          <p id="depot-message-texte" style="font-size: 17px; color: var(--vert)"></p>
+          <p class="muet" style="font-size: 14px">Besoin d’aide ? <a href={`mailto:${cabinet.email}`} class="lien">{cabinet.email}</a> · <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a></p>
+        </div>
+
+        <div id="depot-ouvert" class="pile" style="gap: 24px" hidden>
+          <div class="pile" style="gap: 8px">
+            <p class="surtitre">Votre dossier</p>
+            <h2 id="depot-dossier" style="font-size: 30px"></h2>
+            <p class="muet" id="depot-bonjour"></p>
+            <div id="depot-consigne" class="depot-consigne" hidden><strong>Pièces attendues par le cabinet</strong><p id="depot-consigne-texte"></p></div>
+          </div>
+
+          <div id="depot-zone" class="depot-zone" tabindex="0" role="button" aria-label="Choisir des fichiers à déposer">
+            <Icone nom="depot" taille={34} />
+            <p style="font-size: 17px"><strong>Glissez vos fichiers ici</strong> ou <span style="color: var(--laiton-sombre); font-weight: 600; text-decoration: underline; text-underline-offset: 3px">choisissez-les</span></p>
+            <p class="muet" style="font-size: 13px; max-width: 520px">PDF, photos, scans, Word et Excel, courriels, enregistrements — <span id="depot-max">50</span> Mo par fichier. Depuis un téléphone, prenez directement la photo.</p>
+            <input id="depot-input" type="file" multiple accept={accept} class="visually-hidden" />
+          </div>
+
+          <ul id="depot-liste" class="depot-liste" aria-live="polite"></ul>
+
+          <details id="depot-recues" class="depot-recues" hidden>
+            <summary>Pièces déjà reçues par le cabinet (<span id="depot-recues-nb">0</span>)</summary>
+            <ul id="depot-recues-liste" class="muet" style="font-size: 14px; margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px"></ul>
+          </details>
+
+          <label class="champ">Un mot pour le cabinet (facultatif)<textarea id="depot-mot" maxlength="4000" placeholder="Ce que contiennent ces pièces, ce qui manque encore, une pièce déposée par erreur…" style="min-height: 96px"></textarea></label>
+
+          <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center">
+            <button id="depot-terminer" class="btn btn--plein" type="button" disabled>Terminer et prévenir le cabinet</button>
+            <span id="depot-etat" class="muet" style="font-size: 14px"></span>
+          </div>
+          <p class="muet" style="font-size: 13px">Lien valable jusqu’au <span id="depot-expire"></span> ; vous pouvez y revenir autant de fois que nécessaire. Vos pièces sont chiffrées en transit, hébergées en France et dans l’Union européenne, classées dans votre dossier au cabinet et couvertes par le secret professionnel.</p>
+        </div>
+
+        <div id="depot-fini" class="carte pile" style="gap: 12px; border-color: var(--laiton-clair)" hidden>
+          <p class="surtitre">Merci</p>
+          <h2 style="font-size: 30px">Le cabinet est prévenu.</h2>
+          <p id="depot-fini-texte" class="muet"></p>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px">
+            <button id="depot-encore" type="button" class="btn btn--contour">Déposer d’autres pièces</button>
+            <a href="/" class="btn btn--plein">Retour à l’accueil</a>
+          </div>
+        </div>
       </div>
+      <noscript><p class="carte" style="margin-top: 24px">L’espace de dépôt a besoin de JavaScript. Sans lui, adressez vos pièces à <a href={`mailto:${cabinet.email}`}>{cabinet.email}</a>.</p></noscript>
     </div>
   </section>
 </Base>
+
+<style is:global>
+  .depot-zone { border: 1.5px dashed var(--laiton); border-radius: var(--r); padding: 36px 24px; text-align: center; background: var(--ivoire); color: var(--vert); display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: background-color var(--transition), border-color var(--transition), box-shadow var(--transition); }
+  .depot-zone:hover, .depot-zone:focus-visible, .depot-zone.est-survol { background: #fff; border-color: var(--vert); box-shadow: 0 12px 30px rgba(17, 53, 47, .08); }
+  .depot-zone.est-occupe { cursor: progress; }
+  .depot-consigne { border-left: 3px solid var(--laiton); background: var(--ivoire); padding: 14px 18px; border-radius: 0 var(--r) var(--r) 0; font-size: 15px; color: var(--encre); display: flex; flex-direction: column; gap: 4px; max-width: 720px; }
+  .depot-consigne p { white-space: pre-line; color: var(--muet); margin: 0; }
+  .depot-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .depot-liste:empty { display: none; }
+  .depot-item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px 14px; align-items: center; padding: 12px 16px; border: 1px solid var(--ligne); border-radius: var(--r); background: #fff; font-size: 15px; }
+  .depot-item__nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .depot-item__taille { color: var(--muet); font-size: 13px; }
+  .depot-item__etat { font-size: 13px; color: var(--muet); white-space: nowrap; }
+  .depot-item__barre { grid-column: 1 / -1; height: 4px; background: var(--papier); border-radius: 2px; overflow: hidden; }
+  .depot-item__barre i { display: block; height: 100%; width: 0; background: var(--vert); transition: width .25s ease; }
+  .depot-item--ok .depot-item__etat { color: var(--vert); font-weight: 600; }
+  .depot-item--ok .depot-item__barre i { background: var(--laiton); width: 100%; }
+  .depot-item--erreur { border-color: #c0675f; }
+  .depot-item--erreur .depot-item__etat { color: #9c4a42; white-space: normal; grid-column: 1 / -1; }
+  .depot-item--erreur .depot-item__barre { display: none; }
+  .depot-recues summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--vert); }
+  @media (max-width: 560px) { .depot-item { grid-template-columns: minmax(0, 1fr) auto; } .depot-item__taille { display: none; } }
+</style>
+
+<script>
+  const API = '/api/depot.php';
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const cheminJeton = location.pathname.match(/^\/depot\/([A-Za-z0-9_-]{32})\/?$/);
+  const jeton = cheminJeton ? cheminJeton[1] : new URLSearchParams(location.search).get('j');
+
+  type Info = { ok: boolean; etat: string; erreur?: string; client: string; dossier: string; consigne: string; expire_fr: string;
+    fichiers: { nom: string; taille: number; date: string; signale: boolean }[];
+    limites: { fichier_mo: number; total_mo: number; fichiers: number; morceau: number; reste_octets: number; extensions: string[] } };
+
+  let info: Info | null = null;
+  let enCours = false;
+  let deposeesNonSignalees = 0;
+
+  const taille = (o: number) => o >= 1048576 ? `${(o / 1048576).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} Mo` : `${Math.max(1, Math.round(o / 1024))} Ko`;
+  const dateFr = (iso: string) => new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  function message(texte: string) {
+    $('depot-message-texte').textContent = texte;
+    $('depot-message').hidden = false;
+  }
+
+  function rendreRecues(fichiers: Info['fichiers']) {
+    const bloc = $('depot-recues'); const ul = $('depot-recues-liste');
+    ul.innerHTML = '';
+    for (const f of fichiers) {
+      const li = document.createElement('li');
+      li.textContent = `${f.nom} — ${taille(f.taille)}, le ${dateFr(f.date)}`;
+      ul.appendChild(li);
+    }
+    $('depot-recues-nb').textContent = String(fichiers.length);
+    bloc.hidden = fichiers.length === 0;
+  }
+
+  function majBouton() {
+    const btn = $('depot-terminer') as HTMLButtonElement;
+    btn.disabled = enCours || deposeesNonSignalees === 0;
+    const etat = $('depot-etat');
+    if (enCours) etat.textContent = 'Envoi en cours… ne fermez pas la page.';
+    else if (deposeesNonSignalees > 0) etat.textContent = `${deposeesNonSignalees} pièce${deposeesNonSignalees > 1 ? 's' : ''} déposée${deposeesNonSignalees > 1 ? 's' : ''} — terminez pour prévenir le cabinet.`;
+    else etat.textContent = '';
+  }
+
+  async function charger() {
+    message('Vérification de votre lien…');
+    try {
+      const r = await fetch(`${API}?j=${encodeURIComponent(jeton!)}`, { cache: 'no-store' });
+      const j = (await r.json()) as Info;
+      if (!j.ok) { message(j.erreur || 'Ce lien n’est pas reconnu.'); return; }
+      info = j;
+      if (j.etat !== 'ouvert') {
+        message(j.etat === 'clos' ? 'Ce dépôt est clos : le cabinet a classé vos pièces. Pour en ajouter, demandez-lui un nouveau lien.' : `Ce lien a expiré le ${j.expire_fr}. Demandez un nouveau lien au cabinet.`);
+        return;
+      }
+      $('depot-message').hidden = true;
+      $('depot-dossier').textContent = j.dossier;
+      $('depot-bonjour').textContent = `Bonjour ${j.client}. Déposez ici les pièces de votre dossier : elles sont classées directement au cabinet.`;
+      if (j.consigne) { $('depot-consigne-texte').textContent = j.consigne; $('depot-consigne').hidden = false; }
+      $('depot-expire').textContent = j.expire_fr;
+      $('depot-max').textContent = String(j.limites.fichier_mo);
+      rendreRecues(j.fichiers);
+      deposeesNonSignalees = j.fichiers.filter((f) => !f.signale).length;
+      majBouton();
+      $('depot-ouvert').hidden = false;
+    } catch {
+      message('Le serveur ne répond pas pour l’instant. Réessayez dans quelques minutes.');
+    }
+  }
+
+  /* ── Envoi par morceaux ── */
+  function ligne(nom: string, octets: number) {
+    const li = document.createElement('li');
+    li.className = 'depot-item';
+    li.innerHTML = '<span class="depot-item__nom"></span><span class="depot-item__taille"></span><span class="depot-item__etat">En attente</span><span class="depot-item__barre"><i></i></span>';
+    (li.querySelector('.depot-item__nom') as HTMLElement).textContent = nom;
+    (li.querySelector('.depot-item__taille') as HTMLElement).textContent = taille(octets);
+    $('depot-liste').appendChild(li);
+    return {
+      etat: (t: string) => { (li.querySelector('.depot-item__etat') as HTMLElement).textContent = t; },
+      pct: (p: number) => { (li.querySelector('.depot-item__barre i') as HTMLElement).style.width = `${Math.min(100, Math.round(p))}%`; },
+      ok: () => li.classList.add('depot-item--ok'),
+      erreur: (t: string) => { li.classList.add('depot-item--erreur'); (li.querySelector('.depot-item__etat') as HTMLElement).textContent = t; },
+    };
+  }
+
+  function poster(fd: FormData, surProgression?: (envoye: number) => void): Promise<{ status: number; json: any }> {
+    return new Promise((resoudre, rejeter) => {
+      const x = new XMLHttpRequest();
+      x.open('POST', API);
+      x.timeout = 180000;
+      if (surProgression) x.upload.onprogress = (e) => surProgression(e.loaded);
+      x.onload = () => { try { resoudre({ status: x.status, json: JSON.parse(x.responseText) }); } catch { rejeter(new Error('Réponse illisible du serveur')); } };
+      x.onerror = () => rejeter(new Error('Connexion interrompue'));
+      x.ontimeout = () => rejeter(new Error('Délai dépassé'));
+      x.send(fd);
+    });
+  }
+
+  async function envoyerFichier(fichier: File): Promise<boolean> {
+    const l = ligne(fichier.name, fichier.size);
+    const lim = info!.limites;
+    const ext = (fichier.name.split('.').pop() || '').toLowerCase();
+    if (!lim.extensions.includes(ext)) { l.erreur('Type de fichier non accepté (PDF, photos, Word/Excel, courriels, audio, vidéo, zip).'); return false; }
+    if (fichier.size === 0) { l.erreur('Fichier vide.'); return false; }
+    if (fichier.size > lim.fichier_mo * 1048576) { l.erreur(`Trop lourd : ${lim.fichier_mo} Mo au plus par fichier.`); return false; }
+    if (fichier.size > lim.reste_octets) { l.erreur(`Volume maximal du lien atteint (${lim.total_mo} Mo). Prévenez le cabinet.`); return false; }
+
+    const fid = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => (b % 36).toString(36)).join('');
+    const n = Math.ceil(fichier.size / lim.morceau);
+    let tentativesGlobales = 0;
+    for (let i = 0; i < n; i++) {
+      const debut = i * lim.morceau;
+      const fd = new FormData();
+      fd.append('action', 'morceau'); fd.append('j', jeton!); fd.append('fid', fid); fd.append('nom', fichier.name);
+      fd.append('taille', String(fichier.size)); fd.append('i', String(i)); fd.append('n', String(n));
+      fd.append('c', fichier.slice(debut, debut + lim.morceau), 'c');
+      let essais = 0;
+      for (;;) {
+        try {
+          l.etat(n > 1 ? `Envoi ${i + 1}/${n}` : 'Envoi…');
+          const { json } = await poster(fd, (envoye) => l.pct(((debut + envoye) / fichier.size) * 100));
+          if (json.ok) {
+            if (i === n - 1) {
+              l.pct(100); l.ok(); l.etat(json.fichier?.classe ? 'Déposée et classée' : 'Déposée');
+              lim.reste_octets -= fichier.size;
+              return true;
+            }
+            break; // morceau suivant
+          }
+          if (json.recommencer && tentativesGlobales < 1) { tentativesGlobales++; i = -1; break; } // on reprend du début
+          if (json.reessayer && essais < 2) { essais++; continue; }
+          l.erreur(json.erreur || 'Envoi refusé.');
+          return false;
+        } catch (e) {
+          if (essais < 3) { essais++; l.etat('Nouvel essai…'); await new Promise((r) => setTimeout(r, 1200 * essais)); continue; }
+          l.erreur(`${(e as Error).message}. Vérifiez votre connexion et déposez ce fichier à nouveau.`);
+          return false;
+        }
+      }
+    }
+    return false;
+  }
+
+  const file = [] as File[];
+  async function traiter(fichiers: FileList | File[]) {
+    if (!info || info.etat !== 'ouvert') return;
+    file.push(...Array.from(fichiers));
+    if (enCours) return;
+    enCours = true; $('depot-zone').classList.add('est-occupe'); majBouton();
+    while (file.length) {
+      const f = file.shift()!;
+      if (await envoyerFichier(f)) deposeesNonSignalees++;
+    }
+    enCours = false; $('depot-zone').classList.remove('est-occupe'); majBouton();
+  }
+
+  async function terminer() {
+    const btn = $('depot-terminer') as HTMLButtonElement;
+    btn.disabled = true; $('depot-etat').textContent = 'Envoi du message au cabinet…';
+    const fd = new FormData();
+    fd.append('action', 'terminer'); fd.append('j', jeton!); fd.append('message', ($('depot-mot') as HTMLTextAreaElement).value);
+    try {
+      const { json } = await poster(fd);
+      if (!json.ok) { $('depot-etat').textContent = json.erreur || 'Impossible de prévenir le cabinet, réessayez.'; btn.disabled = false; return; }
+      $('depot-fini-texte').textContent = `${json.nb} pièce${json.nb > 1 ? 's' : ''} signalée${json.nb > 1 ? 's' : ''} au cabinet, qui les classe dans votre dossier.${json.accuse ? ' Un accusé de réception vous est adressé par courriel.' : ''} Vous pouvez revenir déposer d’autres pièces avec le même lien jusqu’au ${info!.expire_fr}.`;
+      $('depot-ouvert').hidden = true; $('depot-fini').hidden = false;
+      $('depot-fini').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      deposeesNonSignalees = 0; ($('depot-mot') as HTMLTextAreaElement).value = ''; $('depot-liste').innerHTML = '';
+    } catch {
+      $('depot-etat').textContent = 'Le serveur ne répond pas ; vos pièces sont bien déposées, réessayez « Terminer » dans un instant.'; btn.disabled = false;
+    }
+  }
+
+  if (jeton) {
+    $('depot-sans-lien').hidden = true;
+    $('depot-app').hidden = false;
+    charger();
+
+    const zone = $('depot-zone'); const input = $('depot-input') as HTMLInputElement;
+    zone.addEventListener('click', () => input.click());
+    zone.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+    input.addEventListener('change', () => { if (input.files) traiter(input.files); input.value = ''; });
+    for (const ev of ['dragenter', 'dragover']) zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.add('est-survol'); });
+    for (const ev of ['dragleave', 'drop']) zone.addEventListener(ev, (e) => { e.preventDefault(); zone.classList.remove('est-survol'); });
+    zone.addEventListener('drop', (e) => { const dt = (e as DragEvent).dataTransfer; if (dt?.files?.length) traiter(dt.files); });
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => e.preventDefault());
+    $('depot-terminer').addEventListener('click', terminer);
+    $('depot-encore').addEventListener('click', () => { $('depot-fini').hidden = true; $('depot-ouvert').hidden = false; charger(); window.scrollTo({ top: ($('depot-app').getBoundingClientRect().top + window.scrollY) - 90, behavior: 'smooth' }); });
+    window.addEventListener('beforeunload', (e) => { if (enCours) { e.preventDefault(); e.returnValue = ''; } });
+  }
+</script>

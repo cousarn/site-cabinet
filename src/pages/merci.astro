@@ -15,7 +15,7 @@ import { cabinet } from '../data/cabinet';
       <span class="muet" style="font-size: 14px">Page de paiement sécurisée PayPal — carte bancaire acceptée sans compte PayPal. Le cabinet ne voit jamais votre numéro de carte. Vous préférez un virement ? Le RIB est dans le courriel que vous venez de recevoir.</span>
     </div>
     <p class="muet" style="font-size: 14px">Référence : <strong id="merci-ref">—</strong>. Urgence : <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a>, prise de message 24h/24.</p>
-    <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/" class="btn btn--plein">Retour à l’accueil</a><a href="/fiches" class="btn btn--contour">Lire les fiches pratiques</a></div>
+    <div style="display: flex; flex-wrap: wrap; gap: 14px"><a id="merci-rdv" href="/services/rendez-vous" class="btn btn--plein" style="display: none">Prendre rendez-vous</a><a id="merci-accueil" href="/" class="btn btn--plein">Retour à l’accueil</a><a href="/fiches" class="btn btn--contour">Lire les fiches pratiques</a></div>
   </div></section>
   <script>
     const q = new URLSearchParams(location.search);
@@ -39,7 +39,13 @@ import { cabinet } from '../data/cabinet';
     }
     if (objet === 'paiement') {
       titre.textContent = 'Merci, votre paiement est en cours de confirmation.';
-      texte.textContent = 'PayPal vous adresse un reçu par courriel. Dès confirmation, le délai de cinq jours ouvrés démarre pour la réponse écrite de l’avocat. Référence à conserver pour tout échange avec le cabinet.';
+      texte.textContent = 'PayPal vous adresse son reçu par courriel ; le cabinet vous confirme à son tour la réception du règlement dès que PayPal la lui notifie, en général dans les minutes qui suivent. Le délai de cinq jours ouvrés pour la réponse écrite de l’avocat court à compter de cette confirmation. Référence à conserver pour tout échange avec le cabinet.';
+    }
+    if (objet === 'pre-entretien') {
+      titre.textContent = 'Votre pré-entretien est bien transmis.';
+      texte.textContent = 'Le récapitulatif de vos réponses et la liste des pièces à réunir viennent de vous être adressés par courriel. Le cabinet en dispose pour préparer le rendez-vous : il ne vous reste qu’à choisir votre créneau.';
+      document.getElementById('merci-rdv')!.style.display = '';
+      document.getElementById('merci-accueil')!.className = 'btn btn--contour';
     }
     if (objet === 'devis') {
       titre.textContent = 'Votre estimation vous attend dans votre boîte mail.';

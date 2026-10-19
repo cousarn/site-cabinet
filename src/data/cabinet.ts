@@ -85,7 +85,7 @@ export const navigation = {
     { href: '/services/consultation-ecrite', titre: 'Consultation écrite en ligne', accroche: 'Une réponse d’avocat par écrit, sans vous déplacer. Dès 80 €.' },
     { href: '/services/devis-divorce', titre: 'Devis divorce amiable', accroche: 'Votre estimation en sept questions, confirmée par l’avocat.' },
     { href: '/services/depot-pieces', titre: 'Déposer des pièces', accroche: 'Vos documents, en sécurité, directement dans votre dossier.' },
-    { href: '/services#assistant', titre: 'Assistant de pré-entretien', accroche: 'Préparer votre rendez-vous, repérer un délai urgent.' },
+    { href: '/services/pre-entretien', titre: 'Assistant de pré-entretien', accroche: 'Une dizaine de minutes pour préparer votre rendez-vous.' },
     { href: '/notaires-confreres', titre: 'Notaires & confrères', accroche: 'Postulation, partage judiciaire : saisir le cabinet.' },
   ],
   pied: [

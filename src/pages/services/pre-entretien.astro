@@ -1,0 +1,574 @@
+---
+/**
+ * Assistant de pré-entretien : questionnaire guidé, une question à la fois, en fil de discussion.
+ * Il ne donne aucun conseil juridique ; il recueille, structure, signale les dates à mentionner et liste les pièces.
+ * Arbre des questions : `src/data/pre-entretien.ts` (modifiable sans toucher à cette page).
+ * Envoi : POST JSON vers /api/pre-entretien.php → courriel au cabinet (+ analyse IA si configurée côté serveur),
+ * accusé de réception au client, puis /merci?objet=pre-entretien.
+ */
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Icone from '../../components/Icone.astro';
+import { cabinet, bookings } from '../../data/cabinet';
+import { textes } from '../../data/pre-entretien';
+const liensRdv = JSON.stringify({ cabinet: bookings.cabinet, visio: bookings.visio, telephone: bookings.telephone });
+const reperes = [
+  ['bouclier', 'Aucun conseil juridique', 'L’assistant ne qualifie pas votre situation et ne se prononce sur aucun droit ni aucun délai : c’est le rôle de l’avocat, au rendez-vous.'],
+  ['horloge', 'Dix minutes, à votre rythme', 'Une question à la fois, un bouton « Revenir » pour corriger. Vous relisez tout avant d’envoyer.'],
+  ['ecrit', 'Couvert par le secret professionnel', 'Vos réponses ne servent qu’à préparer le rendez-vous. Vous en recevez une copie par courriel, avec la liste des pièces à réunir.'],
+] as const;
+---
+<Base title="Pré-entretien en ligne : préparer le rendez-vous | Arnaud Cousin" description="Un questionnaire guidé, sans conseil juridique : votre situation, les dates à signaler, les pièces à réunir. Le cabinet reçoit la synthèse avant votre rendez-vous." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Assistant de pré-entretien', href: '/services/pre-entretien' }]}>
+  <Hero variante="clair" surtitre="Assistant de pré-entretien" titre="Préparer votre premier rendez‑vous" chapo="Une question à la fois, une dizaine de minutes : l’assistant recueille votre situation, repère les dates à signaler et vous dit quelles pièces réunir. Il ne donne aucun conseil juridique — c’est l’avocat qui vous répond, au rendez‑vous." image="cite" />
+
+  <section class="section section--serree" id="assistant">
+    <div class="conteneur pe-grille">
+      <div class="pe" id="pe" data-rdv={liensRdv} data-api="/api/pre-entretien.php">
+        <div class="pe-tete">
+          <div class="pe-progression" role="progressbar" aria-label="Avancement du questionnaire" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pe-barre"></i></div>
+          <p class="pe-etape" id="pe-etape">Pour commencer</p>
+        </div>
+        <div class="pe-fil" id="pe-fil" role="log" aria-live="polite">
+          <div class="pe-rang pe-rang--assistant">
+            <span class="pe-avatar" aria-hidden="true"><Icone nom="assistant" taille={16} /></span>
+            <div class="pe-bulle pe-bulle--assistant"><p>{textes.intro}</p></div>
+          </div>
+        </div>
+        <div class="pe-courant" id="pe-courant"></div>
+        <noscript><p class="carte" style="font-size: 15px">L’assistant a besoin de JavaScript. Sans lui, vous pouvez <a href="/fiches/pieces-premier-rendez-vous">consulter la liste des pièces à réunir</a> et <a href="/services/rendez-vous">prendre rendez-vous</a> directement.</p></noscript>
+      </div>
+
+      <aside class="pe-aside" aria-label="Repères">
+        {reperes.map(([ic, t, x]) => (
+          <div class="pe-repere"><span class="carte__icone"><Icone nom={ic} taille={22} /></span><div><h2>{t}</h2><p class="muet">{x}</p></div></div>
+        ))}
+        <p class="muet" style="font-size: 14px">Une urgence, un délai qui expire ? Appelez le <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a> — prise de message 24h/24. Vous préférez réserver directement : <a href="/services/rendez-vous" class="lien">prendre rendez-vous</a>.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--ivoire section--serree">
+    <div class="conteneur grille grille--3">
+      <div class="pile" style="gap: 8px"><p class="surtitre">1. Vous répondez</p><p class="muet" style="font-size: 15px">Le domaine, puis une dizaine de questions : les faits en quelques phrases, les personnes concernées, les dates, ce qui a déjà été fait, ce que vous attendez.</p></div>
+      <div class="pile" style="gap: 8px"><p class="surtitre">2. L’assistant structure</p><p class="muet" style="font-size: 15px">Il signale les dates à mentionner dès la prise de rendez-vous et dresse la liste des pièces utiles dans votre situation, d’après <a href="/fiches/pieces-premier-rendez-vous" class="lien">la fiche du cabinet</a>.</p></div>
+      <div class="pile" style="gap: 8px"><p class="surtitre">3. Le cabinet prépare</p><p class="muet" style="font-size: 15px">La synthèse arrive au cabinet, vous en recevez une copie. Au rendez-vous — cabinet, visio ou téléphone — l’avocat va droit à l’essentiel.</p></div>
+    </div>
+  </section>
+</Base>
+
+<!-- Styles globaux (préfixe pe-) : les éléments du fil sont créés par le script, hors de la portée des styles scopés d'Astro. -->
+<style is:global>
+  .pe-grille { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px 64px; align-items: start; }
+  .pe { display: flex; flex-direction: column; gap: 20px; max-width: 760px; }
+  .pe-tete { display: flex; flex-direction: column; gap: 10px; }
+  .pe-progression { height: 3px; background: var(--ligne-douce); border-radius: 2px; overflow: hidden; }
+  .pe-progression i { display: block; height: 100%; width: 0; background: var(--laiton); transition: width .5s ease; }
+  .pe-etape { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); }
+  .pe-fil { display: flex; flex-direction: column; gap: 14px; }
+  .pe-rang { display: flex; gap: 12px; align-items: flex-end; }
+  .pe-rang--client { justify-content: flex-end; }
+  .pe-avatar { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--laiton); color: var(--laiton-sombre); display: inline-flex; align-items: center; justify-content: center; background: var(--ivoire); }
+  .pe-bulle { max-width: min(86%, 620px); padding: 16px 20px; border-radius: 16px; font-size: 16px; line-height: 1.55; scroll-margin-top: 110px; }
+  .pe-bulle:focus { outline: none; }
+  .pe-bulle--assistant { background: var(--ivoire); border: 1px solid var(--ligne); border-bottom-left-radius: 4px; color: var(--encre); }
+  .pe-bulle--assistant .pe-aide { color: var(--muet); font-size: 14px; margin-top: 6px; }
+  .pe-bulle--client { background: var(--vert); color: var(--sur-vert); border-bottom-right-radius: 4px; white-space: pre-line; overflow-wrap: anywhere; }
+  .pe-bulle p + p { margin-top: 8px; }
+  .pe-courant:empty { display: none; }
+  .pe-panneau { display: flex; flex-direction: column; gap: 14px; padding-left: 42px; }
+  .pe-options { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .pe-option { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 52px; padding: 12px 16px; text-align: left; border: 1px solid var(--ligne); border-radius: var(--r); background: #fff; color: var(--encre); font: inherit; font-size: 15px; font-weight: 500; line-height: 1.4; cursor: pointer; transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition), color var(--transition); }
+  .pe-option:hover { border-color: var(--vert); box-shadow: 0 8px 20px rgba(17, 53, 47, .08); }
+  .pe-option small { font-weight: 400; font-size: 13px; color: var(--muet); }
+  .pe-option[aria-pressed="true"] { border-color: var(--vert); background: var(--vert); color: var(--sur-vert); }
+  .pe-option[aria-pressed="true"] small { color: var(--sur-vert-muet); }
+  .pe-liste { display: flex; flex-direction: column; gap: 10px; }
+  .pe-case { display: flex; gap: 12px; align-items: flex-start; min-height: 48px; padding: 12px 14px; border: 1px solid var(--ligne); border-radius: var(--r); background: #fff; cursor: pointer; font-size: 15px; line-height: 1.45; transition: border-color var(--transition); }
+  .pe-case:hover, .pe-case:has(input:checked) { border-color: var(--vert); }
+  .pe-case input[type="checkbox"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--vert); cursor: pointer; }
+  .pe-evenement { display: flex; flex-direction: column; gap: 0; padding: 0; border: 1px solid var(--ligne); border-radius: var(--r); background: #fff; transition: border-color var(--transition); }
+  .pe-evenement:has(input:checked) { border-color: var(--vert); }
+  .pe-evenement > label { display: flex; gap: 12px; align-items: flex-start; min-height: 48px; padding: 12px 14px; cursor: pointer; font-size: 15px; line-height: 1.45; }
+  .pe-evenement > label input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--vert); cursor: pointer; }
+  .pe-evenement__date { display: flex; flex-direction: column; gap: 8px; padding: 0 14px 14px 46px; }
+  .pe-evenement__date .champ input { max-width: 240px; }
+  .pe-evenement__date[hidden] { display: none; }
+  .pe-alerte { font-size: 14px; color: var(--laiton-sombre); border-left: 2px solid var(--laiton); padding-left: 10px; line-height: 1.45; }
+  .pe-alerte:empty { display: none; }
+  .pe-panneau .champ textarea { min-height: 140px; }
+  .pe-champs { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .pe-consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--muet); line-height: 1.5; cursor: pointer; min-height: 44px; }
+  .pe-consent input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--vert); }
+  .pe-consent a { margin: 0 3px; }
+  .pe-actions { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+  .pe-revenir { background: none; border: 0; color: var(--laiton-sombre); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; min-height: 44px; padding: 0 6px; border-radius: var(--r); }
+  .pe-revenir:hover { color: var(--vert); }
+  .pe-erreur { color: #9c4a42; font-size: 14px; }
+  .pe-erreur:empty { display: none; }
+  .pe-note { font-size: 13px; color: var(--muet); }
+  .pe-recap { background: var(--ivoire); border: 1px solid var(--ligne); border-radius: var(--r); padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; font-size: 15px; }
+  .pe-recap h3 { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); margin-bottom: 8px; }
+  .pe-recap dl { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .pe-recap dt { font-size: 13px; color: var(--muet); }
+  .pe-recap dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .pe-recap ul { display: flex; flex-direction: column; gap: 4px; padding-left: 18px; }
+  .pe-recap .pe-alerte { margin-top: 4px; }
+  .pe-aside { display: flex; flex-direction: column; gap: 22px; position: sticky; top: 112px; }
+  .pe-repere { display: flex; gap: 14px; align-items: flex-start; }
+  .pe-repere .carte__icone { flex: none; display: inline-flex; margin-top: 1px; }
+  .pe-repere h2 { font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--vert); line-height: 1.3; margin-bottom: 4px; }
+  .pe-repere p { font-size: 14px; }
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes pe-montee { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .pe-rang, .pe-panneau { animation: pe-montee .35s ease both; }
+  }
+  @media (max-width: 980px) { .pe-grille { grid-template-columns: minmax(0, 1fr); } .pe-aside { position: static; } }
+  @media (max-width: 600px) { .pe-bulle { max-width: 92%; padding: 14px 16px; font-size: 15px; } .pe-panneau { padding-left: 0; } .pe-avatar { width: 26px; height: 26px; } .pe-rang--assistant .pe-bulle { max-width: calc(100% - 38px); } .pe-recap { padding: 18px 16px; } }
+</style>
+
+<script>
+  import { domaines, questionsCommunes, piecesCommunes, formats, textes } from '../../data/pre-entretien';
+  import type { Domaine, Question, Option, Piece } from '../../data/pre-entretien';
+
+  /* ───────── Modèle ───────── */
+  type Etape =
+    | { genre: 'domaine' }
+    | { genre: 'question'; q: Question }
+    | { genre: 'pieces' }
+    | { genre: 'format' }
+    | { genre: 'coordonnees' }
+    | { genre: 'consentement' }
+    | { genre: 'recap' };
+  type DateRep = { id: string; date: string };
+  type Contact = { nom: string; email: string; telephone: string };
+
+  const racine = document.getElementById('pe') as HTMLElement;
+  const fil = document.getElementById('pe-fil') as HTMLElement;
+  const courant = document.getElementById('pe-courant') as HTMLElement;
+  const barre = document.getElementById('pe-barre') as HTMLElement;
+  const etiquette = document.getElementById('pe-etape') as HTMLElement;
+  const progression = racine.querySelector('.pe-progression') as HTMLElement;
+  const API = racine.dataset.api || '/api/pre-entretien.php';
+  const liensRdv: Record<string, string> = JSON.parse(racine.dataset.rdv || '{}');
+  const CLE_BROUILLON = 'pe-brouillon-v1';
+  const AVATAR = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4z"/><path d="M8 8h8M8 11h5"/></svg>';
+  const EXCLUSIVES = ['rien', 'aucun'];
+
+  const etat = { domaine: null as Domaine | null, reponses: {} as Record<string, unknown>, i: 0 };
+  let premierRendu = true;
+
+  const idsLus = (v: unknown): string[] => Array.isArray(v) ? (v as string[]) : typeof v === 'string' ? [v] : [];
+  const visible = (q: Question) => !q.si || q.si.valeurs.some((v) => idsLus(etat.reponses[q.si!.question]).includes(v));
+  const questionsDomaine = (d: Domaine): Question[] => [...d.questions, ...questionsCommunes].filter(visible);
+  const piecesDomaine = (d: Domaine): Piece[] => [...piecesCommunes, ...d.pieces];
+
+  function etapes(): Etape[] {
+    const l: Etape[] = [{ genre: 'domaine' }];
+    if (!etat.domaine) return l;
+    for (const q of questionsDomaine(etat.domaine)) l.push({ genre: 'question', q });
+    l.push({ genre: 'pieces' }, { genre: 'format' }, { genre: 'coordonnees' }, { genre: 'consentement' }, { genre: 'recap' });
+    return l;
+  }
+  const idDe = (e: Etape) => e.genre === 'question' ? e.q.id : `_${e.genre}`;
+
+  /* ───────── Dates ───────── */
+  const aujourdhui = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  function joursDepuis(iso: string): number | null {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+    if (!m) return null;
+    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (isNaN(d.getTime()) || Number(m[1]) < 1950) return null;
+    return Math.round((aujourdhui().getTime() - d.getTime()) / 86400000);
+  }
+  /** Message sous une date : ancienneté en jours, jamais de délai nommé ni chiffré. */
+  function alerteDate(iso: string): string {
+    const n = joursDepuis(iso);
+    if (n === null) return '';
+    if (n < -1) return textes.dateFuture.replace('{n}', String(-n));
+    if (n === -1) return textes.dateDemain;
+    if (n === 0) return textes.dateJour;
+    if (n === 1) return textes.dateHier;
+    if (n > 120) return textes.dateAncienne.replace('{n}', String(Math.floor(n / 30)));
+    return textes.datePassee.replace('{n}', String(n));
+  }
+  const dateFr = (iso: string) => { const n = joursDepuis(iso); if (n === null) return 'date non précisée'; const [a, m, j] = iso.split('-'); return `${j}/${m}/${a}`; };
+
+  /* ───────── Libellés ───────── */
+  const optionLabel = (options: Option[], id: string) => options.find((o) => o.id === id)?.label ?? id;
+  function texteQuestion(e: Etape): string {
+    switch (e.genre) {
+      case 'domaine': return textes.domaine;
+      case 'question': return e.q.texte;
+      case 'pieces': return textes.pieces;
+      case 'format': return textes.format;
+      case 'coordonnees': return textes.coordonnees;
+      case 'consentement': return textes.consentement;
+      case 'recap': return textes.recap;
+    }
+  }
+  /** Ce qu'affiche la bulle du client pour une réponse donnée. */
+  function libelleReponse(e: Etape): string {
+    const r = etat.reponses[idDe(e)];
+    const d = etat.domaine;
+    switch (e.genre) {
+      case 'domaine': return d?.label ?? '';
+      case 'question': {
+        const q = e.q;
+        if (q.type === 'choix') return optionLabel(q.options, String(r ?? ''));
+        if (q.type === 'multi') return idsLus(r).map((id) => optionLabel(q.options, id)).join(' ; ') || '—';
+        if (q.type === 'demarches') return idsLus(r).map((id) => optionLabel(d?.demarches ?? [], id)).join(' ; ') || '—';
+        if (q.type === 'dates') {
+          const l = (r as DateRep[] | undefined) ?? [];
+          return l.length ? l.map((x) => `${d?.evenements.find((ev) => ev.id === x.id)?.label ?? x.id} — ${dateFr(x.date)}`).join('\n') : 'Aucun de ces documents';
+        }
+        return String(r ?? '').trim() || '—';
+      }
+      case 'pieces': { const n = idsLus(r).length; const t = d ? piecesDomaine(d).length : 0; return n ? `${n} pièce${n > 1 ? 's' : ''} déjà réunie${n > 1 ? 's' : ''} sur ${t}` : `Aucune des ${t} pièces pour l’instant`; }
+      case 'format': return optionLabel(formats, String(r ?? ''));
+      case 'coordonnees': { const c = r as Contact | undefined; return c ? [c.nom, c.email, c.telephone].filter(Boolean).join(' · ') : ''; }
+      case 'consentement': return 'Consentement donné';
+      case 'recap': return '';
+    }
+  }
+
+  /* ───────── Rendu du fil ───────── */
+  function el<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...enfants: (Node | string)[]): HTMLElementTagNameMap[K] {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) { if (k === 'class') n.className = v; else if (k === 'text') n.textContent = v; else n.setAttribute(k, v); }
+    for (const c of enfants) n.append(c);
+    return n;
+  }
+  function bulleAssistant(idx: number, texte: string, aide?: string, id?: string): HTMLElement {
+    const bulle = el('div', { class: 'pe-bulle pe-bulle--assistant', tabindex: '-1' }, el('p', { text: texte }));
+    if (id) bulle.id = id;
+    if (aide) bulle.append(el('p', { class: 'pe-aide', text: aide }));
+    const rang = el('div', { class: 'pe-rang pe-rang--assistant', 'data-etape': String(idx) });
+    const avatar = el('span', { class: 'pe-avatar', 'aria-hidden': 'true' }); avatar.innerHTML = AVATAR;
+    rang.append(avatar, bulle);
+    fil.append(rang);
+    return bulle;
+  }
+  function bulleClient(idx: number, texte: string) {
+    fil.append(el('div', { class: 'pe-rang pe-rang--client', 'data-etape': String(idx) }, el('div', { class: 'pe-bulle pe-bulle--client', text: texte })));
+  }
+  function retirerDepuis(idx: number) {
+    for (const n of Array.from(fil.querySelectorAll<HTMLElement>('[data-etape]'))) if (Number(n.dataset.etape) >= idx) n.remove();
+  }
+  function majProgression(liste: Etape[]) {
+    const n = liste.length; const i = etat.i;
+    const pct = etat.domaine ? Math.round((i / (n - 1)) * 100) : 0;
+    barre.style.width = `${pct}%`;
+    progression.setAttribute('aria-valuenow', String(pct));
+    etiquette.textContent = !etat.domaine ? 'Pour commencer' : liste[i].genre === 'recap' ? 'Récapitulatif' : `Étape ${i + 1} sur ${n}`;
+  }
+
+  /** Affiche l'étape courante : bulle(s) de l'assistant + panneau de réponse. */
+  function rendre() {
+    const liste = etapes();
+    if (etat.i >= liste.length) etat.i = liste.length - 1;
+    const e = liste[etat.i];
+    courant.innerHTML = '';
+    const idBulle = `pe-q-${etat.i}`;
+    if (e.genre === 'question' && etat.domaine && liste[etat.i - 1]?.genre === 'domaine') bulleAssistant(etat.i, etat.domaine.accueil);
+    const bulle = bulleAssistant(etat.i, texteQuestion(e), e.genre === 'question' ? e.q.aide : undefined, idBulle);
+    const panneau = el('div', { class: 'pe-panneau', role: 'group', 'aria-labelledby': idBulle });
+    const erreur = el('p', { class: 'pe-erreur', role: 'alert' });
+    const actions = el('div', { class: 'pe-actions' });
+    if (etat.i > 0) { const b = el('button', { type: 'button', class: 'pe-revenir', text: '← Revenir' }); b.addEventListener('click', revenir); actions.append(b); }
+    const continuer = (label: string, action: () => void) => { const b = el('button', { type: 'button', class: 'btn btn--plein', text: label }); b.addEventListener('click', action); actions.prepend(b); return b; };
+    let aFocaliser: HTMLElement | null = null;
+    let focusTexte = false;
+    const repondre = (valeur: unknown, libelle: string) => { etat.reponses[idDe(e)] = valeur; bulleClient(etat.i, libelle); etat.i++; sauvegarder(); rendre(); };
+
+    switch (e.genre) {
+      case 'domaine': {
+        const grille = el('div', { class: 'pe-options' });
+        for (const d of domaines) {
+          const b = el('button', { type: 'button', class: 'pe-option', text: d.label, 'aria-pressed': String(etat.domaine?.id === d.id) });
+          b.addEventListener('click', () => {
+            if (etat.domaine && etat.domaine.id !== d.id) { // changement de domaine : on oublie les réponses propres à l'ancien
+              for (const q of etat.domaine.questions) delete etat.reponses[q.id];
+              for (const k of ['dates', 'demarches', '_pieces']) delete etat.reponses[k];
+            }
+            etat.domaine = d;
+            repondre(d.id, d.label);
+          });
+          grille.append(b);
+        }
+        panneau.append(grille); aFocaliser = grille.firstElementChild as HTMLElement; break;
+      }
+      case 'question': {
+        const q = e.q; const r = etat.reponses[q.id];
+        if (q.type === 'choix') {
+          const grille = el('div', { class: 'pe-options' });
+          for (const o of q.options) {
+            const b = el('button', { type: 'button', class: 'pe-option', 'aria-pressed': String(r === o.id) }, o.label);
+            if (o.aide) b.append(el('small', { text: o.aide }));
+            b.addEventListener('click', () => repondre(o.id, o.label));
+            grille.append(b);
+          }
+          panneau.append(grille); aFocaliser = grille.firstElementChild as HTMLElement;
+        } else if (q.type === 'multi' || q.type === 'demarches') {
+          const options = q.type === 'multi' ? q.options : (etat.domaine?.demarches ?? []);
+          const choisis = new Set(idsLus(r));
+          const grille = el('div', { class: 'pe-options' });
+          for (const o of options) {
+            const b = el('button', { type: 'button', class: 'pe-option', 'aria-pressed': String(choisis.has(o.id)) }, o.label);
+            if (o.aide) b.append(el('small', { text: o.aide }));
+            b.addEventListener('click', () => {
+              if (choisis.has(o.id)) choisis.delete(o.id);
+              else { if (EXCLUSIVES.includes(o.id)) choisis.clear(); else for (const x of EXCLUSIVES) choisis.delete(x); choisis.add(o.id); }
+              for (const bb of Array.from(grille.children) as HTMLElement[]) bb.setAttribute('aria-pressed', String(choisis.has(bb.dataset.id!)));
+              erreur.textContent = '';
+            });
+            b.dataset.id = o.id;
+            grille.append(b);
+          }
+          panneau.append(grille, erreur);
+          continuer('Continuer', () => {
+            const v = options.map((o) => o.id).filter((id) => choisis.has(id));
+            if (!v.length && !(q.type === 'multi' && q.facultatif)) { erreur.textContent = 'Choisissez au moins une réponse.'; return; }
+            repondre(v, v.map((id) => optionLabel(options, id)).join(' ; ') || 'Aucune');
+          });
+          aFocaliser = grille.firstElementChild as HTMLElement;
+        } else if (q.type === 'texte') {
+          const max = q.max ?? 2000;
+          const champ = el('label', { class: 'champ' }, q.court ? 'Votre réponse' : 'Votre réponse (le texte reste modifiable jusqu’au récapitulatif)');
+          const saisie = q.court ? el('input', { type: 'text', maxlength: String(max), autocomplete: 'off' }) : el('textarea', { maxlength: String(max), rows: '5' });
+          if (q.placeholder) saisie.setAttribute('placeholder', q.placeholder);
+          saisie.value = typeof r === 'string' ? r : '';
+          champ.append(saisie);
+          const compteur = el('p', { class: 'pe-note', text: `${saisie.value.length} / ${max} caractères` });
+          saisie.addEventListener('input', () => { compteur.textContent = `${saisie.value.length} / ${max} caractères`; erreur.textContent = ''; });
+          const valider = () => {
+            const v = saisie.value.replace(/\s+\n/g, '\n').trim();
+            const mini = q.court ? 2 : 10;
+            if (!q.facultatif && v.length < mini) { erreur.textContent = q.court ? 'Quelques mots suffisent.' : 'Quelques mots de plus aideront le cabinet à préparer le rendez-vous.'; saisie.focus(); return; }
+            repondre(v, v || 'Rien à ajouter');
+          };
+          // Entrée valide un champ court ; Ctrl/Cmd+Entrée un texte long.
+          (saisie as HTMLTextAreaElement).addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && (q.court || ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); valider(); } });
+          panneau.append(champ, compteur, erreur);
+          continuer('Continuer', valider);
+          if (q.facultatif) { const p = el('button', { type: 'button', class: 'pe-revenir', text: 'Passer' }); p.addEventListener('click', () => repondre('', 'Rien à ajouter')); actions.insertBefore(p, actions.children[1] ?? null); }
+          aFocaliser = saisie; focusTexte = true;
+        } else if (q.type === 'dates') {
+          const evenements = etat.domaine?.evenements ?? [];
+          const anciennes = new Map(((r as DateRep[] | undefined) ?? []).map((x) => [x.id, x.date]));
+          const liste = el('div', { class: 'pe-liste' });
+          const lignes: { id: string; case: HTMLInputElement; date: HTMLInputElement }[] = [];
+          const majBouton = () => { bouton.textContent = lignes.some((l) => l.case.checked) ? 'Continuer' : 'Aucun de ces documents'; };
+          for (const ev of evenements) {
+            const idCase = `pe-ev-${ev.id}`;
+            const caseA = el('input', { type: 'checkbox', id: idCase });
+            caseA.checked = anciennes.has(ev.id);
+            const dateI = el('input', { type: 'date', min: '1950-01-01', max: '2099-12-31' });
+            dateI.value = anciennes.get(ev.id) ?? '';
+            const alerte = el('p', { class: 'pe-alerte', role: 'status', text: dateI.value ? alerteDate(dateI.value) : '' });
+            const zoneDate = el('div', { class: 'pe-evenement__date' }, el('label', { class: 'champ' }, ev.dateLabel ?? 'Date de réception', dateI), alerte);
+            zoneDate.hidden = !caseA.checked;
+            const bloc = el('div', { class: 'pe-evenement' }, el('label', { for: idCase }, caseA, ev.label), zoneDate);
+            caseA.addEventListener('change', () => { zoneDate.hidden = !caseA.checked; majBouton(); erreur.textContent = ''; if (caseA.checked) dateI.focus(); });
+            dateI.addEventListener('change', () => { alerte.textContent = dateI.value ? alerteDate(dateI.value) : ''; });
+            liste.append(bloc); lignes.push({ id: ev.id, case: caseA, date: dateI });
+          }
+          panneau.append(liste, erreur);
+          const bouton = continuer('Continuer', () => {
+            const v: DateRep[] = lignes.filter((l) => l.case.checked).map((l) => ({ id: l.id, date: /^\d{4}-\d{2}-\d{2}$/.test(l.date.value) ? l.date.value : '' }));
+            etat.reponses[q.id] = v;
+            repondre(v, libelleReponse(e));
+          });
+          majBouton();
+          aFocaliser = lignes[0]?.case ?? null;
+        }
+        break;
+      }
+      case 'pieces': {
+        const pieces = etat.domaine ? piecesDomaine(etat.domaine) : [];
+        const deja = new Set(idsLus(etat.reponses['_pieces']));
+        const liste = el('div', { class: 'pe-liste' });
+        const cases: { id: string; input: HTMLInputElement }[] = [];
+        for (const p of pieces) {
+          const input = el('input', { type: 'checkbox' }); input.checked = deja.has(p.id);
+          liste.append(el('label', { class: 'pe-case' }, input, p.label)); cases.push({ id: p.id, input });
+        }
+        panneau.append(el('p', { class: 'pe-note', text: 'Cochez ce que vous avez déjà.' }), liste);
+        continuer('Continuer', () => { etat.reponses['_pieces'] = cases.filter((c) => c.input.checked).map((c) => c.id); repondre(etat.reponses['_pieces'], libelleReponse(e)); });
+        aFocaliser = cases[0]?.input ?? null; break;
+      }
+      case 'format': {
+        const grille = el('div', { class: 'pe-options' });
+        for (const f of formats) {
+          const b = el('button', { type: 'button', class: 'pe-option', 'aria-pressed': String(etat.reponses['_format'] === f.id) }, f.label, el('small', { text: f.aide }));
+          b.addEventListener('click', () => repondre(f.id, f.label));
+          grille.append(b);
+        }
+        panneau.append(grille); aFocaliser = grille.firstElementChild as HTMLElement; break;
+      }
+      case 'coordonnees': {
+        const c = (etat.reponses['_coordonnees'] as Contact | undefined) ?? { nom: '', email: '', telephone: '' };
+        const nom = el('input', { type: 'text', autocomplete: 'name', maxlength: '120', required: '' }); nom.value = c.nom;
+        const email = el('input', { type: 'email', autocomplete: 'email', maxlength: '200', required: '', inputmode: 'email' }); email.value = c.email;
+        const tel = el('input', { type: 'tel', autocomplete: 'tel', maxlength: '40', inputmode: 'tel' }); tel.value = c.telephone;
+        panneau.append(el('div', { class: 'pe-champs' }, el('label', { class: 'champ' }, 'Nom et prénom', nom), el('label', { class: 'champ' }, 'Courriel', email), el('label', { class: 'champ' }, 'Téléphone (facultatif)', tel)), erreur);
+        const valider = () => {
+          const v: Contact = { nom: nom.value.trim(), email: email.value.trim(), telephone: tel.value.trim() };
+          if (v.nom.length < 2) { erreur.textContent = 'Indiquez votre nom.'; nom.focus(); return; }
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) { erreur.textContent = 'Le courriel ne paraît pas valide : le récapitulatif vous y sera adressé.'; email.focus(); return; }
+          repondre(v, [v.nom, v.email, v.telephone].filter(Boolean).join(' · '));
+        };
+        for (const i of [nom, email, tel]) i.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); valider(); } });
+        continuer('Continuer', valider);
+        aFocaliser = nom; focusTexte = true; break;
+      }
+      case 'consentement': {
+        const caseC = el('input', { type: 'checkbox', required: '' });
+        caseC.checked = etat.reponses['_consentement'] === true;
+        const lien = el('a', { href: '/mentions-legales#rgpd', class: 'lien', target: '_blank', rel: 'noopener', text: 'En savoir plus sur vos données' });
+        const label = el('label', { class: 'pe-consent' }, caseC, el('span', {}, textes.consentementCase + ' ', lien));
+        const miel = el('input', { type: 'text', name: 'site', tabindex: '-1', autocomplete: 'off', class: 'visually-hidden', 'aria-hidden': 'true' });
+        panneau.append(label, miel, erreur);
+        caseC.addEventListener('change', () => { erreur.textContent = ''; });
+        continuer('Voir le récapitulatif', () => {
+          if (!caseC.checked) { erreur.textContent = 'Sans votre accord, le cabinet ne peut pas recevoir vos réponses.'; caseC.focus(); return; }
+          etat.reponses['_miel'] = miel.value;
+          repondre(true, 'Consentement donné');
+        });
+        aFocaliser = caseC; break;
+      }
+      case 'recap': {
+        panneau.append(recapitulatif(liste), erreur);
+        const envoyer = continuer('Envoyer au cabinet', async () => {
+          envoyer.disabled = true; envoyer.textContent = 'Envoi en cours…'; erreur.textContent = '';
+          const attente = el('p', { class: 'pe-note', role: 'status', text: 'Transmission au cabinet — quelques secondes.' }); actions.append(attente);
+          try {
+            const rep = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(charge(liste)) });
+            const j = await rep.json().catch(() => ({})) as { ok?: boolean; ref?: string; erreur?: string };
+            if (rep.ok && j.ok && j.ref) { oublier(); location.assign(`/merci?objet=pre-entretien&ref=${encodeURIComponent(j.ref)}`); return; }
+            erreur.textContent = j.erreur || 'L’envoi n’a pas abouti. Réessayez dans un instant ; en cas d’échec répété, appelez le cabinet.';
+          } catch {
+            erreur.textContent = 'Le serveur ne répond pas pour l’instant. Vérifiez votre connexion et réessayez ; vos réponses sont conservées sur cette page.';
+          }
+          attente.remove(); envoyer.disabled = false; envoyer.textContent = 'Réessayer l’envoi';
+        });
+        aFocaliser = envoyer; break;
+      }
+    }
+    panneau.append(actions);
+    courant.append(panneau);
+    majProgression(liste);
+    if (premierRendu) { premierRendu = false; return; } // à l'arrivée sur la page : pas de défilement ni de focus imposés
+    requestAnimationFrame(() => {
+      bulle.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      const tactile = matchMedia('(pointer: coarse)').matches;
+      if (aFocaliser && !(focusTexte && tactile)) aFocaliser.focus({ preventScroll: true }); else bulle.focus({ preventScroll: true });
+    });
+  }
+
+  function revenir() {
+    if (etat.i === 0) return;
+    etat.i--;
+    retirerDepuis(etat.i);
+    sauvegarder();
+    rendre();
+  }
+
+  /* ───────── Récapitulatif et envoi ───────── */
+  function recapitulatif(liste: Etape[]): HTMLElement {
+    const d = etat.domaine!;
+    const bloc = el('div', { class: 'pe-recap' });
+    const section = (titre: string, ...contenu: Node[]) => { const s = el('section', {}, el('h3', { text: titre }), ...contenu); bloc.append(s); return s; };
+    const dl = el('dl', {}, el('dt', { text: textes.domaine }), el('dd', { text: d.label }));
+    for (const e of liste) if (e.genre === 'question' && e.q.type !== 'dates') dl.append(el('dt', { text: e.q.texte }), el('dd', { text: libelleReponse(e) }));
+    section('Vos réponses', dl);
+    const dates = (etat.reponses['dates'] as DateRep[] | undefined) ?? [];
+    const ulDates = el('ul', {});
+    for (const x of dates) {
+      const li = el('li', {}, `${d.evenements.find((ev) => ev.id === x.id)?.label ?? x.id} — ${dateFr(x.date)}`);
+      const a = x.date ? alerteDate(x.date) : ''; if (a) li.append(el('p', { class: 'pe-alerte', text: a }));
+      ulDates.append(li);
+    }
+    section('Dates à signaler', dates.length ? ulDates : el('p', { class: 'muet', text: 'Aucun document daté signalé.' }));
+    const deja = new Set(idsLus(etat.reponses['_pieces']));
+    const toutes = piecesDomaine(d);
+    const manquantes = toutes.filter((p) => !deja.has(p.id)); const dispo = toutes.filter((p) => deja.has(p.id));
+    const ulM = el('ul', {}); for (const p of manquantes) ulM.append(el('li', { text: p.label }));
+    const ulD = el('ul', {}); for (const p of dispo) ulD.append(el('li', { text: p.label }));
+    section('Pièces à réunir pour le rendez-vous', manquantes.length ? ulM : el('p', { class: 'muet', text: 'Vous avez déjà toutes les pièces listées.' }));
+    if (dispo.length) section('Pièces que vous avez déjà', ulD);
+    const c = etat.reponses['_coordonnees'] as Contact;
+    section('Rendez-vous et coordonnées', el('dl', {}, el('dt', { text: 'Format souhaité' }), el('dd', { text: optionLabel(formats, String(etat.reponses['_format'])) }), el('dt', { text: 'Vous joindre' }), el('dd', { text: [c.nom, c.email, c.telephone].filter(Boolean).join(' · ') })));
+    bloc.append(el('p', { class: 'pe-note', text: 'Pour modifier une réponse, utilisez « Revenir ». Après l’envoi, vous recevez cette synthèse par courriel ; le cabinet aussi.' }));
+    return bloc;
+  }
+
+  /** Charge JSON envoyée au serveur : les réponses dans l'ordre du parcours, puis les blocs structurés. */
+  function charge(liste: Etape[]) {
+    const d = etat.domaine!;
+    const reponses: { id: string; question: string; type: string; synthese: string; reponse: string; valeurs: unknown }[] = [];
+    for (const e of liste) if (e.genre === 'question' && e.q.type !== 'dates') reponses.push({ id: e.q.id, question: e.q.texte, type: e.q.type, synthese: e.q.synthese ?? 'situation', reponse: libelleReponse(e), valeurs: etat.reponses[e.q.id] ?? null });
+    const dates = ((etat.reponses['dates'] as DateRep[] | undefined) ?? []).map((x) => ({ id: x.id, label: d.evenements.find((ev) => ev.id === x.id)?.label ?? x.id, date: x.date }));
+    const deja = new Set(idsLus(etat.reponses['_pieces']));
+    const toutes = piecesDomaine(d);
+    const format = String(etat.reponses['_format']);
+    const c = etat.reponses['_coordonnees'] as Contact;
+    return {
+      site: String(etat.reponses['_miel'] ?? ''),
+      domaine: { id: d.id, label: d.label },
+      reponses,
+      dates,
+      pieces: { disponibles: toutes.filter((p) => deja.has(p.id)).map((p) => p.label), manquantes: toutes.filter((p) => !deja.has(p.id)).map((p) => p.label) },
+      format: { id: format, label: optionLabel(formats, format), lien: liensRdv[format] ?? '' },
+      contact: { nom: c.nom, email: c.email, telephone: c.telephone },
+      consentement: etat.reponses['_consentement'] === true,
+    };
+  }
+
+  /* ───────── Reprise d'un questionnaire interrompu (facultatif, 24 h, sans les coordonnées) ───────── */
+  function sauvegarder() {
+    try {
+      if (!etat.domaine || etat.i === 0) { localStorage.removeItem(CLE_BROUILLON); return; }
+      const { _coordonnees, _consentement, _miel, ...reste } = etat.reponses;
+      localStorage.setItem(CLE_BROUILLON, JSON.stringify({ t: Date.now(), domaine: etat.domaine.id, reponses: reste, i: etat.i }));
+    } catch { /* stockage indisponible : on continue sans */ }
+  }
+  function oublier() { try { localStorage.removeItem(CLE_BROUILLON); } catch { /* idem */ } }
+  function brouillon(): { domaine: Domaine; reponses: Record<string, unknown>; i: number } | null {
+    try {
+      const b = JSON.parse(localStorage.getItem(CLE_BROUILLON) || 'null');
+      if (!b || typeof b.t !== 'number' || Date.now() - b.t > 86400000 || !b.domaine) return null;
+      const d = domaines.find((x) => x.id === b.domaine);
+      return d && b.i > 1 ? { domaine: d, reponses: b.reponses ?? {}, i: b.i } : null;
+    } catch { return null; }
+  }
+  function reprendre(b: { domaine: Domaine; reponses: Record<string, unknown>; i: number }) {
+    etat.domaine = b.domaine; etat.reponses = b.reponses;
+    const liste = etapes();
+    const limite = liste.findIndex((e) => e.genre === 'coordonnees');
+    etat.i = Math.min(b.i, limite);
+    for (let k = 0; k < etat.i; k++) {
+      const e = liste[k];
+      if (k === 1) bulleAssistant(k, etat.domaine.accueil);
+      bulleAssistant(k, texteQuestion(e), e.genre === 'question' ? e.q.aide : undefined);
+      bulleClient(k, libelleReponse(e));
+    }
+    rendre();
+  }
+
+  const b = brouillon();
+  if (b) {
+    // Les bulles de reprise portent l'indice -1 : « Revenir » ne les retire jamais.
+    const bulle = bulleAssistant(-1, 'Vous aviez commencé ce questionnaire récemment. Souhaitez-vous reprendre où vous en étiez ?', undefined, 'pe-q-reprise');
+    const panneau = el('div', { class: 'pe-panneau', role: 'group', 'aria-labelledby': 'pe-q-reprise' });
+    const grille = el('div', { class: 'pe-options' });
+    const oui = el('button', { type: 'button', class: 'pe-option', text: 'Reprendre' });
+    const non = el('button', { type: 'button', class: 'pe-option', text: 'Recommencer du début' });
+    oui.addEventListener('click', () => { bulleClient(-1, 'Reprendre'); reprendre(b); });
+    non.addEventListener('click', () => { oublier(); bulleClient(-1, 'Recommencer du début'); rendre(); });
+    grille.append(oui, non); panneau.append(grille); courant.append(panneau);
+    premierRendu = false;
+    bulle.focus({ preventScroll: true });
+  } else {
+    rendre();
+  }
+</script>

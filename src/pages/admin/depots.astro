@@ -1,0 +1,243 @@
+---
+/**
+ * Console du cabinet — dépôt de pièces. Page privée (noindex, hors sitemap, non liée) ; l'accès réel est contrôlé
+ * côté serveur par la clé `depot.cle_admin` (session). API : /api/depot-admin.php.
+ */
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Console — dépôts de pièces | Cabinet Arnaud Cousin" description="Console privée du cabinet : liens de dépôt de pièces, suivi des pièces reçues et de leur classement SharePoint." noindex>
+  <section class="section">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="gap: 6px">
+        <p class="surtitre">Console du cabinet</p>
+        <h1 style="font-size: clamp(30px, 4vw, 40px)">Dépôts de pièces</h1>
+        <p class="muet" style="max-width: 720px">Créez un lien personnel par dossier, envoyez-le au client, suivez les pièces reçues : elles sont classées dans la bibliothèque SharePoint « Dépôts clients », sous un dossier au nom de l’affaire.</p>
+      </div>
+
+      <!-- Connexion -->
+      <form id="adm-connexion" class="carte pile" style="max-width: 460px; gap: 14px">
+        <h2 style="font-size: 22px">Connexion</h2>
+        <label class="champ">Clé de la console<input type="password" id="adm-cle" autocomplete="current-password" required /></label>
+        <button class="btn btn--plein" type="submit">Ouvrir la console</button>
+        <p id="adm-connexion-erreur" class="muet" style="font-size: 14px; color: #9c4a42" hidden></p>
+      </form>
+
+      <!-- Console -->
+      <div id="adm-app" class="pile" style="gap: 24px" hidden>
+        <div class="adm-barre">
+          <span id="adm-relais" class="muet" style="font-size: 14px">Relais SharePoint : vérification…</span>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <button id="adm-tester" type="button" class="btn btn--contour" style="min-height: 40px">Tester SharePoint</button>
+            <button id="adm-nouveau" type="button" class="btn btn--plein" style="min-height: 40px">Nouveau lien</button>
+            <button id="adm-sortir" type="button" class="btn btn--contour" style="min-height: 40px">Quitter</button>
+          </div>
+        </div>
+
+        <form id="adm-creer" class="carte pile" style="gap: 16px" hidden>
+          <h2 style="font-size: 22px">Nouveau lien de dépôt</h2>
+          <div class="grille grille--2" style="gap: 14px">
+            <label class="champ">Client (civilité et nom, tel qu’il sera salué) *<input name="nom" required maxlength="120" placeholder="Mme Dupont" /></label>
+            <label class="champ">Courriel du client<input name="email" type="email" maxlength="200" placeholder="pour lui envoyer le lien et l’accusé de réception" /></label>
+            <label class="champ">Dossier (intitulé Secib) *<input name="dossier" required maxlength="120" placeholder="DUPONT c/ MARTIN" /></label>
+            <label class="champ">Référence<input name="reference" maxlength="40" placeholder="202610123" /></label>
+          </div>
+          <label class="champ">Pièces attendues (affiché au client et dans son courriel)<textarea name="consigne" maxlength="1000" placeholder="Jugement de divorce, trois derniers avis d’imposition, relevés du compte joint depuis janvier 2025…" style="min-height: 90px"></textarea></label>
+          <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center">
+            <label class="champ" style="width: 160px">Validité (jours)<input name="validite" type="number" min="1" max="365" value="30" /></label>
+            <label style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--muet)"><input type="checkbox" name="envoyer" value="1" checked /> Envoyer le lien au client par courriel</label>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap">
+            <button class="btn btn--plein" type="submit">Créer le lien</button>
+            <button class="btn btn--contour" type="button" id="adm-creer-annuler">Annuler</button>
+          </div>
+          <p id="adm-creer-erreur" class="muet" style="font-size: 14px; color: #9c4a42" hidden></p>
+        </form>
+
+        <div id="adm-resultat" class="carte pile" style="gap: 10px; border-color: var(--laiton-clair); background: var(--ivoire)" hidden>
+          <p class="surtitre">Lien créé</p>
+          <p id="adm-resultat-texte" style="font-size: 15px"></p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+            <input id="adm-resultat-lien" readonly style="flex: 1 1 320px; min-height: 44px; border: 1px solid var(--ligne); border-radius: var(--r); padding: 0 12px; font: inherit; font-size: 14px; background: #fff" />
+            <button id="adm-resultat-copier" type="button" class="btn btn--plein" style="min-height: 44px">Copier le lien</button>
+          </div>
+        </div>
+
+        <div class="pile" style="gap: 10px">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px">
+            <h2 style="font-size: 22px">Dépôts</h2>
+            <label style="display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muet)"><input type="checkbox" id="adm-tous" /> Afficher les dépôts clos et expirés</label>
+          </div>
+          <p id="adm-vide" class="muet" hidden>Aucun dépôt pour l’instant : créez un premier lien.</p>
+          <div id="adm-liste" class="adm-liste"></div>
+        </div>
+        <p id="adm-info" class="muet" style="font-size: 14px" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .adm-barre { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 18px; border: 1px solid var(--ligne); border-radius: var(--r); background: var(--ivoire); }
+  .adm-liste { display: flex; flex-direction: column; gap: 12px; }
+  .adm-depot { border: 1px solid var(--ligne); border-radius: var(--r); background: #fff; padding: 16px 18px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 10px 20px; align-items: center; }
+  .adm-depot--ferme { opacity: .72; }
+  .adm-depot h3 { font-size: 18px; margin: 0; overflow: hidden; text-overflow: ellipsis; }
+  .adm-depot small, .adm-depot .muet { font-size: 13px; }
+  .adm-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; background: var(--papier); color: var(--laiton-sombre); }
+  .adm-badge--ouvert { background: #e4efe9; color: var(--vert); }
+  .adm-badge--alerte { background: #f6e3e0; color: #9c4a42; }
+  .adm-actions { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
+  .adm-actions button, .adm-actions a { min-height: 34px; padding: 0 12px; font-size: 13px; border-radius: var(--r); border: 1px solid var(--ligne); background: var(--ivoire); color: var(--vert); cursor: pointer; font: inherit; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; }
+  .adm-actions button:hover, .adm-actions a:hover { border-color: var(--vert); background: #fff; }
+  .adm-actions button.est-danger { color: #9c4a42; }
+  .adm-detail { grid-column: 1 / -1; border-top: 1px solid var(--ligne); padding-top: 12px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+  .adm-detail ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .adm-detail blockquote { margin: 0; padding: 8px 12px; border-left: 3px solid var(--laiton); background: var(--ivoire); white-space: pre-line; }
+  @media (max-width: 860px) { .adm-depot { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<script>
+  const API = '/api/depot-admin.php';
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  type Depot = { id: string; lien: string; statut: 'ouvert' | 'expire' | 'clos'; client: { nom: string; email: string }; dossier: string; reference: string; consigne: string; cree: string; expire: string; nb: number; total: number;
+    sharepoint: { ok: number; attente: number; erreur: number }; sharepoint_url: string; dernier_envoi: string | null; lien_envoye: string | null;
+    fichiers: { nom: string; original: string; taille: number; date: string; sharepoint: { etat: string; url?: string; erreur?: string } }[]; depots: { date: string; message: string; fichiers: string[] }[] };
+
+  let depots: Depot[] = [];
+  let graph = false;
+  const ouverts = new Set<string>();
+
+  const taille = (o: number) => o >= 1048576 ? `${(o / 1048576).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} Mo` : `${Math.max(1, Math.round(o / 1024))} Ko`;
+  const dateFr = (iso: string, heure = false) => new Date(iso).toLocaleString('fr-FR', heure ? { dateStyle: 'short', timeStyle: 'short' } : { dateStyle: 'short' });
+  const info = (t: string) => { $('adm-info').textContent = t; };
+
+  async function api(action: string, donnees: Record<string, string> = {}) {
+    const fd = new FormData();
+    fd.append('action', action);
+    for (const [k, v] of Object.entries(donnees)) fd.append(k, v);
+    const r = await fetch(API, { method: 'POST', body: fd, credentials: 'same-origin', headers: { 'X-Requested-With': 'depot-admin' } });
+    const j = await r.json();
+    if (r.status === 401 && action !== 'connexion') { montrerConnexion(j.erreur); throw new Error('déconnecté'); }
+    return j;
+  }
+
+  function montrerConnexion(erreur?: string) {
+    $('adm-app').hidden = true; $('adm-connexion').hidden = false;
+    const e = $('adm-connexion-erreur'); e.textContent = erreur || ''; e.hidden = !erreur;
+  }
+
+  async function charger() {
+    const j = await api('liste');
+    if (!j.ok) { info(j.erreur || 'Erreur'); return; }
+    depots = j.depots; graph = j.graph;
+    (document.querySelector('#adm-creer [name=validite]') as HTMLInputElement).value = String(j.limites.validite_jours);
+    $('adm-relais').textContent = graph ? 'Relais SharePoint : configuré — chaque pièce est classée dès réception.' : 'Relais SharePoint : non configuré — les pièces restent sur le serveur (téléchargez-les en zip).';
+    rendre();
+    $('adm-connexion').hidden = true; $('adm-app').hidden = false;
+  }
+
+  function badge(d: Depot) {
+    if (d.statut === 'ouvert') return '<span class="adm-badge adm-badge--ouvert">Ouvert</span>';
+    if (d.statut === 'clos') return '<span class="adm-badge">Clos</span>';
+    return '<span class="adm-badge">Expiré</span>';
+  }
+
+  function rendre() {
+    const tous = ($('adm-tous') as HTMLInputElement).checked;
+    const visibles = depots.filter((d) => tous || d.statut === 'ouvert');
+    const liste = $('adm-liste'); liste.innerHTML = '';
+    $('adm-vide').hidden = visibles.length > 0 || depots.length > 0;
+    if (!visibles.length && depots.length) { liste.innerHTML = '<p class="muet">Aucun dépôt ouvert. Cochez « Afficher les dépôts clos et expirés » pour voir les autres.</p>'; }
+    for (const d of visibles) {
+      const el = document.createElement('article');
+      el.className = 'adm-depot' + (d.statut !== 'ouvert' ? ' adm-depot--ferme' : '');
+      const sp = graph
+        ? (d.sharepoint.erreur ? `<span class="adm-badge adm-badge--alerte">${d.sharepoint.erreur} en erreur</span>` : d.sharepoint.attente ? `<span class="adm-badge">${d.sharepoint.attente} à relayer</span>` : d.nb ? '<span class="adm-badge adm-badge--ouvert">Classées</span>' : '')
+        : (d.nb ? '<span class="adm-badge">Sur le serveur</span>' : '');
+      const aSignaler = d.fichiers.filter((f) => !d.depots.length || f.date > d.depots[d.depots.length - 1].date).length;
+      el.innerHTML = `
+        <div style="min-width:0"><h3></h3><span class="muet"></span></div>
+        <div><small class="muet">Créé le ${dateFr(d.cree)} · expire le ${dateFr(d.expire)}</small><br><small class="muet">${d.lien_envoye ? 'Lien envoyé le ' + dateFr(d.lien_envoye, true) : 'Lien non envoyé par le site'}</small></div>
+        <div><strong>${d.nb} pièce${d.nb > 1 ? 's' : ''}</strong> <small class="muet">${d.nb ? taille(d.total) : ''}</small><br>${sp}${aSignaler && d.nb ? ` <small class="muet">(${aSignaler} non signalée${aSignaler > 1 ? 's' : ''} par le client)</small>` : ''}</div>
+        <div style="text-align:right">${badge(d)}</div>
+        <div class="adm-actions"></div>`;
+      (el.querySelector('h3') as HTMLElement).textContent = d.dossier + (d.reference ? ` — ${d.reference}` : '');
+      (el.querySelector('.muet') as HTMLElement).textContent = d.client.nom + (d.client.email ? ` · ${d.client.email}` : '');
+      const actions = el.querySelector('.adm-actions') as HTMLElement;
+      const bouton = (texte: string, fn: () => void, danger = false) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = texte; if (danger) b.className = 'est-danger'; b.addEventListener('click', fn); actions.appendChild(b); return b; };
+      bouton('Copier le lien', async () => { await navigator.clipboard.writeText(d.lien); info(`Lien copié : ${d.dossier}`); });
+      if (d.client.email && d.statut === 'ouvert') bouton(d.lien_envoye ? 'Renvoyer le lien' : 'Envoyer le lien', async () => { const j = await api('envoyer', { id: d.id }); info(j.ok ? `Lien envoyé à ${d.client.email}.` : j.erreur); if (j.ok) await charger(); });
+      bouton(ouverts.has(d.id) ? 'Masquer le détail' : 'Détail', () => { ouverts.has(d.id) ? ouverts.delete(d.id) : ouverts.add(d.id); rendre(); });
+      if (d.nb) { const a = document.createElement('a'); a.href = `${API}?action=zip&id=${encodeURIComponent(d.id)}`; a.textContent = 'Télécharger (zip)'; actions.appendChild(a); }
+      if (d.sharepoint_url) { const a = document.createElement('a'); a.href = d.sharepoint_url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Ouvrir dans SharePoint'; actions.appendChild(a); }
+      if (graph && (d.sharepoint.attente || d.sharepoint.erreur)) bouton('Relayer vers SharePoint', async () => { info('Relais en cours…'); const j = await api('renvoyer', { id: d.id }); info(j.ok ? `Relais : ${j.bilan.ok} classée(s), ${j.bilan.erreur} en erreur.` : j.erreur); await charger(); });
+      bouton(d.statut === 'ouvert' ? 'Prolonger de 30 jours' : 'Rouvrir 30 jours', async () => { await api('prolonger', { id: d.id, jours: '30' }); await charger(); });
+      if (d.statut === 'ouvert') bouton('Clore', async () => { if (confirm(`Clore le dépôt « ${d.dossier} » ? Le client ne pourra plus rien envoyer.`)) { await api('clore', { id: d.id }); await charger(); } });
+      bouton('Supprimer du serveur', async () => {
+        const copies = d.sharepoint.ok === d.nb ? '' : `\nATTENTION : ${d.nb - d.sharepoint.ok} pièce(s) ne sont pas dans SharePoint et seront perdues.`;
+        if (confirm(`Supprimer le dépôt « ${d.dossier} » et ses ${d.nb} pièce(s) du serveur ? Les copies SharePoint restent.${copies}`)) { await api('supprimer', { id: d.id }); await charger(); }
+      }, true);
+      if (ouverts.has(d.id)) {
+        const det = document.createElement('div'); det.className = 'adm-detail';
+        const lien = document.createElement('p'); lien.innerHTML = '<strong>Lien :</strong> <code></code>'; (lien.querySelector('code') as HTMLElement).textContent = d.lien; det.appendChild(lien);
+        if (d.consigne) { const c = document.createElement('p'); c.innerHTML = '<strong>Pièces attendues :</strong> '; c.append(d.consigne); det.appendChild(c); }
+        if (d.fichiers.length) {
+          const ul = document.createElement('ul');
+          for (const f of d.fichiers) {
+            const li = document.createElement('li');
+            li.textContent = `${f.nom} (${taille(f.taille)}, ${dateFr(f.date, true)}) — `;
+            if (f.sharepoint.etat === 'ok' && f.sharepoint.url) { const a = document.createElement('a'); a.href = f.sharepoint.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'dans SharePoint'; a.className = 'lien'; li.appendChild(a); }
+            else if (f.sharepoint.etat === 'erreur') { const s = document.createElement('span'); s.style.color = '#9c4a42'; s.textContent = `relais en erreur : ${f.sharepoint.erreur || ''}`; li.appendChild(s); }
+            else li.append(graph ? 'à relayer' : 'sur le serveur');
+            ul.appendChild(li);
+          }
+          det.appendChild(ul);
+        } else { const p = document.createElement('p'); p.className = 'muet'; p.textContent = 'Aucune pièce reçue pour l’instant.'; det.appendChild(p); }
+        for (const e of d.depots) {
+          const q = document.createElement('blockquote');
+          q.textContent = `${dateFr(e.date, true)} — ${e.fichiers.length} pièce(s) signalée(s)${e.message ? '\n' + e.message : ''}`;
+          det.appendChild(q);
+        }
+        el.appendChild(det);
+      }
+      liste.appendChild(el);
+    }
+  }
+
+  /* ── Événements ── */
+  $('adm-connexion').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const j = await api('connexion', { cle: ($('adm-cle') as HTMLInputElement).value });
+    if (!j.ok) { montrerConnexion(j.erreur || 'Clé refusée.'); return; }
+    ($('adm-cle') as HTMLInputElement).value = '';
+    await charger();
+  });
+  $('adm-sortir').addEventListener('click', async () => { await api('deconnexion'); montrerConnexion(); });
+  $('adm-tous').addEventListener('change', rendre);
+  $('adm-nouveau').addEventListener('click', () => { $('adm-creer').hidden = false; $('adm-resultat').hidden = true; (document.querySelector('#adm-creer [name=nom]') as HTMLInputElement).focus(); });
+  $('adm-creer-annuler').addEventListener('click', () => { $('adm-creer').hidden = true; });
+  $('adm-creer').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const donnees: Record<string, string> = {};
+    new FormData(form).forEach((v, k) => { donnees[k] = String(v); });
+    const err = $('adm-creer-erreur'); err.hidden = true;
+    const j = await api('creer', donnees);
+    if (!j.ok) { err.textContent = j.erreur; err.hidden = false; return; }
+    form.reset(); $('adm-creer').hidden = true;
+    const d: Depot = j.depot;
+    ($('adm-resultat-lien') as HTMLInputElement).value = d.lien;
+    $('adm-resultat-texte').textContent = `${d.dossier} — ${d.client.nom}. ` + (j.envoye ? `Lien envoyé par courriel à ${d.client.email}.` : j.envoye === false ? 'Le courriel n’a pas pu partir : copiez le lien et envoyez-le vous-même.' : 'Copiez le lien et envoyez-le au client (ou collez-le dans un courriel Outlook).');
+    $('adm-resultat').hidden = false;
+    await charger();
+  });
+  $('adm-resultat-copier').addEventListener('click', async () => { await navigator.clipboard.writeText(($('adm-resultat-lien') as HTMLInputElement).value); info('Lien copié.'); });
+  $('adm-tester').addEventListener('click', async () => {
+    info('Test du relais SharePoint…');
+    const j = await api('tester');
+    const t = j.test || {};
+    info(t.ok ? `SharePoint accessible : bibliothèque « ${t.nom} » — ${t.url}` : `SharePoint : ${t.erreur}`);
+  });
+
+  charger().catch(() => montrerConnexion());
+</script>

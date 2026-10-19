@@ -10,8 +10,8 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      // Pages noindex hors du sitemap : mentions légales, page « merci », dépôt de pièces (phase 2), 404.
-      filter: (page) => !/\/(mentions-legales|merci|services\/depot-pieces|depot|404)(\/|$)/.test(page),
+      // Pages noindex hors du sitemap : mentions légales, page « merci », dépôt de pièces (lien personnel), console, 404.
+      filter: (page) => !/\/(mentions-legales|merci|services\/depot-pieces|depot|admin|404)(\/|$)/.test(page),
       changefreq: 'monthly',
       lastmod: new Date(),
     }),

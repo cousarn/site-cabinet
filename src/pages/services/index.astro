@@ -10,7 +10,7 @@ import themisBandeau from '../../assets/photos/themis-bandeau-1600.webp';
 const services = [
   ['calendrier', 'Rendez-vous en ligne', 'Cabinet, visio ou téléphone : choisissez le format et le créneau, c’est confirmé. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier.', '/services/rendez-vous', 'Choisir un créneau'],
   ['ecrit', 'Consultation écrite', 'Posez votre question par écrit, joignez vos pièces, réglez en ligne : une note écrite que vous conservez, sous cinq jours ouvrés. L’équivalent d’une consultation d’orientation d’une heure, sans vous déplacer, moins cher.', '/services/consultation-ecrite', 'Consulter dès 80 €'],
-  ['depot', 'Déposer des pièces', 'Clients du cabinet : vos pièces transitent par un lien de partage sécurisé (Microsoft 365) adressé pour votre dossier, jamais par pièces jointes en clair. Un espace de dépôt intégré au site, directement classé dans votre dossier, est en préparation.', '/services/depot-pieces', 'Comment ça marche'],
+  ['depot', 'Déposer des pièces', 'Clients du cabinet : depuis le lien personnel reçu pour votre dossier, déposez PDF, photos, scans et courriels, de l’ordinateur ou du téléphone. Chiffrés en transit, classés directement dans votre dossier — jamais de pièces jointes en clair.', '/services/depot-pieces', 'Comment ça marche'],
   ['devis', 'Devis divorce par consentement mutuel', 'Sept questions — enfants, prestation compensatoire, biens à partager, état de l’accord — et un ordre de grandeur des honoraires, dès 960 € TTC. L’avocat confirme ou ajuste : ni une promesse ni un plafond.', '/services/devis-divorce', 'Estimer mes honoraires'],
 ] as const;
 ---
@@ -33,15 +33,15 @@ const services = [
       <div class="pile">
         <p class="surtitre">Assistant de pré-entretien</p>
         <h2>Pas sûr de votre situation ? Décrivez-la.</h2>
-        <p class="muet">En préparation : jour et nuit, l’assistant identifiera le domaine, repérera un délai qui court et préparera votre rendez-vous. Il n’est pas avocat et ne donne aucun conseil juridique. Échanges confidentiels, jamais réutilisés.</p>
+        <p class="muet">Jour et nuit, une question à la fois, une dizaine de minutes : l’assistant recueille votre situation, repère les dates à signaler et dresse la liste des pièces à réunir. Vos réponses arrivent au cabinet avant le rendez-vous. Il n’est pas avocat et ne donne aucun conseil juridique. Échanges confidentiels, couverts par le secret professionnel.</p>
         <p class="muet" style="font-size: 14px">Prise de message 24h/24 au <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a> pour les urgences.</p>
       </div>
-      <!-- Phase services : panneau interactif (IA, serveur du cabinet). Ici, bouton d'ouverture. -->
+      <!-- Questionnaire guidé : /services/pre-entretien (API /api/pre-entretien.php) -->
       <div class="carte carte--sombre" style="gap: 14px">
         <span style="color: var(--laiton-clair)"><Icone nom="assistant" /></span>
         <h3 style="color: var(--sur-vert)">L’assistant du cabinet</h3>
-        <p class="muet" style="font-size: 15px">« Décrivez votre situation en quelques phrases : ce qui s’est passé, depuis quand, ce que vous attendez. »</p>
-        <button type="button" class="btn btn--clair" data-ouvrir-assistant disabled title="Disponible à la mise en ligne">Démarrer <span class="a-confirmer" style="font-weight: 400; font-size: 13px">(bientôt)</span></button>
+        <p class="muet" style="font-size: 15px">« Ce qui s’est passé, depuis quand, ce que vous attendez » — puis les pièces à réunir et la prise de rendez-vous dans le format de votre choix.</p>
+        <a href="/services/pre-entretien" class="btn btn--clair">Préparer mon rendez-vous</a>
       </div>
     </div>
   </section>

@@ -157,6 +157,9 @@ table.grille-tarifs td:last-child { white-space: nowrap; font-weight: 600; color
 .champ textarea { padding: 12px 14px; resize: vertical; min-height: 120px; }
 .champ input:focus, .champ textarea:focus, .champ select:focus { border-color: var(--vert); outline: 2px solid rgba(17, 53, 47, .15); }
 
+/* L'attribut hidden l'emporte sur les classes d'affichage (pile, grille, deux-colonnes) : pages pilotées par script. */
+[hidden] { display: none !important; }
+
 /* Animations — respectent prefers-reduced-motion */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes apparition { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }

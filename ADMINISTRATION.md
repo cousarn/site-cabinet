@@ -19,7 +19,9 @@ Mode d'emploi du site du Cabinet Arnaud Cousin, avocat au Barreau de Rennes. Il 
 | Déploiement | GitHub Actions construit `dist/` et le pousse sur `deploy-preprod` (push `main`) ou `deploy-prod` (tag `v*`) ; OVH tire la branche via webhook en 1 à 2 min |
 | Courriel | Microsoft 365 ; `site@arnaudcousin-avocat.fr` (expéditeur des formulaires) est un alias de `cabinet@` ; MX, SPF dans la zone DNS OVH |
 | Rendez-vous | Microsoft Bookings, page personnelle du compte `cabinet@` (3 types : cabinet, visio, téléphone — 1 h, 132 € TTC) |
-| Paiement | PayPal « Payments Standard » (lien hébergé, identifiant marchand public dans `_lib.php`), RIB en secours |
+| Paiement | PayPal « Payments Standard » (lien hébergé, identifiant marchand public dans `_lib.php`), RIB en secours ; notification IPN (`api/paypal-ipn.php`) qui marque la consultation « payée » et prévient cabinet et client |
+| Dépôt de pièces | lien personnel `/depot/<jeton>` créé depuis la console `/admin/depots` ; pièces hors racine web puis relayées dans SharePoint (site « Dépôts clients », application Entra `Sites.Selected`) |
+| Pré-entretien | questionnaire guidé `/services/pre-entretien` (arbre dans `src/data/pre-entretien.ts`), synthèse au cabinet ; analyse IA facultative pour l'avocat seul (clé dans le fichier serveur) |
 | Référencement | Google Search Console (propriété domaine, validée par TXT DNS), Bing Webmaster (validé par CNAME DNS), sitemap `/sitemap-index.xml` |
 
 Vérifier d'un coup d'œil quelle version est en ligne : `https://arnaudcousin-avocat.fr/version.txt` (hash du commit, date, référence), idem sur la préprod.
@@ -34,13 +36,17 @@ astro/
 ├── src/content/domaines/*.md  les 5 pages « Domaines » : tout dans le frontmatter (situations, méthode, FAQ, fiches liées)
 ├── src/content/fiches/*.md    fiches pratiques et billets : frontmatter + Markdown
 ├── src/pages/*.astro          pages fixes (accueil, cabinet, honoraires, contact, mentions légales, règlement amiable…)
-├── src/pages/services/        rendez-vous, consultation écrite, devis divorce, dépôt de pièces (phase 2)
+├── src/pages/services/        rendez-vous, consultation écrite, devis divorce, dépôt de pièces, assistant de pré-entretien
+├── src/pages/admin/depots.astro  console du cabinet (noindex, hors sitemap) : liens de dépôt, suivi, zip, relais SharePoint
+├── src/data/pre-entretien.ts  arbre des questions de l'assistant de pré-entretien (modifiable sans toucher à la page)
 ├── src/layouts/Base.astro     <head>, SEO, JSON-LD (LegalService + BreadcrumbList), header, footer
 ├── src/components/            Header, Footer, Hero, Faq, Cta, Icone
 ├── src/styles/global.css      charte : vert #11352F, laiton #9A7B4F, papier #F4EFE6, Fraunces + Figtree (polices locales)
 ├── src/assets/photos/         photos (WebP ; Astro génère les tailles responsives)
 ├── public/.htaccess           HTTPS, sans www, URL sans .html, 301 de l'ancien site, en-têtes de sécurité (CSP stricte)
-├── public/api/*.php           formulaires : contact, saisine, devis, consultation ; `_lib.php` = réglages et utilitaires
+├── public/api/*.php           formulaires : contact, saisine, devis, consultation, pre-entretien ; dépôt : depot, depot-admin ;
+│                              paypal-ipn ; `_lib.php` = réglages et utilitaires, `_depot.php` + `_graph.php` = dépôt et relais SharePoint,
+│                              `_assistant-consigne.php` = consigne de l'analyse IA du pré-entretien
 ├── public/api/config.local.example.php   modèle du fichier serveur hors Git (§ 6)
 ├── .github/workflows/deploy.yml          la chaîne de déploiement
 ├── README.md                  documentation technique (déploiement, formulaires, paiement, historique des décisions)
@@ -90,7 +96,19 @@ Déposer un WebP dans `src/assets/photos/` (1 536 à 2 400 px de large, qualité
 
 ### 3.5 Formulaires et courriels
 
-Les quatre formulaires sont en PHP dans `public/api/` et envoient depuis `site@`. Pour tester sans polluer : envoyer depuis la préprod avec `cabinet@` comme adresse du client ; les deux mails arrivent dans la boîte du cabinet (référence du type `261018-747E`). Les pièces des consultations écrites sont stockées hors racine web dans `/home/arnaudcoqa/consultations/<réf>/`.
+Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) sont en PHP dans `public/api/` et envoient depuis `site@`. Pour tester sans polluer : envoyer depuis la préprod avec `cabinet@` comme adresse du client ; les deux mails arrivent dans la boîte du cabinet (référence du type `261018-747E`). Les pièces des consultations écrites et les synthèses de pré-entretien sont stockées hors racine web dans `/home/arnaudcoqa/consultations/<réf>/` ; les paiements PayPal confirmés y laissent `paye.json`.
+
+### 3.6 Dépôt de pièces (au quotidien)
+
+1. Ouvrir `https://arnaudcousin-avocat.fr/admin/depots`, saisir la clé de la console (`depot.cle_admin` du fichier serveur, § 6).
+2. « Nouveau lien » : civilité et nom du client, courriel, intitulé du dossier tel que dans Secib, référence, pièces attendues, validité (30 jours par défaut). Le site envoie le lien au client (ou « Copier le lien » pour le coller dans un courriel Outlook).
+3. Le client dépose depuis `/depot/<jeton>` (ordinateur ou téléphone, photos comprises) et clique « Terminer » : courriel `[SITE] Pièces déposées — <dossier>` au cabinet, accusé de réception au client. Chaque pièce est relayée dès réception dans SharePoint › site « Dépôts clients » › `Dépôts du site/<dossier — référence>/` (numérotées `01 - …`). Depuis le poste du cabinet (bibliothèque synchronisée), rattacher dans Secib comme d'habitude.
+4. Console : « Détail » (pièces, états SharePoint, messages du client), « Télécharger (zip) » (secours si le relais est en panne), « Relayer vers SharePoint » (reprise), « Prolonger », « Clore » (plus d'envoi possible), « Supprimer du serveur » (les copies SharePoint restent). Purge automatique : dépôt clos ou expiré depuis 7 jours dont toutes les pièces sont dans SharePoint, ou au plus tard 90 jours après l'échéance.
+5. Limites par lien : 50 Mo par fichier, 500 Mo et 60 pièces au total ; types : PDF, images (HEIC compris), Office, OpenDocument, texte, courriels `.eml`/`.msg`, audio, vidéo, zip sans exécutable. Le type réel est contrôlé sur le contenu, pas sur l'extension.
+
+### 3.7 Assistant de pré-entretien
+
+Les questions vivent dans `src/data/pre-entretien.ts` (domaines, questions à choix ou texte, événements datés, démarches, pièces par domaine). Les modifier = éditer ce fichier, construire, préprod, prod. L'assistant ne donne jamais de conseil : les textes doivent rester descriptifs. Les synthèses arrivent par courriel `[SITE] Pré-entretien — <domaine> — <nom>` ; si la clé API est renseignée (§ 6), un bloc « analyse préparatoire » pour l'avocat seul s'y ajoute ; la consigne du modèle est dans `public/api/_assistant-consigne.php`.
 
 ## 4. Vérifier, puis mettre en ligne
 
@@ -121,7 +139,8 @@ Production : créer un tag `vX.Y.Z` sur le commit validé — soit `git tag vX.Y
 | OVH (manager) | compte client Arnaud | zone DNS (TXT/CNAME de vérification), multisite, suivi des tâches | mot de passe, SFTP, facturation, certificats |
 | Serveur (SFTP) | `arnaudcoqa` | rien directement : passer par FileZilla sur le poste d'Arnaud, qui saisit lui-même le mot de passe | identifiants |
 | Microsoft 365 | `cabinet@…` (admin) | Bookings (types, disponibilités), lecture du calendrier pour vérifier les créneaux | connexion, alias, licences |
-| PayPal | compte du cabinet | rien (l'identifiant marchand suffit au site) | tout |
+| PayPal | compte du cabinet | rien (l'identifiant marchand suffit au site ; l'IPN se vérifie sans clé) | tout ; activer l'IPN dans les préférences du compte (facultatif, le lien le porte déjà) |
+| Entra / SharePoint | `cabinet@…` (admin) | préparer l'inscription d'application, les permissions, le site « Dépôts clients », l'octroi `Sites.Selected` | copier la valeur du secret client dans le fichier serveur (§ 6), renouveler le secret avant expiration |
 | Google (Search Console, Business Profile) | compte Google d'Arnaud (`arnaudcousin00@gmail.com` porte la Search Console) | Search Console une fois connecté (sitemap, inspection d'URL, demandes d'indexation) | connexion, fiche Google Business |
 | Bing Webmaster | connecté via Google | sitemaps, inspection | connexion |
 
@@ -129,7 +148,7 @@ Jamais : saisir un mot de passe, un code, une clé API, un IBAN dans une convers
 
 ## 6. Le fichier serveur hors Git
 
-`/home/arnaudcoqa/config/site-cabinet.php` (modèle : `public/api/config.local.example.php`) contient : `cabinet_email`, `from_email`, `rib` (texte affiché dans les accusés de réception), `paiement` (`paypal` | `virement` | `stripe`), `paypal_id`, et optionnellement `devis`, `tva`. Il est lu par la préprod **et** la prod, jamais touché par les déploiements, protégé par un `try/catch` (une erreur de syntaxe n'empêche pas le site de fonctionner, elle est journalisée). Pour le modifier : FileZilla (SFTP, hôte du cluster 105) › clic droit › *Afficher/Éditer* › enregistrer › accepter le renvoi.
+`/home/arnaudcoqa/config/site-cabinet.php` (modèle : `public/api/config.local.example.php`) contient : `cabinet_email`, `from_email`, `rib` (texte affiché dans les accusés de réception), `paiement` (`paypal` | `virement` | `stripe`), `paypal_id`, `depot.cle_admin` (clé de la console des dépôts), `graph` (tenant, client_id, client_secret, drive_id, racine — relais SharePoint), optionnellement `assistant.cle_api` (analyse IA du pré-entretien), `paypal_sandbox`, `paypal_email`, `devis`, `tva`. Il est lu par la préprod **et** la prod, jamais touché par les déploiements, protégé par un `try/catch` (une erreur de syntaxe n'empêche pas le site de fonctionner, elle est journalisée). Pour le modifier : FileZilla (SFTP, hôte du cluster 105) › clic droit › *Afficher/Éditer* › enregistrer › accepter le renvoi.
 
 ## 7. Veille et actualisation — calendrier
 
@@ -187,9 +206,9 @@ Pas de texte généré en masse, pas de pages « ville » dupliquées (Rennes, S
 
 ## 9. Ce qui n'est pas encore fait (phase 2)
 
-- Dépôt de pièces sécurisé (`/services/depot-pieces`, en `noindex`) : relais PHP → SharePoint.
-- Assistant de pré-entretien (bouton « bientôt » sur `/services`).
-- PayPal : notification IPN/webhook pour marquer une consultation « payée » sans intervention.
+- Dépôt de pièces : le relais SharePoint fonctionne dès que les clés `graph` sont renseignées (§ 6) ; d'ici là, pièces sur le serveur et zip depuis la console. Envisager plus tard une suppression des copies serveur immédiatement après relais confirmé.
+- Pré-entretien : activer l'analyse IA (clé `assistant.cle_api`) si l'avocat le souhaite ; vérifier l'identifiant de modèle au moment de l'activer.
+- Stripe Checkout en complément de PayPal (compte Stripe, clés dans le fichier serveur, webhook signé).
 - Page Bookings partagée (logo, couleurs) si Microsoft corrige l'erreur de création sur le tenant.
 - DMARC sur le domaine ; nettoyage des entrées DNS parasites `arnaudcousin-avocat.fr.arnaudcousin-avocat.fr`.
 - Avis à l'Ordre : e-mail affiché dans l'annuaire (`arnaud.cousin@avocat-conseil.fr`) et langue en double.

@@ -44,6 +44,6 @@ lecture: "3 min"
 
 <div class="encadre">
 
-**Pas tout, mais daté.** Mieux vaut cinq pièces datées et classées que cinquante en vrac. Si vous êtes déjà client, transmettez-les par le lien de partage sécurisé que le cabinet vous a adressé : elles seront dans votre dossier avant le rendez-vous.
+**Pas tout, mais daté.** Mieux vaut cinq pièces datées et classées que cinquante en vrac. Si vous êtes déjà client, transmettez-les par le lien de dépôt personnel que le cabinet vous a adressé : elles seront dans votre dossier avant le rendez-vous.
 
 </div>

@@ -30,6 +30,22 @@ $CONFIG = [
         'negociation'   => 500,  // accord non encore obtenu à l'ouverture du dossier
         // déplacement hors Rennes : en sus, au réel
     ],
+    'depot'           => [ // dépôt de pièces par lien personnel (/depot/<jeton>) — voir _depot.php
+        'dossier'          => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/depots', // hors racine web
+        'cle_admin'        => '',   // phrase secrète de la console /admin/depots — À DÉFINIR dans /config/site-cabinet.php (vide = console fermée)
+        'validite_jours'   => 30,   // durée de vie d'un lien par défaut
+        'fichier_max_mo'   => 50,   // par fichier
+        'total_max_mo'     => 500,  // par lien
+        'fichiers_max'     => 60,   // par lien
+        'conservation_jours' => 90, // purge des pièces sur le serveur après la fin de validité (les copies SharePoint restent)
+    ],
+    'graph'           => [ // relais vers SharePoint (Microsoft Graph, application Entra avec la permission Sites.Selected) — tout dans /config/site-cabinet.php
+        'tenant'        => '',  // ex. arnaudcousin-avocat.fr ou l'identifiant du locataire
+        'client_id'     => '',
+        'client_secret' => '',  // JAMAIS dans le dépôt Git
+        'drive_id'      => '',  // bibliothèque de documents du site SharePoint « Dépôts clients »
+        'racine'        => 'Dépôts du site', // dossier racine dans la bibliothèque
+    ],
 ];
 /* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),
    sinon api/config.local.php (ancien emplacement). */
@@ -82,8 +98,9 @@ function honeypot_ok(): bool {
     return trim((string)($_POST['site'] ?? '')) === '';
 }
 
-/** Limite de débit par IP et par formulaire, fichiers dans api/.cache (interdit en HTTP par .htaccess). */
-function limiter_debit(string $formulaire): void {
+/** Limite de débit par IP et par formulaire (compteurs hors racine web). $max : plafond horaire propre à l'action (défaut : rate_par_heure).
+ *  $json : répondre en JSON (API du dépôt) plutôt qu'en texte. */
+function limiter_debit(string $formulaire, ?int $max = null, bool $json = false): void {
     global $CONFIG;
     $dir = DOSSIER_CACHE;
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
@@ -92,9 +109,11 @@ function limiter_debit(string $formulaire): void {
     $now = time();
     $hits = is_file($f) ? (json_decode((string)file_get_contents($f), true) ?: []) : [];
     $hits = array_values(array_filter($hits, fn($t) => $t > $now - 3600));
-    if (count($hits) >= (int)$CONFIG['rate_par_heure']) {
+    if (count($hits) >= ($max ?? (int)$CONFIG['rate_par_heure'])) {
+        $message = 'Trop de demandes depuis votre connexion. Réessayez dans une heure ou appelez le cabinet.';
+        if ($json) { json_reponse(['ok' => false, 'erreur' => $message], 429); }
         http_response_code(429);
-        exit('Trop de demandes depuis votre connexion. Réessayez dans une heure ou appelez le cabinet.');
+        exit($message);
     }
     $hits[] = $now;
     @file_put_contents($f, json_encode($hits), LOCK_EX);
@@ -146,6 +165,7 @@ function lien_paypal(string $libelle, int $montant, string $ref, string $formule
         'charset'       => 'utf-8',
         'return'        => $hote . '/merci?objet=paiement&ref=' . $ref,
         'cancel_return' => $hote . '/merci?objet=consultation&ref=' . $ref . '&prix=' . $montant . '&annule=1',
+        'notify_url'    => $hote . '/api/paypal-ipn.php', // notification IPN : marque la demande « payée » (voir paypal-ipn.php)
     ], '', '&', PHP_QUERY_RFC3986);
 }
 
@@ -162,6 +182,15 @@ function erreur(string $message, int $code = 400): never {
     header('Content-Type: text/html; charset=UTF-8');
     $m = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
     echo "<!doctype html><html lang=\"fr\"><meta charset=\"utf-8\"><title>Formulaire</title><body style=\"font-family:system-ui;max-width:40em;margin:4em auto;line-height:1.5\"><h1 style=\"font-weight:500\">Le formulaire n'a pas pu être envoyé</h1><p>$m</p><p><a href=\"javascript:history.back()\">Revenir au formulaire</a> · <a href=\"/contact\">Contact</a></p></body></html>";
+    exit;
+}
+
+/** Réponse JSON (API du dépôt de pièces et console) puis arrêt. */
+function json_reponse(array $donnees, int $code = 200): never {
+    http_response_code($code);
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store');
+    echo json_encode($donnees, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
 }
 

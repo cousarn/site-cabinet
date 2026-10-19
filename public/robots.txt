@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /depot/
+Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://arnaudcousin-avocat.fr/sitemap-index.xml
