@@ -10,12 +10,16 @@ date_default_timezone_set('Europe/Paris');
 
 const SITE_URL = 'https://arnaudcousin-avocat.fr';
 
+/** Racine web réelle : DOCUMENT_ROOT en HTTP ; en ligne de commande (tâche planifiée) PHP la laisse vide → dossier parent d'api/. */
+$RACINE_WEB = (string)($_SERVER['DOCUMENT_ROOT'] ?? '');
+if ($RACINE_WEB === '') { $RACINE_WEB = dirname(__DIR__); }
+
 /** Réglages par défaut — surchargés par config.local.php si présent. */
 $CONFIG = [
     'cabinet_email'   => 'cabinet@arnaudcousin-avocat.fr', // destinataire des formulaires
     'from_email'      => 'site@arnaudcousin-avocat.fr',    // expéditeur technique (alias de cabinet@ dans Microsoft 365)
     'from_name'       => 'Site du cabinet Arnaud Cousin',
-    'stockage'        => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/consultations', // hors racine web
+    'stockage'        => dirname($RACINE_WEB) . '/consultations', // hors racine web
     'rate_par_heure'  => 6,     // envois max par IP et par formulaire
     'taille_max_mo'   => 20,    // pièces jointes cumulées
     'paiement'        => 'paypal',   // 'paypal' (PayPal ou carte, page hébergée par PayPal ; RIB en secours) | 'virement' (RIB seul) | 'stripe' (phase 2)
@@ -31,7 +35,7 @@ $CONFIG = [
         // déplacement hors Rennes : en sus, au réel
     ],
     'depot'           => [ // dépôt de pièces par lien personnel (/depot/<jeton>) — voir _depot.php
-        'dossier'          => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/depots', // hors racine web
+        'dossier'          => dirname($RACINE_WEB) . '/depots', // hors racine web
         'cle_admin'        => '',   // phrase secrète de la console /admin/depots — À DÉFINIR dans /config/site-cabinet.php (vide = console fermée)
         'validite_jours'   => 30,   // durée de vie d'un lien par défaut
         'fichier_max_mo'   => 50,   // par fichier
@@ -50,7 +54,7 @@ $CONFIG = [
 ];
 /* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),
    sinon api/config.local.php (ancien emplacement). */
-$racineHebergement = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..');
+$racineHebergement = dirname($RACINE_WEB);
 /** État de la configuration serveur : 'lue' | 'illisible' (faute de syntaxe) | 'absente' — affiché par la console, sans contenu. */
 $CONFIG_ETAT = 'absente';
 foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $fichierConfig) {

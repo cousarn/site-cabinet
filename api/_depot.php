@@ -258,3 +258,71 @@ function depot_envoyer_lien(array $d): bool {
     global $CONFIG;
     return envoyer_mail($email, "Votre lien pour déposer vos pièces — {$d['dossier']}", $corps, $CONFIG['cabinet_email']);
 }
+
+/* ───────── Veille quotidienne ─────────
+ * Lancée par la tâche planifiée OVH (`php prod/api/depot-veille.php`) et, à défaut, depuis la console si la dernière
+ * passe date de plus de 20 h. Elle ne crée rien : elle signale au cabinet ce qui demande attention, reprend les relais
+ * SharePoint en échec, prévient des pièces déposées que le client n'a pas « terminées », et fait le ménage. */
+
+function depot_veille_fichier(): string { return DOSSIER_CACHE . '/depot-veille.json'; }
+function depot_veille_derniere(): int {
+    $f = depot_veille_fichier();
+    $j = is_file($f) ? json_decode((string)file_get_contents($f), true) : null;
+    return (int)($j['derniere'] ?? 0);
+}
+
+/** Exécute la veille ; renvoie ['points' => [...lignes], 'mail' => bool envoyé]. */
+function depot_veille(bool $envoyerMail = true): array {
+    global $CONFIG;
+    $points = []; $maintenant = time();
+    $delaiSansTerminer = 12 * 3600;   // pièces déposées mais non signalées depuis plus de 12 h
+    $relanceApresJours = 5;           // lien envoyé sans aucune pièce depuis 5 jours
+    foreach (depot_tous() as $d) {
+        $id = $d['id']; $statut = depot_statut($d); $etiquette = $d['dossier'] . ' — ' . $d['client']['nom'];
+        depot_nettoyer_morceaux($id);
+        // 1. Relais SharePoint à reprendre
+        $aRelayer = array_filter($d['fichiers'], fn($f) => ($f['sharepoint']['etat'] ?? '') !== 'ok');
+        if ($aRelayer && graph_configure()) {
+            $ok = 0; $ko = 0;
+            foreach ($aRelayer as $f) { depot_relayer($id, $f['nom']) === 'ok' ? $ok++ : $ko++; }
+            $points[] = "RELAIS SharePoint — $etiquette : " . count($aRelayer) . ' pièce(s) reprises, ' . ($ko ? "$ko toujours en échec (voir la console, télécharger le zip)" : 'toutes classées');
+            $d = depot_lire($id) ?? $d;
+        } elseif ($aRelayer && !graph_configure()) {
+            $points[] = "RELAIS non configuré — $etiquette : " . count($aRelayer) . ' pièce(s) sur le serveur seulement';
+        }
+        // 2. Pièces déposées mais non « terminées » par le client : on prévient le cabinet à sa place
+        $dernier = $d['depots'] ? end($d['depots'])['date'] : '';
+        $nonSignalees = array_values(array_filter($d['fichiers'], fn($f) => $f['date'] > $dernier && strtotime($f['date']) < $maintenant - $delaiSansTerminer));
+        if ($nonSignalees) {
+            $liste = implode("\n", array_map(fn($f) => '    - ' . $f['original'] . ' (' . depot_taille_lisible((int)$f['taille']) . ', ' . depot_date_fr($f['date']) . ')', $nonSignalees));
+            $points[] = "PIÈCES NON SIGNALÉES — $etiquette : " . count($nonSignalees) . " pièce(s) déposée(s) sans clic « Terminer » :\n$liste\n    " . (!empty($d['sharepoint_url']) ? 'SharePoint : ' . $d['sharepoint_url'] : 'Console : ' . SITE_URL . '/admin/depots');
+            depot_modifier($id, function (array &$x) use ($nonSignalees) {
+                $x['depots'][] = ['date' => date('c'), 'message' => '(signalées au cabinet par la veille automatique)', 'fichiers' => array_map(fn($f) => $f['nom'], $nonSignalees), 'veille' => true];
+            });
+        }
+        // 3. Lien envoyé, aucune pièce, depuis plusieurs jours
+        if ($statut === 'ouvert' && $d['fichiers'] === []) {
+            $depuis = strtotime($d['lien_envoye'] ?? $d['cree']);
+            $age = (int)floor(($maintenant - $depuis) / 86400);
+            $resteJours = (int)ceil((strtotime($d['expire'] . ' 23:59:59') - $maintenant) / 86400);
+            if ($age >= $relanceApresJours && ($age % $relanceApresJours === 0 || $resteJours <= 3)) {
+                $points[] = "SANS DÉPÔT — $etiquette : lien " . ($d['lien_envoye'] ? 'envoyé' : 'créé') . " il y a $age jours, aucune pièce ; expire dans $resteJours jour(s)" . ($d['client']['email'] ? " — relance possible depuis la console (« Renvoyer le lien »)" : '');
+            }
+        }
+        // 4. Lien qui expire bientôt avec des pièces reçues mais toujours ouvert
+        if ($statut === 'ouvert' && $d['fichiers'] !== []) {
+            $resteJours = (int)ceil((strtotime($d['expire'] . ' 23:59:59') - $maintenant) / 86400);
+            if ($resteJours === 3) { $points[] = "ÉCHÉANCE — $etiquette : le lien expire dans 3 jours (" . count($d['fichiers']) . ' pièce(s) reçues) — prolonger ou clore'; }
+        }
+    }
+    $envoye = false;
+    if ($points && $envoyerMail) {
+        $corps = "Veille quotidienne du dépôt de pièces — " . date('d/m/Y H:i') . "\n\n" . implode("\n\n", array_map(fn($p) => '• ' . $p, $points))
+            . "\n\nConsole : " . SITE_URL . "/admin/depots\n";
+        $envoye = envoyer_mail($CONFIG['cabinet_email'], '[SITE] Veille dépôts — ' . count($points) . ' point(s)', $corps);
+    }
+    if (!is_dir(DOSSIER_CACHE)) { @mkdir(DOSSIER_CACHE, 0700, true); }
+    @file_put_contents(depot_veille_fichier(), json_encode(['derniere' => $maintenant, 'points' => count($points), 'mail' => $envoye]), LOCK_EX);
+    journal('depot-veille', count($points) . ($envoye ? '-mail' : ''));
+    return ['points' => $points, 'mail' => $envoye];
+}
