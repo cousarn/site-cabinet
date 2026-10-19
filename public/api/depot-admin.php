@@ -20,7 +20,11 @@ require __DIR__ . '/_depot.php';
 $cle = (string)depot_reglage('cle_admin');
 if ($cle === '' || strlen($cle) < 12) {
     $etat = ['lue' => 'fichier serveur lu, clé absente ou trop courte', 'illisible' => 'fichier serveur ILLISIBLE (faute de syntaxe PHP) : le site tourne sur ses valeurs par défaut', 'absente' => 'aucun fichier serveur trouvé'][$CONFIG_ETAT ?? 'absente'];
-    json_reponse(['ok' => false, 'connecte' => false, 'erreur' => 'Console fermée : définir une clé d’au moins 12 caractères dans depot.cle_admin (configuration serveur) — ' . $etat . '.'], 503);
+    // Diagnostic sans valeur : noms des clés du fichier serveur et longueur des chaînes (jamais leur contenu).
+    $forme = function ($t) use (&$forme) { $r = []; foreach ((array)$t as $k => $v) { $r[] = is_array($v) ? $k . '{' . implode(',', $forme($v)) . '}' : $k . ':' . (is_string($v) ? strlen($v) : gettype($v)); } return $r; };
+    $local = [];
+    foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $f) { if (is_file($f)) { try { $local = (array)(require $f); } catch (\Throwable $e) { $local = []; } break; } }
+    json_reponse(['ok' => false, 'connecte' => false, 'erreur' => 'Console fermée : définir une clé d’au moins 12 caractères dans depot.cle_admin (configuration serveur) — ' . $etat . '.', 'structure' => implode(' ', $forme($local))], 503);
 }
 
 session_name('depotadmin');
