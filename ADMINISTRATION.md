@@ -219,6 +219,8 @@ Pas de texte généré en masse, pas de pages « ville » dupliquées (Rennes, S
 
 ## 10. Brief type pour une session IA
 
+L'agent webmestre est décrit dans `.claude/skills/site-cabinet-webmestre/SKILL.md` (chargé automatiquement par Claude Code dans ce dépôt, ou enregistré comme compétence « site-cabinet-webmestre » du compte Claude) ; `CLAUDE.md` en donne le résumé. Un kit de démarrage hors Git (brief à coller, copies de ces documents, note d'emploi du dépôt, notice de l'agent SECIB) est sur le OneDrive du cabinet : `site web sauvegardes\site 2026 - kit session IA\`.
+
 > Tu administres le site statique Astro du Cabinet Arnaud Cousin (dépôt `cousarn/site-cabinet`, dossier `astro/`). Lis `ADMINISTRATION.md` puis `README.md`. Tâche : ___. Contraintes : aucun secret dans le dépôt ni dans la conversation ; ne jamais réécrire les branches `deploy-*` ; toute jurisprudence citée doit avoir été lue sur Judilibre ou Légifrance avec son lien ; descriptions ≤ 170 caractères ; vérifier `npm run check` et `npm run build` avant de pousser ; pousser sur `main`, contrôler la préprod, puis proposer le tag de production sans le poser toi-même sauf instruction expresse. Rends compte en français, en quelques lignes, avec les URL à vérifier.
 
 Historique des décisions et de la mise en ligne (18–19 octobre 2026) : voir `README.md`.
