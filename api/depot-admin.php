@@ -19,7 +19,8 @@ require __DIR__ . '/_depot.php';
 
 $cle = (string)depot_reglage('cle_admin');
 if ($cle === '' || strlen($cle) < 12) {
-    json_reponse(['ok' => false, 'connecte' => false, 'erreur' => 'Console fermée : définir une clé d’au moins 12 caractères dans depot.cle_admin (configuration serveur).'], 503);
+    $etat = ['lue' => 'fichier serveur lu, clé absente ou trop courte', 'illisible' => 'fichier serveur ILLISIBLE (faute de syntaxe PHP) : le site tourne sur ses valeurs par défaut', 'absente' => 'aucun fichier serveur trouvé'][$CONFIG_ETAT ?? 'absente'];
+    json_reponse(['ok' => false, 'connecte' => false, 'erreur' => 'Console fermée : définir une clé d’au moins 12 caractères dans depot.cle_admin (configuration serveur) — ' . $etat . '.'], 503);
 }
 
 session_name('depotadmin');
