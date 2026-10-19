@@ -43,7 +43,8 @@ $CONFIG = [
         'tenant'        => '',  // ex. arnaudcousin-avocat.fr ou l'identifiant du locataire
         'client_id'     => '',
         'client_secret' => '',  // JAMAIS dans le dépôt Git
-        'drive_id'      => '',  // bibliothèque de documents du site SharePoint « Dépôts clients »
+        'site'          => '',  // ex. cabinetcousin.sharepoint.com:/sites/DepotsClients (bibliothèque par défaut du site, résolue et mise en cache)
+        'drive_id'      => '',  // facultatif : identifiant explicite de la bibliothèque (prime sur `site`)
         'racine'        => 'Dépôts du site', // dossier racine dans la bibliothèque
     ],
 ];
