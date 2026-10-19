@@ -15,7 +15,7 @@ plutôt que de lui lister des étapes — sauf ce qui lui revient (ci-dessous).
 1. `ADMINISTRATION.md` (mode d'emploi complet : arborescence, tâches courantes, déploiement, comptes, fichier serveur, veille, SEO, brief type § 10).
 2. `README.md` (technique, formulaires, paiement, historique des décisions).
 3. `public/api/config.local.example.php` (modèle du fichier serveur hors Git) et `public/api/_lib.php` (réglages par défaut).
-Si tu n'es pas dans un clone : `git clone https://github.com/cousarn/site-cabinet.git` (racine du dépôt = dossier `astro/` en local chez Arnaud), `npm ci`.
+Si tu n'es pas dans un clone : `git clone https://github.com/cousarn/site-cabinet.git` (racine du dépôt = dossier `astro/` en local chez Arnaud), `npm ci`. Le dépôt contient aussi `CLAUDE.md` et cette compétence (`.claude/skills/site-cabinet-webmestre/SKILL.md`), à tenir à jour.
 
 ## 2. Ce que tu ne fais jamais (non négociable)
 
@@ -65,7 +65,7 @@ Préprod et prod partagent `/home/arnaudcoqa/{config,cache,consultations,depots}
 - Envoi de courriels : `from_email` = `site@` (alias de `cabinet@` chez Microsoft 365) ; tests depuis la préprod avec `cabinet@` comme adresse du client.
 - Test local : `php -S` avec un routeur et un `sendmail_path` de capture (placer `-d sendmail_path=` **avant** le script routeur).
 
-**Dépôt de pièces (voir aussi la note d'emploi)**
+**Dépôt de pièces (voir aussi la note d'emploi https://claude.ai/code/artifact/b71204eb-fe77-412e-b946-f7fa1fe79c5d)**
 - Jeton 32 caractères base64url, identifiant = sha256('depot|'+jeton) tronqué ; manifeste `depot.json` ; envoi par morceaux de 4 Mio ; type réel vérifié par `finfo` (HEIC, OOXML, `.msg`, zip sans exécutable) ; fichiers renommés `NN - nom.ext` ; relais Graph : PUT direct ≤ 4 Mo, sinon session d'envoi par fragments de 5 Mio **sans en-tête Authorization**.
 - SharePoint : site « Dépôts clients » `https://cabinetcousin.sharepoint.com/sites/DepotsClients`, bibliothèque Documents, racine `Dépôts du site`, un sous-dossier `<intitulé> — <référence>` par lien ; application Entra « Site du cabinet — dépôt de pièces », permission d'application `Sites.Selected` + octroi en écriture sur ce seul site (`POST /sites/{id}/permissions` depuis Graph Explorer, connecté en `cabinet@`).
 - **La référence saisie dans la console doit être le numéro Secib à 9 chiffres** : l'agent du poste Secib (`C:\Users\arnau\agent-secib\outils\depot_rattachement.py`, tâche Windows 18 h 15) rattache les pièces au dossier Secib portant ce numéro et envoie « Rapport de rattachement de pièces client — jj/mm/aaaa » seulement s'il y a eu des dépôts.
@@ -74,7 +74,7 @@ Préprod et prod partagent `/home/arnaudcoqa/{config,cache,consultations,depots}
 **Pilotage des outils d'Arnaud**
 - Extension Chrome : toujours passer `tabId` à `navigate` (sans lui, l'action part sur un autre onglet) ; les captures d'onglets en arrière-plan expirent → `find` / `get_page_text` ; les `<select>` natifs (Graph Explorer, manager OVH) se choisissent au clavier (flèches + Entrée).
 - Pilotage d'écran de son PC `pcportable-mais` (Windows, un écran 2560×1600) : applications accordées à la demande (FileZilla, Bloc-notes…) ; l'action « taper » passe par le presse-papiers et **écrase** son contenu ; les terminaux ne sont accordés qu'en « clic » (pas de frappe) → les commandes locales, c'est Arnaud qui les lance (fichiers `.cmd` à menu).
-- Accès aux dossiers de son PC : demande d'accès affichée dans l'application Claude du PC (pas sur téléphone) ; OneDrive du cabinet = `C:\Users\arnau\OneDrive` (compte cabinet@ malgré le nom) ; agent Secib = `C:\Users\arnau\agent-secib` (`outils\secib_agent.py`, `mapping_secib.json`, comptes rendus dans `doc\`).
+- Accès aux dossiers de son PC : demande d'accès affichée dans l'application Claude du PC (pas sur téléphone) ; OneDrive du cabinet = `C:\Users\arnau\OneDrive` (compte cabinet@ malgré le nom) ; agent Secib = `C:\Users\arnau\agent-secib` (`outils\secib_agent.py`, `mapping_secib.json`, comptes rendus dans `doc\`) ; kit de démarrage d'une session : `OneDrive\site web sauvegardes\site 2026 - kit session IA\`.
 
 ## 6. Contenu et style
 
