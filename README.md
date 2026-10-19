@@ -135,7 +135,8 @@ Page de réservation **personnelle** du compte `cabinet@` (« Bookings with me �
 
 ## Points en attente
 
-- Relais SharePoint du dépôt de pièces : à activer en renseignant `graph` dans le fichier serveur (voir ADMINISTRATION.md § 6).
 - Page Bookings partagée (logo, couleurs du cabinet, formulaire personnalisé) si Microsoft corrige l'erreur de création.
+
+Réglé le 19/10/2026 : dépôt de pièces en service avec relais SharePoint (site « Dépôts clients », application Entra `Sites.Selected`, secret et clé de console dans le fichier serveur), assistant de pré-entretien, IPN PayPal.
 
 Réglé le 18/10/2026 : Bookings (page personnelle, 3 formats à 132 € TTC), question simple écrite à 80 € TTC, SIRET 429 772 940 00038 et TVA FR70 429 772 940 (avis SIRENE / factures), assureur RCP (notice 2026 du Barreau : MMA IARD apériteur + AXA France IARD, monde entier hors établissement permanent USA/Canada), médiateur CNB, horaires 9h–12h / 14h–19h, accès PMR par ascenseur, bus C5/C6/9/57, parking Colombier (1 150 places), crédits photos © Cabinet Arnaud Cousin, barème 2026 (consultation 132 € TTC), grille devis DCM en HT dans `_lib.php`, alias `site@` (Microsoft 365), fichier serveur `/config/site-cabinet.php` déposé (RIB).

@@ -47,7 +47,12 @@ function depot_chemin(string $id): string { return depot_racine() . '/' . $id; }
 function depot_jeton_nouveau(): string { return rtrim(strtr(base64_encode(random_bytes(24)), '+/', '-_'), '='); }
 function depot_jeton_format_ok(string $j): bool { return (bool)preg_match('/^[A-Za-z0-9_-]{32}$/', $j); }
 function depot_id(string $jeton): string { return substr(hash('sha256', 'depot|' . $jeton), 0, 24); }
-function depot_lien(string $jeton): string { return SITE_URL . '/depot/' . $jeton; }
+/** Lien personnel du client. Sur la préproduction, le lien reste sur la préproduction (essais) ; partout ailleurs, le domaine officiel. */
+function depot_lien(string $jeton): string {
+    $hote = (string)($_SERVER['HTTP_HOST'] ?? '');
+    $base = (str_starts_with($hote, 'preprod.') && preg_match('/^[a-z0-9.-]+$/', $hote)) ? 'https://' . $hote : SITE_URL;
+    return $base . '/depot/' . $jeton;
+}
 
 function depot_lire(string $id): ?array {
     if (!preg_match('/^[a-f0-9]{24}$/', $id)) { return null; }
