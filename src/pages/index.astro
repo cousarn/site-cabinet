@@ -37,7 +37,8 @@ const leads = [
 >
   <!-- Hero -->
   <section class="hero">
-    <Image src={cite} alt="" class="hero__photo" style="object-position: 62% 40%" widths={[800, 1200, 1600, 2400]} sizes="100vw" quality={68} loading="eager" fetchpriority="high" />
+    <!-- Fond : la Cité judiciaire en miroir (le soleil levant passe à droite, visible à côté du portrait ; les vitres à reflets passent sous le voile) -->
+    <Image src={cite} alt="" class="hero__photo accueil-hero__photo" widths={[800, 1200, 1600, 2400]} sizes="100vw" quality={68} loading="eager" fetchpriority="high" />
     <div class="hero__voile" aria-hidden="true" style="background: linear-gradient(90deg, var(--vert) 0%, var(--vert) 30%, rgba(13,38,34,.55) 52%, rgba(13,38,34,.22) 75%, rgba(13,38,34,.3) 100%), linear-gradient(0deg, rgba(13,38,34,.45) 0%, rgba(13,38,34,0) 35%)"></div>
     <div class="conteneur hero__contenu accueil-hero">
       <div class="pile entree" style="gap: 28px; max-width: 640px">
@@ -260,6 +261,11 @@ const leads = [
 </Base>
 
 <style>
+  /* Fond du hero : Cité judiciaire en miroir, légèrement agrandie — soleil levant à droite du portrait, tour au centre.
+     Sur mobile (bandeau étroit), on cadre la tour : le halo du soleil nuirait à la lisibilité du titre. */
+  .accueil-hero__photo { object-position: 0% 45%; transform: scaleX(-1) scale(1.18); transform-origin: 50% 50%; }
+  @media (max-width: 720px) { .accueil-hero__photo { object-position: 24% 45%; transform: scaleX(-1); filter: brightness(.72); } }
+
   .accueil-hero { padding-top: 96px; padding-bottom: 80px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 56px; align-items: end; }
   .accueil-portrait { max-width: 400px; justify-self: center; }
   .accueil-portrait img { aspect-ratio: 4 / 5; }
