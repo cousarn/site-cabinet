@@ -74,6 +74,7 @@ function depot_resume(array $d): array {
 }
 
 if ($action === 'liste') {
+    if (depot_veille_derniere() < time() - 20 * 3600) { depot_veille(true); } // à défaut de tâche planifiée
     $liste = depot_tous();
     // Purge : dépôt échu ou clos depuis 7 jours dont toutes les pièces sont dans SharePoint, ou vide — les copies SharePoint restent.
     $conservation = (int)depot_reglage('conservation_jours');
