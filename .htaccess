@@ -40,6 +40,9 @@ ErrorDocument 404 /404.html
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^mentions-legales\.html$ https://%{HTTP_HOST}/mentions-legales [R=301,L]
 
+  # 2 bis. Lien personnel de dépôt de pièces : /depot/<jeton> → page statique (le jeton est lu par le script de la page)
+  RewriteRule ^depot/[A-Za-z0-9_-]{20,}/?$ /services/depot-pieces.html [L]
+
   # 3. Pas de barre finale (sauf racine), pas d'extension visible
   #    Les redirections externes ne s'appliquent qu'à la requête d'origine (REDIRECT_STATUS vide),
   #    jamais après la réécriture interne vers le .html ni pour la page d'erreur 404.

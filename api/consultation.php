@@ -26,6 +26,10 @@ $pieces = enregistrer_pieces('pieces', 'consultation-' . $ref);
 $fichier = rtrim($CONFIG['stockage'], '/') . '/consultation-' . $ref . '/demande.txt';
 @mkdir(dirname($fichier), 0700, true);
 @file_put_contents($fichier, "Réf. $ref — " . date('c') . "\nFormule : $libelle ($prix €)\nDomaine : $domaine\nNom : $nom\nCourriel : $email\n\nQuestion :\n$question\n\nPièces : " . (implode(', ', $pieces) ?: 'aucune') . "\n");
+// Version structurée, lue par paypal-ipn.php (prix attendu, nom et courriel du client) ; la question reste dans demande.txt.
+@file_put_contents(dirname($fichier) . '/demande.json', json_encode(
+    ['ref' => $ref, 'date' => date('c'), 'formule' => $formule, 'libelle' => $libelle, 'prix' => $prix, 'domaine' => $domaine, 'nom' => $nom, 'email' => $email, 'pieces' => $pieces],
+    JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), LOCK_EX);
 
 $virement = "Par virement de $prix € TTC, référence « $ref » :\n$CONFIG[rib]\nou par chèque à l'ordre de Maître Arnaud Cousin.";
 $payer = null;

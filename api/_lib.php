@@ -10,12 +10,16 @@ date_default_timezone_set('Europe/Paris');
 
 const SITE_URL = 'https://arnaudcousin-avocat.fr';
 
+/** Racine web réelle : DOCUMENT_ROOT en HTTP ; en ligne de commande (tâche planifiée) PHP la laisse vide → dossier parent d'api/. */
+$RACINE_WEB = (string)($_SERVER['DOCUMENT_ROOT'] ?? '');
+if ($RACINE_WEB === '') { $RACINE_WEB = dirname(__DIR__); }
+
 /** Réglages par défaut — surchargés par config.local.php si présent. */
 $CONFIG = [
     'cabinet_email'   => 'cabinet@arnaudcousin-avocat.fr', // destinataire des formulaires
     'from_email'      => 'site@arnaudcousin-avocat.fr',    // expéditeur technique (alias de cabinet@ dans Microsoft 365)
     'from_name'       => 'Site du cabinet Arnaud Cousin',
-    'stockage'        => dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..') . '/consultations', // hors racine web
+    'stockage'        => dirname($RACINE_WEB) . '/consultations', // hors racine web
     'rate_par_heure'  => 6,     // envois max par IP et par formulaire
     'taille_max_mo'   => 20,    // pièces jointes cumulées
     'paiement'        => 'paypal',   // 'paypal' (PayPal ou carte, page hébergée par PayPal ; RIB en secours) | 'virement' (RIB seul) | 'stripe' (phase 2)
@@ -30,19 +34,40 @@ $CONFIG = [
         'negociation'   => 500,  // accord non encore obtenu à l'ouverture du dossier
         // déplacement hors Rennes : en sus, au réel
     ],
+    'depot'           => [ // dépôt de pièces par lien personnel (/depot/<jeton>) — voir _depot.php
+        'dossier'          => dirname($RACINE_WEB) . '/depots', // hors racine web
+        'cle_admin'        => '',   // phrase secrète de la console /admin/depots — À DÉFINIR dans /config/site-cabinet.php (vide = console fermée)
+        'validite_jours'   => 30,   // durée de vie d'un lien par défaut
+        'fichier_max_mo'   => 50,   // par fichier
+        'total_max_mo'     => 500,  // par lien
+        'fichiers_max'     => 60,   // par lien
+        'conservation_jours' => 90, // purge des pièces sur le serveur après la fin de validité (les copies SharePoint restent)
+    ],
+    'graph'           => [ // relais vers SharePoint (Microsoft Graph, application Entra avec la permission Sites.Selected) — tout dans /config/site-cabinet.php
+        'tenant'        => '',  // ex. arnaudcousin-avocat.fr ou l'identifiant du locataire
+        'client_id'     => '',
+        'client_secret' => '',  // JAMAIS dans le dépôt Git
+        'site'          => '',  // ex. cabinetcousin.sharepoint.com:/sites/DepotsClients (bibliothèque par défaut du site, résolue et mise en cache)
+        'drive_id'      => '',  // facultatif : identifiant explicite de la bibliothèque (prime sur `site`)
+        'racine'        => 'Dépôts du site', // dossier racine dans la bibliothèque
+    ],
 ];
 /* Configuration locale : d'abord hors de la racine web (survit à tous les déploiements Git/FTP),
    sinon api/config.local.php (ancien emplacement). */
-$racineHebergement = dirname($_SERVER['DOCUMENT_ROOT'] ?? __DIR__ . '/..');
+$racineHebergement = dirname($RACINE_WEB);
+/** État de la configuration serveur : 'lue' | 'illisible' (faute de syntaxe) | 'absente' — affiché par la console, sans contenu. */
+$CONFIG_ETAT = 'absente';
 foreach ([$racineHebergement . '/config/site-cabinet.php', __DIR__ . '/config.local.php'] as $fichierConfig) {
     if (is_file($fichierConfig)) {
         try {
             $local = require $fichierConfig;
-            if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); }
+            if (is_array($local)) { $CONFIG = array_replace_recursive($CONFIG, $local); $CONFIG_ETAT = 'lue'; }
+            else { $CONFIG_ETAT = 'illisible'; }
         } catch (\Throwable $e) {
             /* Fichier de configuration invalide (faute de frappe) : on garde les valeurs par défaut
                plutôt que de casser les formulaires ; l'erreur est journalisée. */
             error_log('site-cabinet : configuration serveur illisible (' . $e->getMessage() . ')');
+            $CONFIG_ETAT = 'illisible';
         }
         break;
     }
@@ -82,8 +107,9 @@ function honeypot_ok(): bool {
     return trim((string)($_POST['site'] ?? '')) === '';
 }
 
-/** Limite de débit par IP et par formulaire, fichiers dans api/.cache (interdit en HTTP par .htaccess). */
-function limiter_debit(string $formulaire): void {
+/** Limite de débit par IP et par formulaire (compteurs hors racine web). $max : plafond horaire propre à l'action (défaut : rate_par_heure).
+ *  $json : répondre en JSON (API du dépôt) plutôt qu'en texte. */
+function limiter_debit(string $formulaire, ?int $max = null, bool $json = false): void {
     global $CONFIG;
     $dir = DOSSIER_CACHE;
     if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
@@ -92,9 +118,11 @@ function limiter_debit(string $formulaire): void {
     $now = time();
     $hits = is_file($f) ? (json_decode((string)file_get_contents($f), true) ?: []) : [];
     $hits = array_values(array_filter($hits, fn($t) => $t > $now - 3600));
-    if (count($hits) >= (int)$CONFIG['rate_par_heure']) {
+    if (count($hits) >= ($max ?? (int)$CONFIG['rate_par_heure'])) {
+        $message = 'Trop de demandes depuis votre connexion. Réessayez dans une heure ou appelez le cabinet.';
+        if ($json) { json_reponse(['ok' => false, 'erreur' => $message], 429); }
         http_response_code(429);
-        exit('Trop de demandes depuis votre connexion. Réessayez dans une heure ou appelez le cabinet.');
+        exit($message);
     }
     $hits[] = $now;
     @file_put_contents($f, json_encode($hits), LOCK_EX);
@@ -146,6 +174,7 @@ function lien_paypal(string $libelle, int $montant, string $ref, string $formule
         'charset'       => 'utf-8',
         'return'        => $hote . '/merci?objet=paiement&ref=' . $ref,
         'cancel_return' => $hote . '/merci?objet=consultation&ref=' . $ref . '&prix=' . $montant . '&annule=1',
+        'notify_url'    => $hote . '/api/paypal-ipn.php', // notification IPN : marque la demande « payée » (voir paypal-ipn.php)
     ], '', '&', PHP_QUERY_RFC3986);
 }
 
@@ -162,6 +191,15 @@ function erreur(string $message, int $code = 400): never {
     header('Content-Type: text/html; charset=UTF-8');
     $m = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
     echo "<!doctype html><html lang=\"fr\"><meta charset=\"utf-8\"><title>Formulaire</title><body style=\"font-family:system-ui;max-width:40em;margin:4em auto;line-height:1.5\"><h1 style=\"font-weight:500\">Le formulaire n'a pas pu être envoyé</h1><p>$m</p><p><a href=\"javascript:history.back()\">Revenir au formulaire</a> · <a href=\"/contact\">Contact</a></p></body></html>";
+    exit;
+}
+
+/** Réponse JSON (API du dépôt de pièces et console) puis arrêt. */
+function json_reponse(array $donnees, int $code = 200): never {
+    http_response_code($code);
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store');
+    echo json_encode($donnees, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
 }
 

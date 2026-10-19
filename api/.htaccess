@@ -1,5 +1,5 @@
-# Points d'entrée PHP des formulaires — seuls contact/saisine/devis/consultation sont appelables.
-<FilesMatch "^(_lib|config\.local|config)\.php$">
+# Points d'entrée PHP : contact, saisine, devis, consultation, depot, depot-admin, pre-entretien, paypal-ipn. Bibliothèques (_*.php) et configuration interdites.
+<FilesMatch "^(_.*|config\.local|config)\.php$">
   Require all denied
 </FilesMatch>
 <FilesMatch "\.(log|json|txt|md)$">
