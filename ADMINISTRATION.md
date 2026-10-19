@@ -100,6 +100,8 @@ Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) 
 
 ### 3.6 Dépôt de pièces (au quotidien)
 
+Note d'emploi complète (cabinet et secrétariat, modèle de courriel, incidents, sécurité) : https://claude.ai/code/artifact/b71204eb-fe77-412e-b946-f7fa1fe79c5d
+
 1. Ouvrir `https://arnaudcousin-avocat.fr/admin/depots`, saisir la clé de la console (`depot.cle_admin` du fichier serveur, § 6).
 2. « Nouveau lien » : civilité et nom du client, courriel, intitulé du dossier tel que dans Secib, référence, pièces attendues, validité (30 jours par défaut). Le site envoie le lien au client (ou « Copier le lien » pour le coller dans un courriel Outlook).
 3. Le client dépose depuis `/depot/<jeton>` (ordinateur ou téléphone, photos comprises) et clique « Terminer » : courriel `[SITE] Pièces déposées — <dossier>` au cabinet, accusé de réception au client. Chaque pièce est relayée dès réception dans SharePoint › site « Dépôts clients » › `Dépôts du site/<dossier — référence>/` (numérotées `01 - …`). Depuis le poste du cabinet (bibliothèque synchronisée), rattacher dans Secib comme d'habitude.
