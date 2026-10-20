@@ -103,7 +103,7 @@ Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) 
 2. *Jeton signé* (`controle_anti_robot`) : à l'ouverture de la page, le composant `src/components/Jeton.astro` demande à `/api/jeton.php` un horodatage signé, à usage unique. Le serveur refuse l'envoi si le jeton manque (robot qui poste directement, ou visiteur sans JavaScript), s'il est faux ou déjà servi, s'il a moins de 3 secondes ou plus de 7 jours. Le refus affiche une page d'erreur lisible et aucun courriel ne part. Le secret de signature est tiré au hasard dans `/home/arnaudcoqa/cache/site-cabinet/jeton.secret` (ou `jeton_secret` dans le fichier serveur) ; le supprimer invalide seulement les pages déjà ouvertes.
 3. *Contenu suspect* (`contenu_suspect`) : un lien dans le texte libre (http, www, telegra.ph, t.me, bit.ly, BBCode, HTML) fait arriver le message préfixé `[SPAM ?]`, avec un bandeau d'avertissement, **sans accusé de réception** à l'adresse saisie (qui peut être celle d'un tiers).
 
-Appliqué au contact, à la saisine, au devis et à la consultation écrite (le pré-entretien, application JavaScript, n'a que la limite de débit). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
+Appliqué au contact, à la saisine, au devis, à la consultation écrite et au pré-entretien (jeton joint à sa requête JSON). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
 
 ### 3.6 Dépôt de pièces (au quotidien)
 
@@ -170,6 +170,7 @@ Jamais : saisir un mot de passe, un code, une clé API, un IBAN dans une convers
 | Chaque mois | Lien Bookings : réserver un créneau test et l'annuler ; vérifier que les RDV Outlook bloquent bien les créneaux | Bookings |
 | Chaque mois | Fiche Google Business : horaires, avis à répondre, photos | Google |
 | Chaque mois | Veille jurisprudentielle pour les fiches existantes (recel, délivrance de legs, indivision, salaire différé) : Judilibre, 1re civ., arrêts publiés ; mettre à jour la fiche (`updated:` dans le frontmatter) si un arrêt change la règle | Judilibre |
+| Octobre | `public/.well-known/security.txt` : repousser la date `Expires` d'un an (contact de signalement des failles) | dépôt |
 | Janvier | Barème de l'aide juridictionnelle (circulaire du ministère de la Justice, NOR JUST…) → `aj` dans `honoraires.ts` | justice.gouv.fr |
 | Janvier | Notice RCP du Barreau de Rennes (assureur, n° de contrat) → `cabinet.assureur` ; millésime du barème d'honoraires si révisé | courrier de l'Ordre |
 | Janvier | Année du serment / ancienneté : automatique (`anneesExercice` dans `cabinet.ts`) ; vérifier l'affichage | accueil, cabinet |

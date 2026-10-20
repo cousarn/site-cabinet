@@ -22,6 +22,12 @@ $d = json_decode($brut, true);
 if (!is_array($d)) { json_reponse(['ok' => false, 'erreur' => 'Requête illisible.'], 400); }
 // Pot de miel : le champ caché « site » a été rempli (robot) → on fait semblant d'accepter.
 if (trim((string)($d['site'] ?? '')) !== '') { json_reponse(['ok' => true, 'ref' => reference()]); }
+// Jeton anti-robot (voir _lib.php) : demandé par la page à son ouverture, à usage unique.
+$motif = jeton_motif('pre-entretien', is_string($d['jeton'] ?? null) ? $d['jeton'] : '');
+if ($motif !== '') {
+    journal('pre-entretien', 'robot-jeton-' . $motif);
+    json_reponse(['ok' => false, 'erreur' => 'Votre envoi n’a pas pu être vérifié. Réessayez dans un instant ; si le problème persiste, rechargez la page ou appelez le cabinet au 02 30 96 33 35.'], 400);
+}
 limiter_debit('pre-entretien', null, true);
 
 /* ───────────── Nettoyage ───────────── */

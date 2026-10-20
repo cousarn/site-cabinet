@@ -1,5 +1,5 @@
 # Points d'entrée PHP : contact, saisine, devis, consultation, jeton (anti-robot), depot, depot-admin, pre-entretien, paypal-ipn. Bibliothèques (_*.php) et configuration interdites.
-<FilesMatch "^(_.*|config\.local|config)\.php$">
+<FilesMatch "^(_.*|config.*)\.php$">
   Require all denied
 </FilesMatch>
 <FilesMatch "\.(log|json|txt|md)$">

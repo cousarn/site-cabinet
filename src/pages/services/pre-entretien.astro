@@ -149,6 +149,18 @@ const reperes = [
   const etiquette = document.getElementById('pe-etape') as HTMLElement;
   const progression = racine.querySelector('.pe-progression') as HTMLElement;
   const API = racine.dataset.api || '/api/pre-entretien.php';
+  // Jeton anti-robot (voir public/api/_lib.php) : demandé à l'ouverture, à usage unique, refusé s'il a moins de 3 s.
+  let jeton = '';
+  let jetonA = 0;
+  const prendreJeton = async () => {
+    try {
+      const r = await fetch('/api/jeton.php?f=pre-entretien', { cache: 'no-store', credentials: 'same-origin' });
+      const d = await r.json();
+      if (d && typeof d.jeton === 'string') { jeton = d.jeton; jetonA = Date.now(); }
+    } catch { /* réseau indisponible : le serveur expliquera le refus */ }
+  };
+  prendreJeton();
+  window.addEventListener('pageshow', (e) => { if (e.persisted) prendreJeton(); });
   const liensRdv: Record<string, string> = JSON.parse(racine.dataset.rdv || '{}');
   const CLE_BROUILLON = 'pe-brouillon-v1';
   const AVATAR = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4z"/><path d="M8 8h8M8 11h5"/></svg>';
@@ -442,7 +454,12 @@ const reperes = [
           envoyer.disabled = true; envoyer.textContent = 'Envoi en cours…'; erreur.textContent = '';
           const attente = el('p', { class: 'pe-note', role: 'status', text: 'Transmission au cabinet — quelques secondes.' }); actions.append(attente);
           try {
-            const rep = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(charge(liste)) });
+            if (!jeton) await prendreJeton();
+            const reste = 3500 - (Date.now() - jetonA);
+            if (reste > 0) await new Promise((r) => setTimeout(r, reste));
+            const corps = { ...charge(liste), jeton };
+            jeton = ''; prendreJeton(); // un jeton ne sert qu'une fois : le suivant est prêt pour un nouvel essai
+            const rep = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corps) });
             const j = await rep.json().catch(() => ({})) as { ok?: boolean; ref?: string; erreur?: string };
             if (rep.ok && j.ok && j.ref) { oublier(); location.assign(`/merci?objet=pre-entretien&ref=${encodeURIComponent(j.ref)}`); return; }
             erreur.textContent = j.erreur || 'L’envoi n’a pas abouti. Réessayez dans un instant ; en cas d’échec répété, appelez le cabinet.';
