@@ -1,0 +1,5 @@
+# Signaler une faille de sécurité sur ce site — Cabinet Arnaud Cousin, avocat au Barreau de Rennes
+Contact: mailto:cabinet@arnaudcousin-avocat.fr
+Expires: 2027-10-20T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://arnaudcousin-avocat.fr/.well-known/security.txt
