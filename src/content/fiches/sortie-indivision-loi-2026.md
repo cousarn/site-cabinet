@@ -4,7 +4,7 @@ description: "La loi du 7 avril 2026 consacre des outils que les juges appliquai
 date: 2026-10-20
 domaine: successions
 type: billet
-lecture: "10 min"
+lecture: "11 min"
 ---
 
 On l’a annoncée comme la fin du veto de l’héritier récalcitrant. La [loi n° 2026-248 du 7 avril 2026](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053773159) « visant à simplifier la sortie de l’indivision » consacre surtout ce que les tribunaux accordaient déjà, et ce que le Code civil prévoyait depuis 2009. Le cabinet ne l’a pas attendue : depuis près de quinze ans, il développe des méthodes de sortie d’indivision alternatives à la licitation, cette vente aux enchères qui reste l’horizon trop fréquent des partages contentieux. Pour l’indivisaire bloqué, la leçon est double : il n’y avait pas lieu d’attendre la loi, et il n’y a pas lieu de s’en contenter.
@@ -47,6 +47,12 @@ Deux limites, que le cabinet intègre dès l’assignation :
 
 Le mandataire est rémunéré selon ce que fixe le jugement qui le désigne, pour une mission dont ce même jugement fixe la durée, prorogeable ([art. 813-9](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006432316)). Rien de neuf, là encore : avant même la réforme de 2006, la Cour de cassation admettait la nomination d’un administrateur provisoire de la succession lorsque les conflits entre héritiers et légataire en mettaient en péril les intérêts ([Cass. 1re civ., 17 janvier 2006, n° 04-11.267](https://www.courdecassation.fr/decision/60794d829ba5988459c488fd)). Hors succession — entre ex-époux, partenaires ou concubins —, l’article 815-6 offre au même juge des outils voisins : désigner un indivisaire comme administrateur, nommer un séquestre, et désormais autoriser un indivisaire à vendre seul.
 
+Le cabinet a une longue expérience de ces ventes forcées par mandataire successoral, qu’il conduit de bout en bout :
+
+- **La mise en place.** Choix du fondement, assignation en procédure accélérée au fond, proposition d’un mandataire et, surtout, rédaction de sa mission : quels biens, quels actes, à quel prix plancher, pour quelle durée. C’est le jugement qui fixe ce que le mandataire pourra faire ; tout se joue à ce stade.
+- **Le suivi.** Dialogue avec le mandataire, estimations et offres, comptes rendus, prorogation de la mission ou autorisation de nouveaux actes lorsque la situation l’exige (art. 813-9 et 814), réponse aux incidents soulevés par l’héritier qui résiste.
+- **La distribution des fonds.** Le prix encaissé reste indivis. Les créanciers de la succession et ceux de la gestion des biens sont payés par prélèvement sur l’actif avant le partage ([art. 815-17](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006136538/)) ; le solde se répartit par accord entre héritiers, par une avance en capital sur leurs droits que le président du tribunal peut ordonner, lui aussi en procédure accélérée au fond, « à concurrence des fonds disponibles » (art. 815-11), ou par le partage, amiable ou judiciaire.
+
 ## 5. Les autres voies qui vont plus vite
 
 Le bon levier dépend de trois questions : qui détient quoi, qu’est-ce qui presse, et le bien est-il grevé d’un usufruit. Selon les réponses :
@@ -60,7 +66,7 @@ Le bon levier dépend de trois questions : qui détient quoi, qu’est-ce qui p
 
 ## 6. Comment le cabinet procède
 
-Depuis près de quinze ans, le cabinet développe ces méthodes alternatives à la licitation : vente autorisée de gré à gré, mandataire successoral, cession de droits, partage ordonné sans détour. Au premier rendez-vous, il dresse la carte des droits (quotes-parts, usufruit, indivisaire protégé, absent ou introuvable), repère ce qui presse et chiffre ce que coûte chaque mois de blocage. Il choisit ensuite le levier, souvent plusieurs à la fois : une mise en demeure chiffrée, une demande de désignation d’un mandataire successoral ou d’autorisation de vente, une assignation en partage pour fermer les issues dilatoires. La licitation reste au dossier comme ultime recours — et comme argument : chacun sait ce qu’elle coûte. Devant le tribunal judiciaire et jusqu’à la cour d’appel, avec le même interlocuteur du début à la fin.
+Depuis près de quinze ans, le cabinet développe ces méthodes alternatives à la licitation : vente forcée par mandataire successoral, vente autorisée de gré à gré, cession de droits, partage ordonné sans détour. Au premier rendez-vous, il dresse la carte des droits (quotes-parts, usufruit, indivisaire protégé, absent ou introuvable), repère ce qui presse et chiffre ce que coûte chaque mois de blocage. Il choisit ensuite le levier, souvent plusieurs à la fois : une mise en demeure chiffrée, une demande de désignation d’un mandataire successoral ou d’autorisation de vente, une assignation en partage pour fermer les issues dilatoires. La licitation reste au dossier comme ultime recours — et comme argument : chacun sait ce qu’elle coûte. Devant le tribunal judiciaire et jusqu’à la cour d’appel, avec le même interlocuteur du début à la fin.
 
 <div class="encadre">
 
@@ -68,4 +74,4 @@ Depuis près de quinze ans, le cabinet développe ces méthodes alternatives à 
 
 </div>
 
-*Sources : loi n° 2026-248 du 7 avril 2026 (JO du 8 avril) ; loi n° 2009-526 du 12 mai 2009 ; loi n° 2017-285 du 6 mars 2017, art. 1er et 2 ; C. civ., art. 813-1, 813-9, 814, 815-5, 815-5-1, 815-6, 815-9, 815-10, 815-14, 836, 840 et 841 ; CPC, art. 481-1, 1273 à 1279, 1360, 1361, 1364, 1377 et 1380 ; Cass. 1re civ., 16 févr. 1988, n° 86-16.489 ; Cass. 1re civ., 17 janv. 2006, n° 04-11.267 ; Cass. 1re civ., 4 déc. 2013, n° 12-20.158 ; Cass. 1re civ., 13 mai 2020, n° 18-26.702 ; CA Rennes, 1re ch., 14 févr. 2023, RG n° 22/03195. Textes et décisions consultés sur Légifrance, Judilibre et Lexis 360 le 20 octobre 2026.*
+*Sources : loi n° 2026-248 du 7 avril 2026 (JO du 8 avril) ; loi n° 2009-526 du 12 mai 2009 ; loi n° 2017-285 du 6 mars 2017, art. 1er et 2 ; C. civ., art. 813-1, 813-9, 814, 815-5, 815-5-1, 815-6, 815-9, 815-10, 815-11, 815-14, 815-17, 836, 840 et 841 ; CPC, art. 481-1, 1273 à 1279, 1360, 1361, 1364, 1377 et 1380 ; Cass. 1re civ., 16 févr. 1988, n° 86-16.489 ; Cass. 1re civ., 17 janv. 2006, n° 04-11.267 ; Cass. 1re civ., 4 déc. 2013, n° 12-20.158 ; Cass. 1re civ., 13 mai 2020, n° 18-26.702 ; CA Rennes, 1re ch., 14 févr. 2023, RG n° 22/03195. Textes et décisions consultés sur Légifrance, Judilibre et Lexis 360 le 20 octobre 2026.*
