@@ -98,6 +98,13 @@ Déposer un WebP dans `src/assets/photos/` (1 536 à 2 400 px de large, qualité
 
 Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) sont en PHP dans `public/api/` et envoient depuis `site@`. Pour tester sans polluer : envoyer depuis la préprod avec `cabinet@` comme adresse du client ; les deux mails arrivent dans la boîte du cabinet (référence du type `261018-747E`). Les pièces des consultations écrites et les synthèses de pré-entretien sont stockées hors racine web dans `/home/arnaudcoqa/consultations/<réf>/` ; les paiements PayPal confirmés y laissent `paye.json`.
 
+**Protection contre les robots** (oct. 2026, après les premiers spams reçus par le formulaire de contact). Trois filtres, dans `_lib.php` :
+1. *Pot de miel* : champ invisible `site` ; s'il est rempli, l'envoi est ignoré en silence.
+2. *Jeton signé* (`controle_anti_robot`) : à l'ouverture de la page, le composant `src/components/Jeton.astro` demande à `/api/jeton.php` un horodatage signé, à usage unique. Le serveur refuse l'envoi si le jeton manque (robot qui poste directement, ou visiteur sans JavaScript), s'il est faux ou déjà servi, s'il a moins de 3 secondes ou plus de 7 jours. Le refus affiche une page d'erreur lisible et aucun courriel ne part. Le secret de signature est tiré au hasard dans `/home/arnaudcoqa/cache/site-cabinet/jeton.secret` (ou `jeton_secret` dans le fichier serveur) ; le supprimer invalide seulement les pages déjà ouvertes.
+3. *Contenu suspect* (`contenu_suspect`) : un lien dans le texte libre (http, www, telegra.ph, t.me, bit.ly, BBCode, HTML) fait arriver le message préfixé `[SPAM ?]`, avec un bandeau d'avertissement, **sans accusé de réception** à l'adresse saisie (qui peut être celle d'un tiers).
+
+Appliqué au contact, à la saisine, au devis et à la consultation écrite (le pré-entretien, application JavaScript, n'a que la limite de débit). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
+
 ### 3.6 Dépôt de pièces (au quotidien)
 
 Note d'emploi complète (cabinet et secrétariat, modèle de courriel, incidents, sécurité) : https://claude.ai/code/artifact/b71204eb-fe77-412e-b946-f7fa1fe79c5d

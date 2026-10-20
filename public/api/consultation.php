@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require __DIR__ . '/_lib.php';
 exiger_post();
-if (!honeypot_ok()) { merci('consultation'); }
+controle_anti_robot('consultation');
 limiter_debit('consultation');
 
 $formules = ['simple' => ['Question simple', 80], 'consultation' => ['Consultation', 120], 'approfondie' => ['Consultation approfondie', 349]];
@@ -21,6 +21,7 @@ if ($nom === '' || !email_valide($email)) { erreur('Nom et courriel valide sont 
 if (mb_strlen($question) < 40) { erreur('Exposez votre situation et votre question en quelques lignes au moins : l’avocat ne peut pas répondre à une question trop courte.'); }
 if (!$cgv) { erreur('Merci d’accepter les conditions de la consultation en ligne.'); }
 
+$suspect = contenu_suspect($nom, $question);
 $ref = reference();
 $pieces = enregistrer_pieces('pieces', 'consultation-' . $ref);
 $fichier = rtrim($CONFIG['stockage'], '/') . '/consultation-' . $ref . '/demande.txt';
@@ -47,10 +48,10 @@ $corpsClient = "Bonjour,\n\nVotre demande de consultation écrite est bien enreg
     . "L'avocat demeure libre de refuser la consultation (conflit d'intérêts, matière hors compétence) : vous en seriez informé(e) sous 48 heures et intégralement remboursé(e). "
     . "En demandant l'exécution immédiate, vous avez renoncé à votre droit de rétractation une fois la consultation délivrée.\n\n"
     . "Cabinet Arnaud Cousin — Avocat au Barreau de Rennes\n15 rue du Puits Mauger, 35000 Rennes · 02 30 96 33 35 · " . SITE_URL . "\n";
-envoyer_mail($email, "Votre demande de consultation écrite ($ref)", $corpsClient);
+if (!$suspect) { envoyer_mail($email, "Votre demande de consultation écrite ($ref)", $corpsClient); } // suspect : les instructions de règlement restent affichées sur la page de remerciement
 
-$corpsCabinet = "Consultation écrite — réf. $ref\n\nFormule : $libelle ($prix €)\nDomaine : $domaine\nNom : $nom\nCourriel : $email\nPièces : " . (implode(', ', $pieces) ?: 'aucune') . "\nDossier serveur : " . dirname($fichier) . "\n\nQuestion :\n$question\n";
-$envoye = envoyer_mail($CONFIG['cabinet_email'], "[SITE] Consultation écrite — $libelle — $nom ($ref)", $corpsCabinet, $email);
+$corpsCabinet = ($suspect ? AVERTISSEMENT_SUSPECT : '') . "Consultation écrite — réf. $ref\n\nFormule : $libelle ($prix €)\nDomaine : $domaine\nNom : $nom\nCourriel : $email\nPièces : " . (implode(', ', $pieces) ?: 'aucune') . "\nDossier serveur : " . dirname($fichier) . "\n\nQuestion :\n$question\n";
+$envoye = envoyer_mail($CONFIG['cabinet_email'], ($suspect ? '[SPAM ?] ' : '') . "[SITE] Consultation écrite — $libelle — $nom ($ref)", $corpsCabinet, $email);
 
-journal('consultation', $envoye ? 'ok' : 'echec-mail');
+journal('consultation', ($envoye ? 'ok' : 'echec-mail') . ($suspect ? '-suspect' : ''));
 merci('consultation', ['ref' => $ref, 'prix' => $prix] + ($payer ? ['payer' => $payer] : []));

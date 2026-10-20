@@ -58,6 +58,7 @@ Préprod et prod partagent `/home/arnaudcoqa/{config,cache,consultations,depots}
 - Photo du bandeau d'accueil : miroir volontaire (`scaleX(-1)`) pour montrer le bâtiment et le soleil levant, cadrage mobile distinct.
 
 **PHP sur OVH (mutualisé, PHP 8)**
+- Formulaires : jeton anti-robot signé obligatoire (`Jeton.astro` + `/api/jeton.php` + `controle_anti_robot`) — un test en `curl` sans jeton reçoit une erreur 400, c'est voulu ; attendre 3 s entre l'obtention du jeton et l'envoi, un jeton ne sert qu'une fois (ADMINISTRATION § 3.5).
 - `glob(..., GLOB_BRACE)` non fiable → `scandir` ; `is_dir` avant `scandir`.
 - Tâche planifiée OVH = CLI : `DOCUMENT_ROOT` vide → `_lib.php` calcule `$RACINE_WEB` (`dirname(__DIR__)`) ; `depot-veille.php` refuse tout appel autre que CLI.
 - `public/api/.htaccess` interdit l'accès direct aux `_*.php` et aux fichiers `config*.php`.

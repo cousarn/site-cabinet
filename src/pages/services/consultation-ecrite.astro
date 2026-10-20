@@ -6,6 +6,7 @@ const offres = [
   ['consultation', 'Consultation', '120 € TTC', 'Une situation exposée avec vos pièces, une note de deux à trois pages, sous 5 jours ouvrés.'],
   ['approfondie', 'Consultation approfondie', '349 € TTC', 'Analyse de pièces, stratégie et chiffrage ; un échange téléphonique de 20 min inclus.'],
 ];
+import Jeton from '../../components/Jeton.astro';
 ---
 <Base title="Consultation d’avocat écrite en ligne dès 80 € | Arnaud Cousin" description="Posez votre question par écrit, joignez vos pièces, réglez en ligne : réponse écrite d’un avocat sous 5 jours ouvrés. Trois formules dès 80 € TTC. Secret garanti." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Consultation écrite', href: '/services/consultation-ecrite' }]}>
   <Hero variante="clair" surtitre="Consultation en ligne" titre="Consultez le cabinet par internet" chapo="Sans rendez-vous ni déplacement : question posée immédiatement, réponse écrite que vous conservez, tarif plus avantageux qu’au cabinet. L’équivalent d’une consultation d’orientation d’une heure, sans recherche longue." image="themis" />
@@ -33,6 +34,7 @@ const offres = [
           <div class="grille grille--2" style="gap: 14px"><label class="champ">Nom et prénom<input type="text" name="nom" required autocomplete="name" /></label><label class="champ">Courriel<input type="email" name="email" required autocomplete="email" /></label></div>
           <label style="display: flex; gap: 10px; font-size: 14px; color: var(--muet); align-items: flex-start"><input type="checkbox" name="cgv" required style="margin-top: 4px" /> J’ai lu les <a href="/mentions-legales#cgv" class="lien" style="margin: 0 4px">conditions de la consultation en ligne</a> et je demande l’exécution immédiate de la prestation, renonçant à mon droit de rétractation de quatorze jours.</label>
           <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+          <Jeton formulaire="consultation" />
           <button type="submit" class="btn btn--plein" style="align-self: flex-start">Envoyer ma demande et régler</button>
           <p class="muet" style="font-size: 13px">Après l’envoi : règlement en ligne par PayPal ou carte bancaire (page sécurisée PayPal, sans compte nécessaire), ou par virement avec les coordonnées envoyées dans l’accusé de réception. L’avocat peut refuser la consultation : remboursement sous huit jours.</p>
         </div>

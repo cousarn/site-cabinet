@@ -1,0 +1,48 @@
+---
+/**
+ * Jeton anti-robot d'un formulaire (voir public/api/_lib.php › controle_anti_robot).
+ * À placer dans le <form>, à côté du pot de miel. Au chargement, la page demande à /api/jeton.php
+ * un horodatage signé, à usage unique, que le serveur vérifie à l'envoi : un robot qui poste
+ * directement, ou en moins de 3 secondes, est refusé avant tout courriel.
+ */
+import { cabinet } from '../data/cabinet';
+interface Props { formulaire: 'contact' | 'saisine' | 'devis' | 'consultation'; }
+const { formulaire } = Astro.props;
+---
+<input type="hidden" name="jeton" value="" data-jeton={formulaire} />
+<noscript><p style="font-size: 14px; margin: 0">Ce formulaire vérifie, par un court script, que l’envoi vient d’une personne. Sans JavaScript, écrivez directement à <a href={`mailto:${cabinet.email}`}>{cabinet.email}</a>.</p></noscript>
+
+<script>
+  const ATTENTE_MIN = 3500; // ms : le serveur refuse un jeton servi moins de 3 s après son émission
+
+  function brancher(champ: HTMLInputElement) {
+    const form = champ.form;
+    if (!form) return;
+    let obtenuA = 0;
+    let envoi = false;
+
+    const obtenir = async () => {
+      try {
+        const rep = await fetch('/api/jeton.php?f=' + encodeURIComponent(champ.dataset.jeton ?? ''), { cache: 'no-store', credentials: 'same-origin' });
+        const d = await rep.json();
+        if (d && typeof d.jeton === 'string') { champ.value = d.jeton; obtenuA = Date.now(); }
+      } catch { /* réseau indisponible : le serveur expliquera le refus */ }
+    };
+
+    obtenir();
+    // Retour arrière vers une page conservée en mémoire : jeton neuf (l'ancien a pu servir).
+    window.addEventListener('pageshow', (e) => { if (e.persisted) { envoi = false; obtenir(); } });
+
+    form.addEventListener('submit', async (e) => {
+      if (envoi) { e.preventDefault(); return; } // double clic : un seul envoi
+      if (champ.value && Date.now() - obtenuA >= ATTENTE_MIN) { envoi = true; return; }
+      e.preventDefault();
+      if (!champ.value) await obtenir();
+      const reste = ATTENTE_MIN - (Date.now() - obtenuA);
+      if (reste > 0) await new Promise((r) => setTimeout(r, reste));
+      if (typeof form.requestSubmit === 'function') { form.requestSubmit(); } else { envoi = true; form.submit(); }
+    });
+  }
+
+  document.querySelectorAll<HTMLInputElement>('input[data-jeton]').forEach(brancher);
+</script>

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import { cabinet } from '../data/cabinet';
+import Jeton from '../components/Jeton.astro';
 ---
 <Base title="Notaires et confrères : postulation à Rennes | Arnaud Cousin" description="Postulation devant le tribunal judiciaire et la cour d’appel de Rennes (540 € / 700 € TTC), partage judiciaire en relais de l’étude notariale. Saisir le cabinet en ligne." fil={[{ label: 'Notaires & confrères', href: '/notaires-confreres' }]}>
   <Hero surtitre="Notaires & confrères" titre="Un partenaire judiciaire à Rennes pour débloquer vos dossiers" chapo="Partenaire des notaires et des professionnels face à un blocage : un relais judiciaire efficace, avec réactivité et célérité. Pour les confrères : postulation et suivi devant le tribunal judiciaire et la cour d’appel de Rennes, à tarifs connus d’avance." image="parlement" position="50% 40%">
@@ -28,6 +29,7 @@ import { cabinet } from '../data/cabinet';
         <label class="champ" style="color: var(--sur-vert)">Objet<select name="objet"><option>Postulation — tribunal judiciaire</option><option>Postulation — cour d’appel</option><option>Partage judiciaire</option><option>Séparation d’un chef d’entreprise</option><option>Autre</option></select></label>
         <label class="champ" style="color: var(--sur-vert)">Juridiction, date d’audience ou délai connu, parties<textarea name="message" required></textarea></label>
         <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+        <Jeton formulaire="saisine" />
         <button type="submit" class="btn btn--clair" style="align-self: flex-start">Envoyer la saisine</button>
       </form>
     </div>

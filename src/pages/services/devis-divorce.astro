@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
+import Jeton from '../../components/Jeton.astro';
 ---
 <Base title="Devis divorce amiable en ligne dès 960 € | Arnaud Cousin" description="Estimez vos honoraires de divorce par consentement mutuel en sept questions : enfants, prestation compensatoire, partage. Dès 960 € TTC, confirmé par l’avocat sous 48 h." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Devis divorce', href: '/services/devis-divorce' }]}>
   <Hero variante="clair" surtitre="Divorce par consentement mutuel" titre="Divorce par consentement mutuel : estimez vos honoraires" chapo="Forfaits divorce amiable dès 960 € TTC pour les situations simples. Sept questions pour situer la vôtre — enfants, prestation compensatoire, biens à partager, état de l’accord : c’est ce qui fait varier le travail, donc le prix." image="themis" />
@@ -17,6 +18,7 @@ import Hero from '../../components/Hero.astro';
         <label class="champ">7. Signature de la convention<select name="lieu"><option>Au cabinet, à Rennes</option><option>Hors Rennes (déplacement en sus)</option></select></label>
         <label class="champ">Votre courriel pour recevoir l’estimation<input type="email" name="email" required autocomplete="email" /></label>
         <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+        <Jeton formulaire="devis" />
         <button type="submit" class="btn btn--plein" style="align-self: flex-start">Recevoir mon estimation</button>
       </form>
       <div class="pile">
