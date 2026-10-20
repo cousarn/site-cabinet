@@ -1,6 +1,6 @@
 ---
 title: "Sortie d’indivision : la loi de 2026 a quinze ans de retard"
-description: "La loi du 7 avril 2026 consacre des outils que les juges appliquaient déjà. Ce qu’elle change, et les voies plus rapides et moins coûteuses que la licitation."
+description: "La loi du 7 avril 2026 consacre des outils que le cabinet utilise ou contourne déjà depuis quinze ans. Ce qu’elle change, et les voies plus rapides."
 date: 2026-10-20
 domaine: successions
 type: billet
