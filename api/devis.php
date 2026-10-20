@@ -3,7 +3,7 @@
 declare(strict_types=1);
 require __DIR__ . '/_lib.php';
 exiger_post();
-if (!honeypot_ok()) { merci('devis'); }
+controle_anti_robot('devis');
 limiter_debit('devis');
 
 $mariage       = champ('mariage', 7);
