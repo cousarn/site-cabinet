@@ -107,6 +107,87 @@ function honeypot_ok(): bool {
     return trim((string)($_POST['site'] ?? '')) === '';
 }
 
+/* ——— Protection anti-robots des formulaires (oct. 2026) ———
+ * 1. Pot de miel (champ « site ») : l'envoi est ignoré en silence.
+ * 2. Jeton signé (champ « jeton ») : horodatage émis par api/jeton.php à l'ouverture de la page, signé et à usage unique.
+ *    Refusé s'il manque, s'il est faux ou déjà servi, s'il a moins de JETON_DELAI_MIN secondes ou plus de JETON_VALIDITE.
+ *    Refus = page d'erreur lisible (une personne sans JavaScript sait quoi faire) ; aucun courriel ne part.
+ * 3. Contenu suspect (lien dans le texte libre) : le message arrive au cabinet préfixé « [SPAM ?] »,
+ *    sans accusé de réception à l'adresse saisie, qui peut être celle d'un tiers.
+ * Les refus sont comptés dans le journal (cache/site-cabinet/journal.log), sans contenu personnel. */
+const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation'];
+const JETON_DELAI_MIN   = 3;          // secondes : personne ne remplit un formulaire plus vite
+const JETON_VALIDITE    = 7 * 86400;  // une page laissée ouverte une semaine reste utilisable
+
+/** Secret de signature : `jeton_secret` du fichier serveur s'il existe, sinon tiré au hasard une fois pour toutes dans le cache (hors racine web). */
+function secret_formulaires(): string {
+    global $CONFIG;
+    if (!empty($CONFIG['jeton_secret'])) { return (string)$CONFIG['jeton_secret']; }
+    $dir = DOSSIER_CACHE;
+    if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
+    $f = $dir . '/jeton.secret';
+    if (!is_file($f) && ($h = @fopen($f, 'x'))) { fwrite($h, bin2hex(random_bytes(32))); fclose($h); @chmod($f, 0600); }
+    $s = is_file($f) ? trim((string)@file_get_contents($f)) : '';
+    // Cache inaccessible (anormal) : secret de repli propre au serveur, pour ne pas bloquer les formulaires.
+    return strlen($s) >= 32 ? $s : hash('sha256', __DIR__ . '|' . php_uname('n') . '|' . (string)$CONFIG['cabinet_email']);
+}
+
+/** Jeton « horodatage.aléa.signature » pour le formulaire $form. */
+function jeton_emettre(string $form): string {
+    $t = time();
+    $n = bin2hex(random_bytes(8));
+    return $t . '.' . $n . '.' . hash_hmac('sha256', "$form|$t|$n", secret_formulaires());
+}
+
+/** '' si le jeton reçu est valable (et le marque comme servi) ; sinon le motif : absent, invalide, trop-rapide, expire, rejoue. */
+function jeton_motif(string $form): string {
+    $j = $_POST['jeton'] ?? '';
+    if (!is_string($j) || $j === '') return 'absent';
+    if (!preg_match('/^(\d{10})\.([0-9a-f]{16})\.([0-9a-f]{64})$/', $j, $m)) return 'invalide';
+    $t = (int)$m[1]; $n = $m[2];
+    if (!hash_equals(hash_hmac('sha256', "$form|$t|$n", secret_formulaires()), $m[3])) return 'invalide';
+    $age = time() - $t;
+    if ($age < JETON_DELAI_MIN) return 'trop-rapide';
+    if ($age > JETON_VALIDITE) return 'expire';
+    $dir = DOSSIER_CACHE;
+    if (!is_dir($dir)) { @mkdir($dir, 0700, true); }
+    $h = @fopen($dir . '/jetons-servis.txt', 'c+');
+    if ($h) {
+        flock($h, LOCK_EX);
+        $servis = array_filter(explode("\n", (string)stream_get_contents($h)));
+        if (in_array($n, $servis, true)) { flock($h, LOCK_UN); fclose($h); return 'rejoue'; }
+        $servis = array_slice($servis, -5000);
+        $servis[] = $n;
+        ftruncate($h, 0); rewind($h); fwrite($h, implode("\n", $servis) . "\n");
+        flock($h, LOCK_UN); fclose($h);
+    }
+    return '';
+}
+
+/** Pot de miel puis jeton : arrête ici les robots, avant tout envoi de courriel. */
+function controle_anti_robot(string $form): void {
+    global $CONFIG;
+    if (!honeypot_ok()) { journal($form, 'robot-pot-de-miel'); merci($form); }
+    $motif = jeton_motif($form);
+    if ($motif === '') return;
+    journal($form, 'robot-jeton-' . $motif);
+    if ($motif === 'absent') {
+        erreur('Ce formulaire vérifie, par un court script, que l’envoi vient bien d’une personne, et ce script n’a pas pu s’exécuter (JavaScript désactivé ou bloqué). Activez-le puis renvoyez le formulaire, ou écrivez directement à ' . $CONFIG['cabinet_email'] . ' — ou appelez le 02 30 96 33 35.');
+    }
+    erreur('Votre envoi n’a pas pu être vérifié (envoi trop rapide, déjà effectué, ou page ouverte depuis trop longtemps). Rechargez la page et renvoyez le formulaire ; en cas de difficulté, écrivez à ' . $CONFIG['cabinet_email'] . ' ou appelez le 02 30 96 33 35.');
+}
+
+/** Lien dans un texte libre (http, www, raccourcisseurs, BBCode, HTML) : la signature habituelle des robots publicitaires. */
+function contenu_suspect(string ...$textes): bool {
+    foreach ($textes as $texte) {
+        if (preg_match('~https?://|www\.|\[url|<a\s|telegra\.ph|t\.me/|bit\.ly~i', $texte)) return true;
+    }
+    return false;
+}
+
+/** Bandeau placé en tête du courriel au cabinet lorsqu'un envoi est suspect. */
+const AVERTISSEMENT_SUSPECT = "⚠ Envoi signalé comme suspect (lien dans le texte) : aucun accusé de réception n'a été adressé à l'expéditeur. S'il s'agit d'un vrai client, répondez-lui directement.\n\n";
+
 /** Limite de débit par IP et par formulaire (compteurs hors racine web). $max : plafond horaire propre à l'action (défaut : rate_par_heure).
  *  $json : répondre en JSON (API du dépôt) plutôt qu'en texte. */
 function limiter_debit(string $formulaire, ?int $max = null, bool $json = false): void {
