@@ -115,7 +115,7 @@ function honeypot_ok(): bool {
  * 3. Contenu suspect (lien dans le texte libre) : le message arrive au cabinet préfixé « [SPAM ?] »,
  *    sans accusé de réception à l'adresse saisie, qui peut être celle d'un tiers.
  * Les refus sont comptés dans le journal (cache/site-cabinet/journal.log), sans contenu personnel. */
-const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation'];
+const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation', 'pre-entretien'];
 const JETON_DELAI_MIN   = 3;          // secondes : personne ne remplit un formulaire plus vite
 const JETON_VALIDITE    = 7 * 86400;  // une page laissée ouverte une semaine reste utilisable
 
@@ -139,9 +139,10 @@ function jeton_emettre(string $form): string {
     return $t . '.' . $n . '.' . hash_hmac('sha256', "$form|$t|$n", secret_formulaires());
 }
 
-/** '' si le jeton reçu est valable (et le marque comme servi) ; sinon le motif : absent, invalide, trop-rapide, expire, rejoue. */
-function jeton_motif(string $form): string {
-    $j = $_POST['jeton'] ?? '';
+/** '' si le jeton reçu est valable (et le marque comme servi) ; sinon le motif : absent, invalide, trop-rapide, expire, rejoue.
+ *  $jeton : jeton transmis hors formulaire (requête JSON du pré-entretien) ; à défaut, le champ POST « jeton ». */
+function jeton_motif(string $form, ?string $jeton = null): string {
+    $j = $jeton ?? ($_POST['jeton'] ?? '');
     if (!is_string($j) || $j === '') return 'absent';
     if (!preg_match('/^(\d{10})\.([0-9a-f]{16})\.([0-9a-f]{64})$/', $j, $m)) return 'invalide';
     $t = (int)$m[1]; $n = $m[2];
