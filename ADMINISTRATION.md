@@ -141,6 +141,8 @@ Contrôles en préprod avant toute production :
 
 Production : créer un tag `vX.Y.Z` sur le commit validé — soit `git tag vX.Y.Z && git push origin vX.Y.Z`, soit GitHub › Releases › *Draft a new release* (le tag est créé à la publication). L'environnement GitHub `production` n'accepte que les tags `v*`. Deux minutes plus tard, `/version.txt` en production doit afficher le commit. Numérotation : `v1.x.0` pour du contenu nouveau, `v1.x.y` pour une correction.
 
+**Si la prod (ou la préprod) ne bouge pas** alors que l'action GitHub est verte : regarder GitHub › Settings › Webhooks › *Recent Deliveries* (compte `cousarn`). Le 24/10/2026, le service de webhooks d'OVH a répondu `401 {"class":"Client::Unauthorized"}` à une partie des envois (même URL, succès et échecs mêlés), et le renvoi (*Redeliver*) échouait aussi. Remède immédiat, sans rien casser : manager OVH › Hébergements › `arnaudcousin-avocat.fr` › **Mes sites** › ⋮ du site (`Website-prod` = dossier `prod`) › **Déployer Git** › *Valider* **sans** cocher « forcer » ; le statut passe « En cours » puis `/version.txt` est à jour en moins d'une minute. *Informations sur le dernier déploiement* (même menu) donne le journal du `git pull`.
+
 **Interdit** : réécrire l'historique des branches `deploy-preprod` / `deploy-prod` (OVH fait un `git pull` ; une branche réécrite bloque tout). Si OVH reste bloqué sur « En cours » et que les webhooks répondent 400 : Multisite › ⋯ › *Supprimer Git* (cocher « vider le répertoire ») puis *Associer Git* à nouveau (même URL de webhook).
 
 ## 5. Comptes et accès (qui fait quoi)

@@ -36,7 +36,7 @@ Si tu n'es pas dans un clone : `git clone https://github.com/cousarn/site-cabine
 | ouvrir FileZilla sur son poste (pilotage d'écran), saisir l'hôte, ouvrir `/config/site-cabinet.php` dans le Bloc-notes, préparer la modification | taper le mot de passe SFTP, coller toute valeur secrète |
 | tests de bout en bout sur la préprod (formulaires, dépôt, IPN sandbox) | valider le rendu et décider de la mise en production |
 
-« tag name has already been taken » à la publication d'une release = le tag existait déjà, sans conséquence. Une action GitHub en « Internal Server Error » : `gh run rerun --failed <id>`.
+« tag name has already been taken » à la publication d'une release = le tag existait déjà, sans conséquence. Une action GitHub en « Internal Server Error » : `gh run rerun --failed <id>`. Action verte mais `/version.txt` inchangé : le webhook OVH a pu répondre `401 unauthorized` (vu le 24/10/2026, intermittent) → manager OVH › Hébergements › Mes sites › ⋮ › **Déployer Git** (sans « forcer »), effectif en moins d'une minute (ADMINISTRATION § 4). Le manager demande la connexion d'Arnaud ; une fois connecté, tu cliques toi-même.
 
 ## 4. Chaîne de travail
 
