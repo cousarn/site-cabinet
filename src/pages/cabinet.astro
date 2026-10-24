@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Icone from '../components/Icone.astro';
 import Cta from '../components/Cta.astro';
 import { cabinet, anneesExercice, anneesEnLettres } from '../data/cabinet';
-import portrait from '../assets/photos/couloir-portrait-753x941.webp';
+import portrait from '../assets/photos/couloir-portrait-880x1100.webp';
 import parlementBandeau from '../assets/photos/parlement-bandeau-1536x640.webp';
 import parlement from '../assets/photos/parlement-1536.webp';
 const n = anneesExercice();
@@ -19,7 +19,7 @@ const n = anneesExercice();
         <div style="display: flex; flex-wrap: wrap; gap: 14px"><a href="/services/rendez-vous" class="btn btn--plein">Prendre rendez-vous</a><a href="/domaines" class="btn btn--contour">Voir les domaines</a></div>
       </div>
       <figure class="figure" style="max-width: 420px; justify-self: center">
-        <span class="cadre"><Image src={portrait} alt="Maître Arnaud Cousin dans le couloir du cabinet, rue du Puits Mauger" widths={[400, 600, 753]} sizes="(max-width: 720px) 90vw, 420px" loading="eager" style="aspect-ratio: 4/5" /></span>
+        <span class="cadre"><Image src={portrait} alt="Maître Arnaud Cousin dans le couloir du cabinet, rue du Puits Mauger" widths={[440, 660, 880]} sizes="(max-width: 720px) 90vw, 420px" loading="eager" style="aspect-ratio: 4/5" /></span>
         <figcaption>Me Arnaud Cousin, avocat au {cabinet.barreau} · Toque {cabinet.toque}</figcaption>
       </figure>
     </div>
