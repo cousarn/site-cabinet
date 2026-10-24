@@ -1,0 +1,29 @@
+---
+/**
+ * Bandeau d’annonce sous le bandeau d’accueil : filet laiton, étiquette, phrase en gras, précision, lien.
+ * Ne s’affiche que si `annonceDuJour()` renvoie une annonce (src/data/annonces.ts).
+ */
+import { annonceDuJour } from '../data/annonces';
+const a = annonceDuJour();
+---
+{a && (
+  <aside class="annonce" aria-label="Annonce">
+    <div class="conteneur annonce__int">
+      <span class="annonce__etiquette">{a.etiquette}</span>
+      <p class="annonce__texte"><strong>{a.titre}</strong>{' '}{a.texte}</p>
+      <a href={a.lien} class="btn btn--plein annonce__btn">{a.libelle}</a>
+    </div>
+  </aside>
+)}
+<style>
+  .annonce { background: var(--ivoire); border-top: 3px solid var(--laiton); border-bottom: 1px solid var(--ligne); }
+  .annonce__int { display: flex; align-items: center; gap: 18px 28px; padding-top: 18px; padding-bottom: 18px; }
+  .annonce__etiquette { flex: none; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--vert); border: 1px solid var(--laiton); border-radius: var(--r); padding: 6px 10px; }
+  .annonce__texte { flex: 1; margin: 0; font-size: 15px; line-height: 1.5; }
+  .annonce__texte strong { color: var(--vert); }
+  .annonce__btn { flex: none; min-height: 42px; padding: 0 18px; font-size: 14px; }
+  @media (max-width: 760px) {
+    .annonce__int { flex-wrap: wrap; gap: 12px 16px; }
+    .annonce__texte { flex-basis: 100%; }
+  }
+</style>

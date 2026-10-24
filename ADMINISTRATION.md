@@ -86,6 +86,7 @@ La fiche apparaît automatiquement sur `/fiches`, sur l'accueil (trois dernière
 - Grille devis divorce (HT) : valeurs par défaut dans `_lib.php` (`devis`), surchargeables dans le fichier serveur (§ 6) ; l'affichage de `services/devis-divorce.astro` doit suivre.
 - Confrères du cabinet groupé, assureur RCP (notice annuelle du Barreau), médiateur : `cabinet.ts`.
 - Barème AJ : `aj` dans `honoraires.ts`, à mettre à jour **chaque janvier** d'après la circulaire du ministère (voir § 7).
+- Bandeau d'annonce de l'accueil (réforme, texte nouveau) : `src/data/annonces.ts` — une entrée avec étiquette, phrase, lien et fenêtre d'affichage `du`/`au` ; le bandeau disparaît de lui-même à la date `au` (au prochain déploiement). Composant `Annonce.astro`, placé sous le bandeau d'accueil dans `index.astro`.
 
 ### 3.3 Ajouter ou modifier une page
 

@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import Icone from '../components/Icone.astro';
 import Cta from '../components/Cta.astro';
 import HeroAccueil from '../components/HeroAccueil.astro';
+import Annonce from '../components/Annonce.astro';
 import { cabinet, navigation, anneesExercice, anneesEnLettres } from '../data/cabinet';
 import cite from '../assets/photos/cite-judiciaire-bandeau-2400.webp';
 import couloirBandeau from '../assets/photos/couloir-bandeau-1672x700.webp';
@@ -37,6 +38,9 @@ const leads = [
 >
   <!-- Bandeau d'accueil : composition « c » (bande verte, portrait pleine hauteur, couloir en texture) — voir HeroAccueil.astro, choix d'Arnaud du 24/10/2026 -->
   <HeroAccueil variante="c" />
+
+  <!-- Bandeau d'annonce (réforme, texte nouveau) : contenu et dates dans src/data/annonces.ts -->
+  <Annonce />
 
   <!-- Repères -->
   <section class="section section--serree" aria-label="Repères" style="border-bottom: 1px solid var(--ligne)">
