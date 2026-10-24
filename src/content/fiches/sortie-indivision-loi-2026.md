@@ -2,6 +2,7 @@
 title: "Sortie d’indivision : la loi de 2026 a quinze ans de retard"
 description: "La loi du 7 avril 2026 consacre des outils que le cabinet utilise ou contourne déjà depuis quinze ans. Ce qu’elle change, et les voies plus rapides."
 date: 2026-10-20
+updated: 2026-10-24
 domaine: successions
 type: billet
 lecture: "11 min"
@@ -24,7 +25,7 @@ La « majorité des deux tiers », présentée comme une avancée, n’a rien 
 La loi de 2026 ne retouche pas ce texte. Son article 6 étend la majorité des deux tiers au partage, mais seulement pour les indivisions constatées par un acte de notoriété portant sur un immeuble situé en Corse, régime dérogatoire de la [loi du 6 mars 2017](https://www.legifrance.gouv.fr/loda/id/JORFTEXT000034150658). Le reste tient en deux mesures :
 
 - **Le partage judiciaire ouvert aux couples.** Le nouvel [article 840](https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006070721/LEGISCTA000006165529/) applique expressément la procédure de partage judiciaire à la liquidation des intérêts patrimoniaux des époux, partenaires de pacs et concubins, même sans indivision entre eux lorsque la complexité des opérations le requiert.
-- **Un juge commis aux pouvoirs renforcés — plus tard.** L’article 841 permet désormais au juge commis de trancher les contestations nées en cours d’opérations et d’ordonner les licitations, « dans des conditions définies par décret en Conseil d’État ». Ce décret n’est pas encore publié ; son entrée en vigueur est envisagée au 1er janvier 2027.
+- **Un juge commis aux pouvoirs renforcés — à partir de 2027.** L’article 841 permet désormais au juge commis de trancher les contestations nées en cours d’opérations et d’ordonner les licitations, « dans des conditions définies par décret en Conseil d’État ». Ce décret est paru : le [décret n° 2026-964 du 18 octobre 2026](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054999146) réécrit les articles 1359 à 1378 du code de procédure civile (juge commis et notaire commis désignés dès l’orientation, avocat obligatoire jusque devant le notaire, demandes sur les libéralités et le régime matrimonial à former dans les quatre mois, délai du notaire de dix-huit mois). Il s’applique aux instances introduites à compter du 1er janvier 2027 et, sous conditions, aux instances en cours.
 
 La loi sécurise ; elle n’accélère guère.
 
