@@ -10,7 +10,8 @@
 import { Image } from 'astro:assets';
 import { cabinet, anneesExercice, anneesEnLettres } from '../data/cabinet';
 import portrait from '../assets/photos/portrait-arnaud-cousin-2000.webp';
-import couloir from '../assets/photos/couloir-fond-1600x900.webp'; // couloir sans la silhouette : un seul Arnaud par bandeau
+import couloir from '../assets/photos/couloir-fond-1600x900.webp'; // couloir sans la silhouette (variantes a, b, d)
+import couloirMarche from '../assets/photos/couloir-bandeau-1672x700.webp'; // couloir complet, Me Cousin qui marche (variante c)
 
 interface Props { variante: 'a' | 'b' | 'c' | 'd' }
 const { variante } = Astro.props;
@@ -19,7 +20,7 @@ const alt = 'Maître Arnaud Cousin, avocat au Barreau de Rennes';
 ---
 <section class={`ha ha--${variante}`}>
   <div class="ha-fond" aria-hidden="true">
-    <Image src={couloir} alt="" widths={[900, 1300, 1600]} sizes="100vw" quality={55} loading="eager" />
+    <Image src={variante === 'c' ? couloirMarche : couloir} alt="" widths={[900, 1300, 1672]} sizes="100vw" quality={55} loading="eager" />
   </div>
   {variante === 'b' && <div class="ha-nom" aria-hidden="true"><span>Arnaud</span><span>Cousin</span></div>}
 
@@ -54,6 +55,7 @@ const alt = 'Maître Arnaud Cousin, avocat au Barreau de Rennes';
   {variante === 'c' && (
     <>
       <div class="ha-c__photo"><Image src={portrait} alt={alt} widths={[700, 1000, 1400, 2000]} sizes="(max-width: 860px) 100vw, 44vw" quality={82} loading="eager" fetchpriority="high" /></div>
+      <p class="ha-c__credit">Photo : David Ferrière</p>
       <div class="conteneur ha-c__grille">
         <div class="ha-texte pile entree">
           <p class="surtitre ha-surtitre"><span class="filet"></span>Famille · Successions · Travail · Procédure civile</p>
@@ -122,11 +124,15 @@ const alt = 'Maître Arnaud Cousin, avocat au Barreau de Rennes';
 
   /* ---- C : bande verte ------------------------------------------------------------ */
   .ha--c { background: var(--vert); color: var(--sur-vert); border-top: 0; }
-  .ha--c .ha-fond img { opacity: .34; filter: grayscale(1) contrast(1.15); mix-blend-mode: luminosity; object-position: 40% 50%; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 45%, transparent 58%); mask-image: linear-gradient(90deg, #000 0%, #000 45%, transparent 58%); }
-  .ha--c::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17, 53, 47, 0) 0%, rgba(17, 53, 47, .35) 100%); pointer-events: none; }
-  .ha-c__photo { position: absolute; top: 0; bottom: 0; right: 0; width: 44%; border-left: 1px solid rgba(202, 171, 127, .55); }
+  /* Cadrage décalé vers la silhouette qui marche (partie gauche du couloir) : le fond du couloir, sombre et uniforme, passe derrière le texte ; la porte et le mur clair restent sous le portrait. */
+  .ha--c .ha-fond img { opacity: .42; filter: grayscale(1) contrast(1.05); mix-blend-mode: luminosity; object-position: 0% 42%; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 44%, transparent 58%); mask-image: linear-gradient(90deg, #000 0%, #000 44%, transparent 58%); }
+  /* Voile vert dégressif : opaque derrière la colonne de texte (lisibilité), ouvert entre le texte et le portrait, où l'on devine Me Cousin qui marche. */
+  .ha--c .ha-fond { z-index: 0; }
+  .ha--c::before { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(17, 53, 47, .82) 0%, rgba(17, 53, 47, .62) 34%, rgba(17, 53, 47, .08) 52%, rgba(17, 53, 47, 0) 58%); pointer-events: none; }
+  .ha-c__photo { position: absolute; z-index: 2; top: 0; bottom: 0; right: 0; width: 44%; border-left: 1px solid rgba(202, 171, 127, .55); }
   .ha-c__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
-  .ha-c__grille { position: relative; min-height: 680px; display: flex; align-items: center; padding-top: 72px; padding-bottom: 72px; }
+  .ha-c__credit { position: absolute; z-index: 3; right: calc(44% + 14px); bottom: 26px; margin: 0; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--laiton-clair); opacity: .85; white-space: nowrap; }
+  .ha-c__grille { position: relative; z-index: 2; min-height: 680px; display: flex; align-items: center; padding-top: 72px; padding-bottom: 72px; }
   .ha--c .ha-texte { max-width: 540px; }
   .ha--c h1 { color: var(--sur-vert); }
   .ha--c h1 em { color: var(--laiton-clair); }
@@ -159,7 +165,8 @@ const alt = 'Maître Arnaud Cousin, avocat au Barreau de Rennes';
     .ha-nom { font-size: clamp(90px, 24vw, 150px); }
     .ha-nom span:last-child { left: 22%; bottom: auto; top: 24vw; }
     .ha-c__photo { position: relative; width: 100%; height: 100vw; max-height: 520px; border-left: 0; border-bottom: 1px solid rgba(202, 171, 127, .55); }
-    .ha-c__grille { min-height: 0; padding-top: 40px; padding-bottom: 48px; }
+    .ha-c__credit { position: static; writing-mode: horizontal-tb; transform: none; text-align: right; padding: 10px 24px 0; font-size: 10px; }
+    .ha-c__grille { min-height: 0; padding-top: 28px; padding-bottom: 48px; }
     .ha-d__grille { grid-template-columns: 1fr; grid-template-areas: 'titre' 'photo' 'texte'; row-gap: 32px; padding-top: 40px; padding-bottom: 48px; }
     .ha-d__titre { font-size: clamp(40px, 11vw, 60px); }
     .ha-d__photo { width: min(86vw, 420px); justify-self: center; }

@@ -40,7 +40,8 @@ astro/
 ├── src/pages/admin/depots.astro  console du cabinet (noindex, hors sitemap) : liens de dépôt, suivi, zip, relais SharePoint
 ├── src/data/pre-entretien.ts  arbre des questions de l'assistant de pré-entretien (modifiable sans toucher à la page)
 ├── src/layouts/Base.astro     <head>, SEO, JSON-LD (LegalService + BreadcrumbList), header, footer
-├── src/components/            Header, Footer, Hero, Faq, Cta, Icone
+├── src/components/            Header, Footer, Hero, Faq, Cta, Icone ; HeroAccueil = bandeau de la page d’accueil (portrait © David Ferrière,
+│                              4 compositions a–d, « c » en service ; la photo n’est jamais retouchée ni recouverte)
 ├── src/styles/global.css      charte : vert #11352F, laiton #9A7B4F, papier #F4EFE6, Fraunces + Figtree (polices locales)
 ├── src/assets/photos/         photos (WebP ; Astro génère les tailles responsives)
 ├── public/.htaccess           HTTPS, sans www, URL sans .html, 301 de l'ancien site, en-têtes de sécurité (CSP stricte)
