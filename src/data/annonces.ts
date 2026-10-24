@@ -22,7 +22,7 @@ export interface Annonce {
 export const annonces: Annonce[] = [
   {
     etiquette: 'Réforme',
-    titre: 'Partage judiciaire : la procédure change au 1er janvier 2027.',
+    titre: 'Partage judiciaire : coup d’accélérateur au 1er janvier 2027… gare à la sortie de route.',
     texte: 'Avocat obligatoire à toutes les étapes, y compris devant le notaire ; délais réduits pour agir — quatre mois pour les contestations, deux mois pour les dires, quinze jours pour l’appel.',
     lien: '/fiches/reforme-partage-judiciaire-2027',
     libelle: 'En savoir plus',

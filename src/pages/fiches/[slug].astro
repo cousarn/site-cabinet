@@ -20,7 +20,7 @@ const jsonLd = {
   publisher: { '@id': `${cabinet.siteUrl}/#cabinet` }, mainEntityOfPage: `${cabinet.siteUrl}/fiches/${f.id}`, inLanguage: 'fr-FR',
 };
 ---
-<Base title={`${f.data.title} | Arnaud Cousin`} description={f.data.description} jsonLd={jsonLd} fil={[{ label: 'Fiches & actualités', href: '/fiches' }, { label: f.data.title, href: `/fiches/${f.id}` }]}>
+<Base title={`${f.data.titreCourt ?? f.data.title} | Arnaud Cousin`} description={f.data.description} jsonLd={jsonLd} fil={[{ label: 'Fiches & actualités', href: '/fiches' }, { label: f.data.titreCourt ?? f.data.title, href: `/fiches/${f.id}` }]}>
   <article>
     <header class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
       <div class="conteneur pile" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 900px">

@@ -6,6 +6,7 @@ const fiches = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/fiches' }),
   schema: z.object({
     title: z.string(),
+    titreCourt: z.string().optional(), // <title>, fil d’Ariane : quand le titre éditorial est long
     description: z.string().max(170),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),

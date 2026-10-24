@@ -1,13 +1,26 @@
 ---
-title: "Partage judiciaire : la réforme applicable au 1er janvier 2027"
-description: "Décret du 18 octobre 2026 : avocat obligatoire jusque devant le notaire, juge commis qui tranche, contestations en quatre mois, dires en deux mois. Le guide."
+title: "Coup d’accélérateur pour les procédures de partage judiciaire… mais gare à la sortie de route pour les héritiers et les indivisaires"
+titreCourt: "Partage judiciaire : la réforme applicable au 1er janvier 2027"
+description: "Avocat obligatoire, quatre mois pour contester, notaire au centre : ce que change le décret du 18 octobre 2026, et les effets pervers que le cabinet anticipe."
 date: 2026-10-24
 domaine: successions
 type: billet
-lecture: "16 min"
+lecture: "17 min"
 ---
 
 Le [décret n° 2026-964 du 18 octobre 2026](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054999146), publié au Journal officiel du 20 octobre, réécrit intégralement la procédure de partage judiciaire — les articles 1359 à 1378 du code de procédure civile — et crée dans le code de l’organisation judiciaire la fonction de « juge commis aux opérations de liquidation et partage ». Il s’applique aux instances introduites à compter du 1er janvier 2027 et, dans deux cas, aux instances en cours. Pour les héritiers, les ex-époux, les partenaires et les concubins qui ne parviennent pas à partager, c’est la réforme la plus importante depuis 2007. Deux changements dominent : l’avocat devient obligatoire à toutes les étapes, y compris devant le notaire ; et les délais pour contester se comptent désormais en mois, à peine d’irrecevabilité. Ce billet fait le tour du texte, article par article, puis dit ce qu’il faut en retenir pour un dossier en cours ou à engager.
+
+<div class="encadre">
+
+**L’essentiel en trente secondes.**
+
+- **Avocat obligatoire** du premier au dernier jour, y compris devant le notaire : seuls les dires des avocats compteront.
+- **Des délais couperets** : quatre mois pour soumettre au juge commis les contestations qui structurent le partage (donation, testament, régime matrimonial, attribution préférentielle), deux mois pour les dires, quinze jours pour l’appel. Passé ces délais, des droits existants seront perdus.
+- **Le tribunal ne tranche plus à l’ouverture** : le dossier part chez le notaire commis, neutre par principe, et les vraies difficultés ne seront jugées que des années plus tard — le décret parachève le revirement de la Cour de cassation du 27 mars 2024.
+- **La vente aux enchères** des biens difficiles à partager devient plus facile à ordonner, au détriment des prix et donc des héritiers.
+- **Le cabinet anticipe ces effets** depuis longtemps : dossier constitué avant l’assignation, contestations chiffrées dès les premiers mois, dires écrits devant le notaire, préférence pour la vente de gré à gré. Plus de quinze ans de partages judiciaires à Rennes, Saint-Malo, Saint-Brieuc et devant la cour d’appel de Rennes.
+
+</div>
 
 ## 1. D’où vient la réforme
 
@@ -75,9 +88,9 @@ Autrement dit : une assignation délivrée en novembre 2026 dont l’affaire n�
 
 Le cabinet pratique le partage judiciaire depuis plus de quinze ans, devant les tribunaux judiciaires de Rennes, Saint-Malo et Saint-Brieuc et devant la cour d’appel de Rennes, et il conduit depuis longtemps ses dossiers comme la réforme l’imposera désormais à tous : qualifications posées dès l’assignation, dires écrits et chiffrés devant le notaire, projets de comptes établis par le cabinet lui-même. Pour les instances en cours, il examine avec chaque client l’intérêt d’une demande conjointe d’application du décret.
 
-## 9. Le regard du cabinet : des réserves, et un vrai progrès
+## 9. Le regard du cabinet : des effets pervers prévisibles, un vrai progrès
 
-La réforme poursuit un objectif que personne ne conteste : des partages plus courts. Le cabinet, qui pratique ce contentieux depuis plus de quinze ans, craint toutefois que plusieurs de ses mécanismes ne produisent, pour une partie des justiciables, l’effet inverse de celui recherché. Il le dit avec la prudence qui s’impose devant un texte qui n’a pas encore été appliqué.
+La réforme poursuit un objectif que personne ne conteste : des partages plus courts. Le cabinet, qui pratique ce contentieux depuis plus de quinze ans, prévoit toutefois que plusieurs de ses mécanismes produiront, pour une large part des justiciables, l’effet inverse de celui recherché. Les effets pervers sont prévisibles, et il vaut mieux les annoncer que les constater dans trois ans.
 
 - **Des délais brefs, et des droits qui pourraient se perdre.** Quatre mois pour saisir le juge commis des questions essentielles, deux mois pour les dires, quinze jours pour l’appel : la concentration des prétentions a sa logique, mais elle suppose que chaque partie dispose, dès le début, de ses pièces et de ses arguments. Dans un conflit familial, les documents sont souvent chez l’autre partie ou chez le notaire de famille ; le risque est que des droits existants — une donation à rapporter, un testament à discuter, un recel à établir — soient perdus faute d’avoir été exercés à temps, au détriment des héritiers les moins préparés.
 - **Le report, dans le temps, de la décision judiciaire.** Pendant des décennies, le tribunal saisi d’une demande de partage tranchait d’emblée les contestations qui lui étaient soumises ; la Cour de cassation veillait même à ce qu’il le fasse, en censurant le juge qui renvoyait les parties devant le notaire sans statuer. Le cabinet a beaucoup utilisé cette possibilité, qui permettait de régler de nombreux points de litige dès l’ouverture de la procédure et faisait gagner un temps précieux. La Cour de cassation a renversé cette jurisprudence par un arrêt publié du 27 mars 2024 : le juge saisi de demandes à l’ouverture des opérations ne méconnaît plus son office en renvoyant les parties devant le notaire « afin d’en permettre l’instruction » ([Cass. 1re civ., 27 mars 2024, n° 22-13.041](https://www.courdecassation.fr/decision/6603c4ea01e3cc0008b6f4e5)). Le décret parachève ce mouvement : ce que la Cour a autorisé — ne plus trancher immédiatement et confier l’ensemble du dossier au notaire —, le pouvoir réglementaire l’organise et l’encourage désormais. On peut le regretter : désormais, les contestations relèvent du juge commis, magistrat unique en charge de nombreuses liquidations, et la formation collégiale ne retrouve le dossier qu’une fois l’état liquidatif dressé. Il est à craindre que, dans bien des dossiers, la décision sur les véritables difficultés n’intervienne qu’après plusieurs années.
@@ -86,7 +99,7 @@ La réforme poursuit un objectif que personne ne conteste : des partages plus c
 - **La consécration de pratiques éprouvées.** L’acte de liquidation-partage établi par le notaire « sans qu’il soit besoin de la signature des parties », l’homologation malgré l’absence d’un indivisaire, le tirage au sort pour l’absent : ces solutions étaient déjà admises par les tribunaux et mises en œuvre par les cabinets spécialisés — le nôtre fait signer le partage par le notaire commis, sans la signature des autres héritiers, depuis plus de dix ans. Le décret leur donne un fondement réglementaire, et c’est une sécurité bienvenue.
 - **Un vrai progrès : l’assistance obligatoire d’un avocat.** Les personnes engagées dans un conflit familial seront désormais toutes assistées, ce qui n’était pas toujours le cas. C’est, à nos yeux, l’apport le plus sûr de la réforme : être utilement conseillé dès le premier jour, et tirer le meilleur parti possible d’une procédure devenue plus exigeante, avec un cabinet qui la pratique au quotidien.
 
-En somme, le texte demandera beaucoup à ceux qui conduisent les partages, et sans doute davantage que ce qu’il ne fera gagner en durée. C’est précisément dans cette exigence que l’avocat trouve sa place.
+En somme, le coup d’accélérateur est réel sur le papier ; sur la route, il faut s’attendre à des sorties de route : des héritiers forclos pour avoir réagi trop tard, des contestations sérieuses jugées des années après l’assignation, des maisons de famille vendues aux enchères en dessous de leur valeur. Le texte demandera beaucoup à ceux qui conduisent les partages, et sans doute davantage que ce qu’il fera gagner en durée. C’est précisément dans cette exigence que l’avocat spécialisé trouve sa place — et que le cabinet entend tenir la sienne.
 
 ## 10. Ce qu’en disent les premiers commentateurs
 
