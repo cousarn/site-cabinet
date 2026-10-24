@@ -3,5 +3,6 @@ Allow: /
 Disallow: /depot/
 Disallow: /admin/
 Disallow: /api/
+Disallow: /apercu/
 
 Sitemap: https://arnaudcousin-avocat.fr/sitemap-index.xml

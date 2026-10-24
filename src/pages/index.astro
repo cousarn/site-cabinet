@@ -4,9 +4,9 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icone from '../components/Icone.astro';
 import Cta from '../components/Cta.astro';
+import HeroAccueil from '../components/HeroAccueil.astro';
 import { cabinet, navigation, anneesExercice, anneesEnLettres } from '../data/cabinet';
 import cite from '../assets/photos/cite-judiciaire-bandeau-2400.webp';
-import portrait from '../assets/photos/portrait-arnaud-cousin-2000.webp';
 import couloirBandeau from '../assets/photos/couloir-bandeau-1672x700.webp';
 import parlement from '../assets/photos/parlement-1536.webp';
 import parlementBandeau from '../assets/photos/parlement-bandeau-1536x640.webp';
@@ -35,35 +35,8 @@ const leads = [
   description={`Avocat à Rennes depuis ${n} ans : divorce, successions et indivision, droit du travail, appel, médiation. Rendez-vous en ligne, consultation écrite dès 80 €.`}
   image="/og/cabinet.jpg"
 >
-  <!-- Hero : portrait en arche sur fond papier, couloir du cabinet en filigrane, nom en lettres géantes -->
-  <section class="hero hero--portrait">
-    <div class="hp-fond" aria-hidden="true">
-      <Image src={couloirBandeau} alt="" widths={[900, 1300, 1672]} sizes="100vw" quality={52} loading="eager" />
-    </div>
-    <div class="hp-nom" aria-hidden="true"><span class="hp-nom__a">Arnaud</span><span class="hp-nom__b">Cousin</span></div>
-    <div class="conteneur hp">
-      <div class="hp-texte pile entree">
-        <p class="surtitre" style="display: flex; align-items: center; gap: 14px"><span class="filet"></span>Famille · Successions · Travail · Procédure civile</p>
-        <h1>Écouter. Analyser.<br />Conseiller. <em>Agir.</em></h1>
-        <p class="chapo">Séparation, succession bloquée, licenciement : vous devez savoir vite où vous en êtes, et à quel prix. Négociateur pugnace ou défenseur combatif, avocat à Rennes depuis {anneesEnLettres(n)} ans : appui, soutien et conseil, à des conditions transparentes.</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px">
-          <a href="/services/rendez-vous" class="btn btn--plein btn--grand">Prendre rendez-vous</a>
-          <a href="/services/consultation-ecrite" class="btn btn--contour btn--grand">Consultation écrite en ligne</a>
-        </div>
-        <p class="hp-urgence">Urgence, délai qui expire : <a href={`tel:${cabinet.telephoneE164}`}>{cabinet.telephone}</a> — prise de message 24h/24.</p>
-      </div>
-      <figure class="hp-portrait">
-        <span class="hp-panneau" aria-hidden="true"></span>
-        <span class="hp-arche">
-          <Image src={portrait} alt="Maître Arnaud Cousin, avocat au Barreau de Rennes" widths={[480, 720, 960, 1200]} sizes="(max-width: 860px) 78vw, 430px" quality={82} loading="eager" fetchpriority="high" />
-        </span>
-        <span class="hp-pastille hp-pastille--1"><strong>{n} ans</strong> de barreau</span>
-        <span class="hp-pastille hp-pastille--2"><span class="hp-point"></span>Rennes · à 400 m de la Cité judiciaire</span>
-        <span class="hp-pastille hp-pastille--3"><em>Me</em> Arnaud Cousin<small>Avocat au Barreau de Rennes</small></span>
-        <figcaption>Photo : David Ferrière</figcaption>
-      </figure>
-    </div>
-  </section>
+  <!-- Bandeau d'accueil : composition « a » (voir HeroAccueil.astro ; aperçus des variantes sous /apercu/) -->
+  <HeroAccueil variante="a" />
 
   <!-- Repères -->
   <section class="section section--serree" aria-label="Repères" style="border-bottom: 1px solid var(--ligne)">
@@ -268,62 +241,4 @@ const leads = [
 </Base>
 
 <style>
-  /* ---- Hero portrait ------------------------------------------------------------------
-     Fond papier ; le couloir du cabinet passe en filigrane (gris, 12 %), masqué vers la gauche pour laisser le
-     texte respirer ; le nom en lettres géantes traverse la composition, « Cousin » passant en transparence
-     devant le bas du portrait. Le portrait n'est pas retouché : seulement cadré dans une arche. */
-  .hero--portrait { background: var(--papier); color: var(--encre); border-top: 1px solid var(--ligne-douce); }
-  .hero--portrait::before { content: ''; position: absolute; inset: 0; background: radial-gradient(55% 70% at 78% 30%, rgba(202, 171, 127, .30), transparent 70%); pointer-events: none; }
-  .hp-fond { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-  .hp-fond img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; opacity: .12; filter: grayscale(.6) contrast(1.08); mix-blend-mode: multiply;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 42%, #000 100%), linear-gradient(0deg, transparent 0%, #000 30%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 42%, #000 100%), linear-gradient(0deg, transparent 0%, #000 30%); mask-composite: intersect; }
-  .hp-nom { position: absolute; inset: 0; pointer-events: none; font-family: var(--serif); font-weight: 300; letter-spacing: -.03em; line-height: .82; color: var(--laiton); }
-  .hp-nom span { position: absolute; right: max(24px, calc((100% - var(--conteneur)) / 2)); font-size: clamp(96px, 13.5vw, 210px); white-space: nowrap; }
-  .hp-nom__a { top: 34px; opacity: .12; }
-  .hp-nom__b { bottom: 18px; opacity: .17; font-style: italic; }
-  .hp { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: 48px; align-items: center; padding-top: 72px; padding-bottom: 84px; }
-  .hp-texte { gap: 26px; max-width: 600px; }
-  .hero--portrait h1 { color: var(--vert); font-size: clamp(42px, 5.4vw, 70px); }
-  .hero--portrait h1 em { font-style: italic; color: var(--laiton-sombre); }
-  .hero--portrait .chapo { color: var(--muet); font-size: 19px; }
-  .hp-urgence { font-size: 14px; color: var(--muet); }
-  .hp-urgence a { color: var(--vert); font-weight: 600; text-decoration: none; }
-
-  .hp-portrait { position: relative; z-index: 2; margin: 0; justify-self: end; width: min(100%, 430px); }
-  .hp-arche { position: relative; z-index: 2; display: block; aspect-ratio: 4 / 5; border-radius: 999px 999px 22px 22px; overflow: hidden; box-shadow: 0 30px 60px -28px rgba(17, 53, 47, .45); }
-  .hp-arche img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 24%; display: block; }
-  .hp-panneau { position: absolute; z-index: 1; top: 0; left: 0; right: 0; aspect-ratio: 4 / 5; transform: translate(28px, 28px); border-radius: 999px 999px 22px 22px; background: rgba(17, 53, 47, .9); }
-  .hp-panneau::after { content: ''; position: absolute; inset: -16px; border: 1px solid var(--laiton); border-radius: 999px 999px 30px 30px; opacity: .55; }
-  .hp-pastille { position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(252, 250, 245, .78); border: 1px solid rgba(154, 123, 79, .35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 14px 30px -16px rgba(17, 53, 47, .35); font-size: 14px; color: var(--vert); white-space: nowrap; }
-  .hp-pastille strong { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1; color: var(--vert); }
-  .hp-pastille--1 { left: -54px; top: 31%; }
-  .hp-pastille--2 { right: -70px; top: 56%; }
-  .hp-pastille--3 { left: -26px; bottom: 9%; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 18px; font-family: var(--serif); font-size: 20px; border-radius: 14px; }
-  .hp-pastille--3 em { font-style: italic; color: var(--laiton-sombre); margin-right: 6px; }
-  .hp-pastille--3 small { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); }
-  .hp-point { width: 8px; height: 8px; border-radius: 50%; background: var(--laiton); box-shadow: 0 0 0 4px rgba(154, 123, 79, .18); }
-  .hp-portrait figcaption { margin-top: 58px; text-align: right; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muet); }
-
-  @media (max-width: 1100px) { .hp-pastille--1 { left: -18px; } .hp-pastille--2 { right: -22px; } }
-  @media (max-width: 860px) {
-    .hp { grid-template-columns: 1fr; gap: 36px; padding-top: 28px; padding-bottom: 56px; }
-    .hp-portrait { order: -1; justify-self: center; width: min(78vw, 340px); margin-top: 24px; }
-    .hp-panneau { transform: translate(18px, 18px); }
-    .hp-panneau::after { inset: -11px; }
-    .hp-pastille { font-size: 12px; padding: 7px 12px; }
-    .hp-pastille strong { font-size: 18px; }
-    .hp-pastille--1 { left: -22px; top: 24%; }
-    .hp-pastille--2 { right: -14px; top: auto; bottom: 22%; }
-    .hp-pastille--3 { left: -16px; bottom: -10px; font-size: 16px; padding: 10px 14px; }
-    .hp-portrait figcaption { margin-top: 48px; text-align: center; }
-    .hp-nom span { font-size: clamp(88px, 26vw, 140px); right: 12px; }
-    .hp-nom__a { top: 14px; }
-    .hp-nom__b { bottom: auto; top: calc(14px + 22vw); opacity: .13; }
-  }
-  @media (max-width: 480px) {
-    .hp-pastille--2 { display: none; }
-    .hp-fond img { object-position: 60% 50%; opacity: .10; -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 35%, #000 100%); mask-image: linear-gradient(0deg, transparent 0%, #000 35%, #000 100%); }
-    .hero--portrait::before { background: radial-gradient(70% 45% at 50% 18%, rgba(202, 171, 127, .30), transparent 70%); }
-    .hero--portrait h1 { font-size: clamp(38px, 10.5vw, 48px); }
-  }
 </style>

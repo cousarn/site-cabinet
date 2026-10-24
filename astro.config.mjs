@@ -11,7 +11,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Pages noindex hors du sitemap : mentions légales, page « merci », dépôt de pièces (lien personnel), console, 404.
-      filter: (page) => !/\/(mentions-legales|merci|services\/depot-pieces|depot|admin|404)(\/|$)/.test(page),
+      filter: (page) => !/\/(mentions-legales|merci|services\/depot-pieces|depot|admin|apercu|404)(\/|$)/.test(page),
       changefreq: 'monthly',
       lastmod: new Date(),
     }),
