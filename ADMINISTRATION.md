@@ -184,6 +184,8 @@ Jamais : saisir un mot de passe, un code, une clé API, un IBAN dans une convers
 
 Sources de veille utiles : Judilibre (recherche par chambre + « publié au bulletin »), Légifrance (versions des articles), justice.gouv.fr (politique de l'amiable, AJ), Dalloz actualité / Actu-Juridique (abonnements du cabinet), bulletin de l'Ordre.
 
+**Veille automatique du matin** (depuis le 24/10/2026) : une tâche planifiée Claude « Veille JO et Cour de cassation » tourne du lundi au vendredi vers 7 h 30 (heure de Paris). Elle clone ce dépôt, lance `veille/veille_dila.py` (données brutes DILA : JO de la veille et du jour, nouveaux lots CASS/INCA/CONSTIT — voir `veille/README.md`), lit les textes retenus et envoie à `cabinet@` un courriel « [VEILLE] JO et Cour de cassation — jj/mm/aaaa » avec résumé et liens Légifrance ; pas de courriel si rien ne concerne le cabinet. Elle n'écrit rien dans le dépôt. Réglage de l'horaire, du destinataire ou de l'approbation : application Claude › tâches planifiées. Les décisions du jour de la Cour de cassation ne sont lues que si une clé PISTE (API Judilibre) est fournie à l'environnement en variable `JUDILIBRE_KEYID` — à créer par Arnaud sur piste.gouv.fr le cas échéant.
+
 ## 8. Améliorer le référencement — méthode
 
 Le site est techniquement propre (URL courtes, 301 de l'ancien site, canonical, sitemap, JSON-LD `LegalService`/`Attorney`, `BreadcrumbList`, `FAQPage`, `Article`, CSP, images WebP/AVIF, polices locales). Le levier est maintenant **le contenu local et spécialisé**, puis la notoriété. Un agent peut conduire ce travail en boucle mensuelle.
