@@ -1,13 +1,13 @@
 ---
 title: "Avocat droit du travail à Rennes | Arnaud Cousin"
 h1: "Avocat en droit du travail à Rennes"
-description: "Licenciement, inaptitude, harcèlement, rupture conventionnelle, prud’hommes de Rennes. Avocat pour salariés et employeurs : contester, négocier, sécuriser."
+description: "Licenciement, inaptitude, harcèlement, rupture conventionnelle, prud’hommes. Avocat pour salariés et employeurs : contester, négocier, sécuriser."
 accroche: "Vous avez reçu une lettre de licenciement, une convocation, une proposition de rupture — ou vous devez en envoyer une — et vous voulez savoir vite ce que vous pouvez accepter, contester, négocier."
 image: cite
 ordre: 3
 situations:
   - titre: "Rupture du contrat"
-    texte: "Employeurs et salariés : licenciement (économique, faute, inaptitude, insuffisance), harcèlement et discrimination, heures supplémentaires et rappels de salaire, non-concurrence. Et la négociation des ruptures amiables — prud’hommes de Rennes et cour d’appel."
+    texte: "Employeurs et salariés : licenciement (économique, faute, inaptitude, insuffisance), harcèlement et discrimination, heures supplémentaires et rappels de salaire, non-concurrence. Et la négociation des ruptures amiables — conseils de prud’hommes et cours d’appel."
   - titre: "Rupture conventionnelle, transaction"
     texte: "Négocier le départ plutôt que le subir : indemnité, préavis, clause de non-concurrence, chômage. Le cabinet chiffre ce que vaut votre dossier avant de signer quoi que ce soit."
   - titre: "Harcèlement, discrimination"

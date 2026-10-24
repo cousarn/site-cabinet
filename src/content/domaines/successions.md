@@ -2,7 +2,7 @@
 title: "Avocat successions et indivision à Rennes | Arnaud Cousin"
 h1: "Avocat en successions, partages et indivision à Rennes"
 description: "Succession bloquée, sortie contentieuse d’indivision, conflit d’associés de SCI familiale, testament contesté : partage judiciaire, licitation, recel. Avocat à Rennes."
-accroche: "Succession bloquée, héritier qui ne répond plus, testament contesté, assurance-vie qui vide la masse : quand le notaire ne peut plus avancer seul, il faut un partenaire judiciaire. Rennes, Saint-Malo, Saint-Brieuc, Nantes et la cour d’appel."
+accroche: "Succession bloquée, héritier qui ne répond plus, testament contesté, assurance-vie qui vide la masse : quand le notaire ne peut plus avancer seul, il faut un partenaire judiciaire."
 image: parlement
 ordre: 2
 situations:

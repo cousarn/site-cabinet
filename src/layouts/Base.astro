@@ -33,7 +33,7 @@ const organisation = {
   address: { '@type': 'PostalAddress', streetAddress: cabinet.adresse.rue, postalCode: cabinet.adresse.cp, addressLocality: cabinet.adresse.ville, addressCountry: cabinet.adresse.pays },
   geo: { '@type': 'GeoCoordinates', latitude: cabinet.geo.lat, longitude: cabinet.geo.lon },
   openingHours: cabinet.horairesSchema,
-  areaServed: ['Rennes', 'Ille-et-Vilaine', 'Bretagne'],
+  areaServed: ['France'],
   knowsAbout: ['Droit de la famille', 'Divorce', 'Successions', 'Partage judiciaire', 'Sortie contentieuse d’indivision', 'Licitation', 'Recel successoral', 'Délivrance de legs', 'Conflits d’associés de SCI familiale', 'Droit du travail', 'Procédure civile', 'Postulation', 'Médiation et règlement amiable'],
   hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${cabinet.nom}, ${cabinet.adresse.rue}, ${cabinet.adresse.cp} ${cabinet.adresse.ville}`)}`,
   currenciesAccepted: 'EUR',

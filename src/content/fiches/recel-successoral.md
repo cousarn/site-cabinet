@@ -51,7 +51,7 @@ Choisir le bon fondement dès l’assignation évite de perdre des mois — et p
 
 Le recel se gagne sur les pièces et sur le calendrier. Dès le premier rendez-vous, le cabinet fixe avec vous la date à laquelle vous avez eu connaissance des faits, pour savoir de combien de temps vous disposez. Il obtient ensuite les relevés des comptes du défunt sur les dix années précédant le décès — par le notaire, par sommation, par requête au juge si les banques résistent — et reconstitue les flux : retraits, virements, procurations, chèques, rachats d’assurance-vie. Il chiffre, puis il écrit : une mise en demeure précise et datée suffit parfois à obtenir la réintégration, et interrompt utilement la discussion sur le repentir.
 
-À défaut d’accord, il assigne en partage judiciaire devant le tribunal judiciaire, en demandant la désignation d’un notaire commis et la condamnation du receleur aux peines de l’article 778, aux fruits et aux dommages-intérêts, jusqu’à la cour d’appel. Rennes, Saint-Malo, Saint-Brieuc, Nantes : l’essentiel des dossiers de partage du cabinet depuis vingt-six ans comporte, à un moment, une question de recel.
+À défaut d’accord, il assigne en partage judiciaire devant le tribunal judiciaire, en demandant la désignation d’un notaire commis et la condamnation du receleur aux peines de l’article 778, aux fruits et aux dommages-intérêts, jusqu’à la cour d’appel. L’essentiel des dossiers de partage du cabinet depuis vingt-six ans comporte, à un moment, une question de recel.
 
 <div class="encadre">
 

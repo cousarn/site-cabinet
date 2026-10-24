@@ -1,13 +1,13 @@
 ---
 title: "Procédure civile, appel et postulation à Rennes | Arnaud Cousin"
 h1: "Procédure civile, appel et postulation à Rennes"
-description: "Appel devant la cour de Rennes, référés, incidents, exécution. Postulation pour les confrères des autres barreaux : TJ et cour d’appel, forfaits connus d’avance."
+description: "Appel dans toute la France, référés, incidents, exécution. Postulation pour les confrères des autres barreaux : TJ et cour d’appel, forfaits connus d’avance."
 accroche: "Vous avez perdu, ou pas assez gagné, le délai court et vous voulez savoir si l’appel en vaut la peine. Ou vous êtes confrère et il vous faut un relais fiable à Rennes."
 image: parlement
 ordre: 4
 situations:
   - titre: "Appel"
-    texte: "Inscription et suivi des appels, en direct ou pour les confrères des autres barreaux ; même prestation devant le tribunal judiciaire de Rennes, en référé comme au fond. Une matière de délais et de rigueur, à 400 m de la Cité judiciaire."
+    texte: "Assistance et défense en appel et devant les tribunaux judiciaires de toute la France, en référé comme au fond ; postulation à Rennes pour les confrères des autres barreaux. Une matière de délais et de rigueur, à 400 m de la Cité judiciaire."
   - titre: "Référés et incidents"
     texte: "Référé provision, référé expertise, incidents de mise en état, nullités, fins de non-recevoir : la procédure est une arme, pas une formalité."
   - titre: "Exécution"
