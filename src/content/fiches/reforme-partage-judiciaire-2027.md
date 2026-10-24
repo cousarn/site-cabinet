@@ -5,20 +5,18 @@ description: "Avocat obligatoire, quatre mois pour contester, notaire au centre�
 date: 2026-10-24
 domaine: successions
 type: billet
-lecture: "17 min"
+lecture: "19 min"
 ---
 
-Le [décret n° 2026-964 du 18 octobre 2026](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054999146), publié au Journal officiel du 20 octobre, réécrit intégralement la procédure de partage judiciaire — les articles 1359 à 1378 du code de procédure civile — et crée dans le code de l’organisation judiciaire la fonction de « juge commis aux opérations de liquidation et partage ». Il s’applique aux instances introduites à compter du 1er janvier 2027 et, dans deux cas, aux instances en cours. Pour les héritiers, les ex-époux, les partenaires et les concubins qui ne parviennent pas à partager, c’est la réforme la plus importante depuis 2007. Deux changements dominent : l’avocat devient obligatoire à toutes les étapes, y compris devant le notaire ; et les délais pour contester se comptent désormais en mois, à peine d’irrecevabilité. Ce billet fait le tour du texte, article par article, puis dit ce qu’il faut en retenir pour un dossier en cours ou à engager.
+Le [décret n° 2026-964 du 18 octobre 2026](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054999146), publié au Journal officiel du 20 octobre, réécrit intégralement la procédure de partage judiciaire — les articles 1359 à 1378 du code de procédure civile — et crée dans le code de l’organisation judiciaire la fonction de « juge commis aux opérations de liquidation et partage ». Il s’applique aux instances introduites à compter du 1er janvier 2027 et, dans deux cas, aux instances en cours. Pour les héritiers, les ex-époux, les partenaires et les concubins qui ne parviennent pas à partager, c’est la réforme la plus importante depuis 2007. Deux changements dominent : l’avocat devient obligatoire à toutes les étapes, y compris devant le notaire ; et les délais pour contester se comptent désormais en mois, à peine d’irrecevabilité. Publiée quatre jours après le décret, avant les commentaires de doctrine encore à paraître, cette analyse s’adresse à deux lecteurs : aux familles, qui y trouveront l’essentiel en trente secondes et ce que le cabinet en attend ; aux praticiens, qui y trouveront le texte article par article, un tableau avant/après et les références. Elle dit aussi, sans détour, les effets pervers que le cabinet prévoit.
 
 <div class="encadre">
 
 **L’essentiel en trente secondes.**
 
-- **Avocat obligatoire** du premier au dernier jour, y compris devant le notaire : seuls les dires des avocats compteront.
-- **Des délais couperets** : quatre mois pour soumettre au juge commis les contestations qui structurent le partage (donation, testament, régime matrimonial, attribution préférentielle), deux mois pour les dires, quinze jours pour l’appel. Passé ces délais, des droits existants seront perdus.
-- **Le tribunal ne tranche plus à l’ouverture** : le dossier part chez le notaire commis, neutre par principe, et les vraies difficultés ne seront jugées que des années plus tard — le décret parachève le revirement de la Cour de cassation du 27 mars 2024.
-- **La vente aux enchères** des biens difficiles à partager devient plus facile à ordonner, au détriment des prix et donc des héritiers.
-- **Le cabinet anticipe ces effets** depuis longtemps : dossier constitué avant l’assignation, contestations chiffrées dès les premiers mois, dires écrits devant le notaire, préférence pour la vente de gré à gré. Plus de quinze ans de partages judiciaires à Rennes, Saint-Malo, Saint-Brieuc et devant la cour d’appel de Rennes.
+*Pour les familles.* À partir du 1er janvier 2027, un partage qui passe par le tribunal se fera obligatoirement avec un avocat, du premier au dernier jour, y compris chez le notaire. Les contestations importantes — une donation à rapporter, un testament à discuter, le régime du mariage, qui garde la maison — devront être soulevées dans les quatre premiers mois, sinon elles seront perdues. Le tribunal ne tranchera plus au début : le dossier partira chez le notaire, neutre par principe, et les vraies difficultés ne seront jugées que bien plus tard. Les ventes aux enchères des biens difficiles à partager seront plus faciles à ordonner, au détriment des prix. Le cabinet anticipe ces effets depuis longtemps : dossier constitué avant l’assignation, contestations chiffrées dès les premiers mois, préférence pour la vente de gré à gré. Plus de quinze ans de partages judiciaires à Rennes, Saint-Malo, Saint-Brieuc et devant la cour d’appel de Rennes.
+
+*Pour les praticiens.* Décret n° 2026-964 du 18 octobre 2026, JO du 20 octobre ; CPC, art. 1359 à 1378 réécrits ; COJ, art. R. 213-12-3 nouveau. Procédure unique avec désignation du juge commis et du notaire commis à l’orientation (1362) ; ministère d’avocat obligatoire jusque devant le notaire (1361, 1370) ; juge commis statuant par jugement sur la gestion de l’indivision, la licitation, la loi applicable, la validité des dispositions à cause de mort, le régime matrimonial, les attributions préférentielles et l’existence de libéralités, saisi à peine d’irrecevabilité dans les quatre mois (1364) ; appel à quinze jours, bref délai (1365) ; mission du notaire de dix-huit mois, prorogations de six mois (1363, 1367), provision et radiation (1369), technicien (1371), dires sous deux mois (1372), conclusions limitées aux désaccords subsistants (1373) ; entrée en vigueur au 1er janvier 2027 avec application aux instances en cours non orientées ou sur accord écrit des avocats (art. 4). Le décret parachève Cass. 1re civ., 27 mars 2024, n° 22-13.041.
 
 </div>
 
@@ -77,6 +75,24 @@ L’article 4 du décret est précis. Le texte « entre en vigueur le 1er janvi
 
 Autrement dit : une assignation délivrée en novembre 2026 dont l’affaire n’aura pas été orientée au 1er janvier basculera dans la procédure nouvelle ; et un dossier enlisé chez le notaire depuis des années peut y entrer, à condition que tous les avocats le demandent ensemble. Pour celui qui attend un partage, c’est une option à étudier sérieusement ; pour celui qui le freine, c’est une option qu’on ne lui proposera pas sans contrepartie.
 
+### Avant / après : le tableau pour les praticiens
+
+| | Jusqu’au 31 décembre 2026 | À compter du 1er janvier 2027 |
+|---|---|---|
+| Assignation (1360) | Descriptif du patrimoine, intentions, diligences amiables | Descriptif du patrimoine et intentions ; plus de diligences amiables à justifier |
+| Avocat | Obligatoire devant le tribunal ; facultatif devant le notaire | Obligatoire à tous les stades, y compris devant le notaire (1361) ; seuls les dires des avocats sont pris en compte (1370) |
+| Juge et notaire commis | Désignés par le jugement qui ordonne le partage, si la complexité le justifie (1364 ancien) | Désignés dès l’orientation par le président, si l’affaire n’est pas en état (1362) |
+| Contestations de fond | Tranchées par le tribunal à l’ouverture, ou renvoyées au notaire depuis l’arrêt du 27 mars 2024 ; procès-verbal de difficultés | Juge commis, saisi par conclusions dans les quatre mois à peine d’irrecevabilité, jugement ayant autorité de chose jugée (1364) |
+| Appel des décisions du juge commis | Droit commun | Quinze jours à compter de la signification, procédure à bref délai (1365) ; pas d’appel immédiat pour les décisions de mise en état sauf art. 795 ou autorisation du premier président |
+| Délai du notaire | Un an, prorogation d’un an au plus (1368, 1370 anciens) | Dix-huit mois au plus, prorogations de six mois (1363, 1367) |
+| Provision du notaire | Non réglée par le code | Information des parties, prélèvement sur les fonds indivis ou versement sous un mois au moins, radiation possible (1369) |
+| Évaluation des biens | Expert adjoint au notaire (1365 ancien) ou désigné en cours d’instance (1362 ancien) | Technicien adjoint au notaire commis, rémunération convenue, contestation devant le juge commis (1371) |
+| Dires | Procès-verbal reprenant les dires (1373 ancien) | Projet d’état liquidatif, délai de deux mois au plus pour les dires, puis état liquidatif et avis (1372) |
+| Retour devant le tribunal | Rapport du juge commis sur les désaccords subsistants ; demande distincte irrecevable sauf fait nouveau (1373, 1374 anciens) | Conclusions limitées aux points de désaccord subsistants, sauf fait nouveau (1373) ; partage ordonné selon le projet conforme, état liquidatif établi par le tribunal ou renvoi (1374) |
+| Partie défaillante | Représentant désigné (1363, 1367 anciens ; art. 841-1 C. civ.) | Homologation si ses droits sont préservés (1375) ; tirage au sort par le notaire pour elle (1376) ; représentant pour le partage amiable (1364, 5°) |
+| Licitation | Ordonnée par le tribunal (1377 ancien) | Ordonnée par le tribunal ou par le juge commis (1377) |
+| Acte de partage | Signature des parties ; difficulté en cas de refus | Établi par le notaire commis « sans qu’il soit besoin de la signature des parties » (1366, 4°) |
+
 ## 8. Ce qu’il faut en retenir, côté client
 
 - **Un avocat du premier au dernier jour.** Plus de phase notariale « sans avocat » : la constitution est obligatoire dès l’assignation et jusqu’au jugement qui met fin à l’instance, et seuls les dires des avocats comptent chez le notaire.
@@ -101,9 +117,9 @@ La réforme poursuit un objectif que personne ne conteste : des partages plus c
 
 En somme, le coup d’accélérateur est réel sur le papier ; sur la route, il faut s’attendre à des sorties de route : des héritiers forclos pour avoir réagi trop tard, des contestations sérieuses jugées des années après l’assignation, des maisons de famille vendues aux enchères en dessous de leur valeur. Le texte demandera beaucoup à ceux qui conduisent les partages, et sans doute davantage que ce qu’il fera gagner en durée. C’est précisément dans cette exigence que l’avocat spécialisé trouve sa place — et que le cabinet entend tenir la sienne.
 
-## 10. Ce qu’en disent les premiers commentateurs
+## 10. Ce qu’en disent les premiers commentateurs — et ce qu’ils ne disent pas encore
 
-Le texte a quatre jours. Les premières analyses viennent des institutions et de la presse professionnelle : le Conseil national des barreaux, qui a soutenu le ministère d’avocat obligatoire comme protection contre les comportements dilatoires ; le CRIDON Nord-Est, pour les notaires, qui souligne le rôle central de l’avocat et précise que, pour la conciliation par le notaire, « il ne s’agit aucunement d’une obligation » ; la Gazette du Palais, qui notait dès juin « la nécessité de se former pour accompagner toutes les phases de la procédure ». Au jour où nous écrivons, aucun commentaire universitaire n’est encore paru dans les revues de doctrine ; ce billet sera mis à jour lorsque ce sera le cas.
+Le texte a quatre jours. Les premières analyses viennent des institutions et de la presse professionnelle : le Conseil national des barreaux, qui a soutenu le ministère d’avocat obligatoire comme protection contre les comportements dilatoires ; le CRIDON Nord-Est, pour les notaires, qui souligne le rôle central de l’avocat et précise que, pour la conciliation par le notaire, « il ne s’agit aucunement d’une obligation » ; la Gazette du Palais, qui notait dès juin « la nécessité de se former pour accompagner toutes les phases de la procédure ». Ces premières lectures sont descriptives ; aucune ne se risque encore à prévoir les effets du texte sur les familles, et aucun commentaire universitaire n’est paru à ce jour dans les revues de doctrine. Le cabinet publie la sienne sans attendre : c’est à ses clients qu’elle est d’abord utile. Ce billet sera mis à jour au fil des commentaires et des premières applications.
 
 <div class="encadre">
 
