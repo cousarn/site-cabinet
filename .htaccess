@@ -32,6 +32,16 @@ ErrorDocument 404 /404.html
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^consultez-le-cabinet-par-internet\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^consultez-le-cabinet-par-internet-consultation-en-ligne\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(droit-de-la-famille|divorce|famille)\.html$ https://%{HTTP_HOST}/domaines/separation-divorce [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(successions|succession|indivision)\.html$ https://%{HTTP_HOST}/domaines/successions [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(droit-du-travail|travail)\.html$ https://%{HTTP_HOST}/domaines/droit-du-travail [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^(procedure|appel|procedure-appel)\.html$ https://%{HTTP_HOST}/domaines/procedure-appel [R=301,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^_checkout\.html$ https://%{HTTP_HOST}/services/consultation-ecrite [R=301,L]
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^infos-pratiques\.html$ https://%{HTTP_HOST}/contact [R=301,L]
