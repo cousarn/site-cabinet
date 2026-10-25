@@ -4,15 +4,15 @@ import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
 import { cabinet } from '../data/cabinet';
 
-const titre = 'Quel tribunal est compétent ? Carte et moteur par code postal';
-const description = 'Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de Bretagne, Pays de la Loire et Normandie : carte, recherche par code postal, règles de compétence.';
+const titre = 'Quel tribunal saisir ? Moteur de compétence territoriale';
+const description = 'Quel tribunal saisir ? Moteur de compétence territoriale par code postal : tribunaux, prud’hommes et cours d’appel de Bretagne, Pays de la Loire et Normandie.';
 
 const faq = [
-  { q: 'Quel tribunal est compétent pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
-  { q: 'Quel juge aux affaires familiales saisir après une séparation ?', r: '<p>Celui du lieu où réside la famille ; si les parents vivent séparément, celui du lieu de résidence du parent chez lequel les enfants mineurs résident habituellement ; dans les autres cas, celui du lieu où réside la partie qui n’a pas pris l’initiative de la procédure (art.&nbsp;1070 du code de procédure civile). La compétence s’apprécie au jour de la demande.</p>' },
-  { q: 'Quel conseil de prud’hommes saisir ?', r: '<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail est accompli à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 du code du travail).</p>' },
-  { q: 'Mon code postal couvre plusieurs communes : laquelle compte ?', r: '<p>La compétence s’apprécie par commune, non par code postal. Un même code postal peut couvrir des communes rattachées à des tribunaux différents : le moteur ci-dessus vous demande alors de préciser la commune.</p>' },
-  { q: 'Le cabinet peut-il plaider devant tous ces tribunaux ?', r: '<p>Oui. Le cabinet postule directement devant tous les tribunaux judiciaires du ressort de la cour d’appel de Rennes (Côtes-d’Armor, Finistère, Ille-et-Vilaine, Loire-Atlantique, Morbihan) et plaide devant les conseils de prud’hommes et les autres juridictions de France ; devant les tribunaux judiciaires des autres cours d’appel, il s’adjoint si nécessaire un confrère postulant.</p>' },
+  { q: 'Quel tribunal saisir pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
+  { q: 'Quel juge aux affaires familiales saisir après une séparation ?', r: '<p>Celui du lieu où réside la famille ; si les parents vivent séparément, celui du lieu de résidence du parent chez lequel les enfants mineurs résident habituellement ; dans les autres cas, celui du lieu où réside la partie qui n’a pas pris l’initiative de la procédure (art.&nbsp;1070 du code de procédure civile). La compétence s’apprécie au jour de la demande.</p>' },
+  { q: 'Quel conseil de prud’hommes saisir ?', r: '<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail est accompli à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 du code du travail).</p>' },
+  { q: 'Mon code postal couvre plusieurs communes : laquelle compte ?', r: '<p>La compétence s’apprécie par commune, non par code postal. Un même code postal peut couvrir des communes rattachées à des tribunaux différents : le moteur ci-dessus vous demande alors de préciser la commune.</p>' },
+  { q: 'Le cabinet peut-il plaider devant tous ces tribunaux ?', r: '<p>Oui. Le cabinet postule directement devant tous les tribunaux judiciaires du ressort de la cour d’appel de Rennes (Côtes-d’Armor, Finistère, Ille-et-Vilaine, Loire-Atlantique, Morbihan) et plaide devant les conseils de prud’hommes et les autres juridictions de France ; devant les tribunaux judiciaires des autres cours d’appel, il s’adjoint si nécessaire un confrère postulant.</p>' },
 ];
 
 const jsonLd = {
@@ -27,11 +27,11 @@ const jsonLd = {
   dateModified: '2026-10-25',
 };
 ---
-<Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Compétence territoriale', href: '/competence-territoriale' }]}>
+<Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Quel tribunal saisir ?', href: '/competence-territoriale' }]}>
   <section class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
     <div class="conteneur pile entree" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 880px">
-      <p class="surtitre">Outil pratique · Grand Ouest</p>
-      <h1>Quel tribunal est compétent&nbsp;?</h1>
+      <p class="surtitre">Moteur de compétence territoriale · Grand Ouest</p>
+      <h1>Quel tribunal saisir&nbsp;?</h1>
       <p class="chapo">Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de Bretagne, des Pays de la Loire et de Normandie. Saisissez un code postal ou une commune&nbsp;: la page indique les juridictions dont elle dépend, les situe sur la carte et rappelle les règles de compétence territoriale en droit de la famille, des successions, de l’indivision, des référés et du travail.</p>
     </div>
   </section>
@@ -39,7 +39,7 @@ const jsonLd = {
   <section class="section" id="moteur">
     <div class="conteneur pile" style="gap: 28px">
       <div class="pile" style="gap: 10px; max-width: 720px">
-        <p class="surtitre">Moteur de compétence</p>
+        <p class="surtitre">Moteur de compétence territoriale</p>
         <h2>De quel tribunal dépend votre commune&nbsp;?</h2>
         <p class="muet">Ressorts officiels du ministère de la Justice (mise à jour de juillet&nbsp;2026), 5&nbsp;081 communes des départements 14, 22, 27, 29, 35, 44, 49, 50, 53, 56, 61, 72, 76 et 85.</p>
       </div>
@@ -130,7 +130,7 @@ const jsonLd = {
     </div>
   </section>
 
-  <Cta titre="Un doute sur le tribunal à saisir ?" texte="Le choix de la juridiction se décide avec la stratégie du dossier : délais, mesures provisoires, exécution. Le cabinet vous répond par écrit ou en rendez-vous, à Rennes, en visio ou par téléphone." />
+  <Cta titre="Un doute sur le tribunal à saisir ?" texte="Le choix de la juridiction se décide avec la stratégie du dossier : délais, mesures provisoires, exécution. Le cabinet vous répond par écrit ou en rendez-vous, à Rennes, en visio ou par téléphone." />
 
   <section class="section" id="sources">
     <div class="conteneur pile" style="gap: 10px; max-width: 880px">
