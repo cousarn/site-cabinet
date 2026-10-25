@@ -62,3 +62,19 @@ jobs:
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "Déploiement ${{ github.ref_name }} — ${{ github.sha }}"
+      # OVH refuse par intermittence les notifications de GitHub (401 « Client::Unauthorized » constaté
+      # les 24 et 25/10/2026, alors que l'URL du webhook est bien celle fournie par OVH). Cette étape rend
+      # l'échec visible : croix rouge et courriel de GitHub si le site n'affiche pas la nouvelle version.
+      - name: Vérifier la mise en ligne (OVH a-t-il tiré la branche ?)
+        env:
+          CIBLE: ${{ startsWith(github.ref, 'refs/tags/v') && 'https://arnaudcousin-avocat.fr' || 'https://preprod.arnaudcousin-avocat.fr' }}
+        run: |
+          for i in $(seq 1 24); do
+            sleep 10
+            if curl -fsS "$CIBLE/version.txt?v=$(date +%s)" | grep -q "$GITHUB_SHA"; then
+              echo "En ligne : $CIBLE ($GITHUB_REF_NAME)"
+              exit 0
+            fi
+          done
+          echo "::error::$CIBLE n'affiche pas $GITHUB_SHA après 4 minutes : notification OVH probablement refusée. Remède : manager OVH › Hébergements › arnaudcousin-avocat.fr › Mes sites › ⋮ du site › Déployer Git (sans cocher « forcer »)."
+          exit 1
