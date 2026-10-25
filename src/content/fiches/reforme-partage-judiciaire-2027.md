@@ -154,7 +154,7 @@ Autrement dit : une assignation délivrée en novembre 2026 dont l’affaire n�
 | Licitation | Ordonnée par le tribunal (1377 ancien) | Ordonnée par le tribunal ou par le juge commis (1377) |
 | Acte de partage | Signature des parties ; difficulté en cas de refus | Établi par le notaire commis « sans qu’il soit besoin de la signature des parties » (1366, 4°) |
 
-## 9. Le regard du cabinet : des effets pervers prévisibles, un vrai progrès
+## 9. Le regard du cabinet : de vrais progrès, mais des effets pervers prévisibles
 
 La réforme poursuit un objectif que personne ne conteste : des partages plus courts. Le cabinet, qui pratique ce contentieux depuis plus de vingt-cinq ans et qui, depuis plus de quinze ans, s’attache à épargner à ses clients les effets pervers de la lenteur des partages judiciaires, prévoit toutefois que plusieurs de ses mécanismes produiront, pour une large part des justiciables, l’effet inverse de celui recherché : cette lenteur, la réforme va très certainement l’aggraver. Les effets pervers sont prévisibles, et il vaut mieux les annoncer que les constater dans trois ans.
 
