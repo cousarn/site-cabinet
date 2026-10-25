@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Icone from '../components/Icone.astro';
 import Cta from '../components/Cta.astro';
+import MoteurTribunal from '../components/MoteurTribunal.astro';
 import HeroAccueil from '../components/HeroAccueil.astro';
 import Annonce from '../components/Annonce.astro';
 import { cabinet, navigation, anneesExercice, anneesEnLettres } from '../data/cabinet';
@@ -140,6 +141,7 @@ const leads = [
           </a>
         ))}
       </div>
+      <MoteurTribunal sombre />
       <p style="border-left: 2px solid var(--laiton-clair); padding-left: 16px; max-width: 760px; color: var(--sur-vert-muet)"><strong style="color: var(--sur-vert)">Pas sûr de votre situation ?</strong> L’assistant de pré-entretien la recueille en une dizaine de minutes, une question à la fois : vos réponses, les dates à signaler et les pièces à réunir arrivent au cabinet avant le rendez-vous — sans conseil juridique. <a href="/services/pre-entretien">Préparer mon rendez-vous →</a></p>
     </div>
   </section>

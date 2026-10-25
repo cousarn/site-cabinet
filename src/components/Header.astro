@@ -3,7 +3,7 @@ import { cabinet, navigation } from '../data/cabinet';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const estCourant = (href: string) =>
-  href === '/' ? path === '/' : path === href || path.startsWith(href + '/') || (href === '/services' && path.startsWith('/services')) || (href === '/fiches' && path.startsWith('/fiches')) || (href === '/domaines' && path.startsWith('/domaines'));
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/') || (href === '/services' && (path.startsWith('/services') || path === '/competence-territoriale')) || (href === '/fiches' && path.startsWith('/fiches')) || (href === '/domaines' && path.startsWith('/domaines'));
 
 const chevron = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>`;
 const fleche = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
@@ -39,7 +39,7 @@ const fleche = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stro
             <button type="button" class="nav__ouvrir" aria-label={`Ouvrir le sous-menu ${item.label}`} aria-expanded="false"><Fragment set:html={chevron} /></button>
             <div class={`mega ${item.menu === 'services' ? 'mega--3' : ''}`} role="group" aria-label={item.label}>
               {(item.menu === 'domaines' ? navigation.domaines : navigation.services).map((e) => (
-                <a href={e.href}><span class="mega__titre">{e.titre} <Fragment set:html={fleche} /></span><span class="mega__texte">{e.accroche}</span></a>
+                <a href={e.href} class={'vedette' in e ? 'mega__vedette' : undefined}>{'vedette' in e && <span class="mega__etiquette">{e.vedette}</span>}<span class="mega__titre">{e.titre} <Fragment set:html={fleche} /></span><span class="mega__texte">{e.accroche}</span></a>
               ))}
               {item.menu === 'domaines' ? (
                 <div class="mega__pied"><span>Votre situation n’entre dans aucune case ? Décrivez-la.</span><span><a href="/services#assistant">Préparer mon rendez-vous →</a> &nbsp;·&nbsp; <a href="/domaines">Tous les domaines →</a></span></div>
@@ -100,6 +100,9 @@ const fleche = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stro
   .mega__titre svg { flex: none; color: var(--laiton); opacity: 0; transform: translateX(-6px); transition: opacity .22s ease, transform .22s ease; }
   .mega > a:hover .mega__titre svg { opacity: 1; transform: none; }
   .mega__texte { font-size: 13px; line-height: 1.5; color: var(--muet); }
+  .mega > a.mega__vedette { grid-column: 1 / -1; background: var(--papier); border-color: var(--ligne); border-left: 3px solid var(--laiton); }
+  .mega > a.mega__vedette .mega__titre svg { opacity: 1; transform: none; }
+  .mega__etiquette { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); }
   .mega__pied { grid-column: 1 / -1; border-top: 1px solid var(--ligne); margin-top: 8px; padding-top: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 20px; font-size: 13px; color: var(--muet); }
   .mega__pied a { color: var(--laiton-sombre); font-weight: 600; text-decoration: none; }
   .mega__pied a:hover { color: var(--vert); }

@@ -29,7 +29,7 @@ const jsonLd = {
   dateModified: '2026-10-25',
 };
 ---
-<Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Quel tribunal saisir ?', href: '/competence-territoriale' }]}>
+<Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Quel tribunal saisir ?', href: '/competence-territoriale' }]}>
   <section class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
     <div class="conteneur pile entree" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 880px">
       <p class="surtitre">Moteur de compétence territoriale · Grand Ouest</p>
@@ -238,9 +238,17 @@ const jsonLd = {
     index.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
     initCarte();
     champ.disabled = false;
-    const h = new URLSearchParams(location.hash.replace(/^#/, ''));
-    const q = h.get('q');
-    if (q) { champ.value = q; chercher(q, true); }
+    // ?q=… (encarts du site, formulaire sans JavaScript) ou #q=… (lien partagé depuis la page)
+    const q = new URLSearchParams(location.search).get('q') ?? new URLSearchParams(location.hash.replace(/^#/, '')).get('q');
+    if (q) {
+      champ.value = q;
+      chercher(q, true);
+      if (resultat.hidden) {
+        const exactes = index.filter((c) => c.norm === normaliser(q));
+        if (exactes.length === 1) afficher(exactes[0].insee);
+      }
+      document.getElementById('moteur')?.scrollIntoView({ block: 'start' });
+    }
   }
 
   function chercher(brut: string, auto = false) {
@@ -299,7 +307,7 @@ const jsonLd = {
       Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants${NBSP}; expertise d’un immeuble avant tout procès${NBSP}: celle où se trouve l’immeuble (<a href="#regles">voir les règles</a>).</p>`;
     selection = [tj, tprx, cph, ca].filter(Boolean);
     mettreEnValeur();
-    history.replaceState(null, '', '#q=' + encodeURIComponent(champ.value.trim()));
+    history.replaceState(null, '', location.pathname + '#q=' + encodeURIComponent(champ.value.trim()));
   }
 
   function initCarte() {

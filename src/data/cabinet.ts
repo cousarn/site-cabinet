@@ -81,12 +81,12 @@ export const navigation = {
     { href: '/reglement-amiable', titre: 'Règlement amiable & médiation', accroche: 'Médiation, conciliation, négociation : y aller accompagné, en sortir avec un bon accord.' },
   ],
   services: [
+    { href: '/competence-territoriale', titre: 'Quel tribunal saisir ?', accroche: 'Moteur de compétence territoriale : un code postal ou une commune, et voici le tribunal judiciaire, le tribunal de proximité, le conseil de prud’hommes et la cour d’appel compétents — Bretagne, Pays de la Loire, Normandie.', vedette: 'Outil gratuit' },
     { href: '/services/rendez-vous', titre: 'Prendre rendez-vous', accroche: 'Cabinet, visio ou téléphone, créneau choisi en ligne.' },
     { href: '/services/consultation-ecrite', titre: 'Consultation écrite en ligne', accroche: 'Une réponse d’avocat par écrit, sans vous déplacer. Dès 80 €.' },
     { href: '/services/devis-divorce', titre: 'Devis divorce amiable', accroche: 'Votre estimation en sept questions, confirmée par l’avocat.' },
     { href: '/services/depot-pieces', titre: 'Déposer des pièces', accroche: 'Vos documents, en sécurité, directement dans votre dossier.' },
     { href: '/services/pre-entretien', titre: 'Assistant de pré-entretien', accroche: 'Une dizaine de minutes pour préparer votre rendez-vous.' },
-    { href: '/competence-territoriale', titre: 'Quel tribunal saisir ?', accroche: 'Moteur de compétence territoriale par code postal : tribunaux, prud’hommes, cours d’appel du Grand Ouest.' },
     { href: '/notaires-confreres', titre: 'Notaires & confrères', accroche: 'Postulation, partage judiciaire : saisir le cabinet.' },
   ],
   pied: [

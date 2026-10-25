@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
 import Icone from '../../components/Icone.astro';
 import Cta from '../../components/Cta.astro';
+import MoteurTribunal from '../../components/MoteurTribunal.astro';
 import { cabinet } from '../../data/cabinet';
 import themisBandeau from '../../assets/photos/themis-bandeau-1600.webp';
 
@@ -24,6 +25,9 @@ const services = [
       {services.map(([ic, t, x, h, l]) => (
         <div class="carte"><span class="carte__icone"><Icone nom={ic} /></span><h3>{t}</h3><p class="muet" style="font-size: 15px">{x}</p><a href={h} class="lien" style="margin-top: auto">{l}</a></div>
       ))}
+    </div>
+    <div class="conteneur" id="tribunal" style="margin-top: 28px">
+      <MoteurTribunal niveau="h2" />
     </div>
   </section>
 

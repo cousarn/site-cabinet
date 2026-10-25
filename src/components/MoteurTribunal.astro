@@ -1,0 +1,44 @@
+---
+/**
+ * Encart « Quel tribunal saisir ? » : accès direct au moteur de compétence territoriale.
+ * Le formulaire envoie /competence-territoriale?q=… ; la page lance la recherche à l’arrivée.
+ * Fonctionne sans JavaScript (simple formulaire GET).
+ */
+interface Props { sombre?: boolean; niveau?: 'h2' | 'h3'; }
+const { sombre = false, niveau = 'h3' } = Astro.props;
+const Titre = niveau;
+---
+<div class={`moteur-encart${sombre ? ' moteur-encart--sombre' : ''}`}>
+  <div class="moteur-encart__texte">
+    <p class="surtitre">Outil gratuit · moteur de compétence territoriale</p>
+    <Titre class="moteur-encart__titre">Quel tribunal saisir&nbsp;?</Titre>
+    <p class="moteur-encart__chapo">Un code postal ou une commune de Bretagne, des Pays de la Loire ou de Normandie suffit&nbsp;: tribunal judiciaire, tribunal de proximité, conseil de prud’hommes et cour d’appel compétents, sur la carte, avec les règles de compétence en droit de la famille, des successions, de l’indivision, des référés, de l’expertise et du travail.</p>
+  </div>
+  <form class="moteur-encart__form" action="/competence-territoriale" method="get" role="search" aria-label="Quel tribunal saisir ?">
+    <label class="champ">
+      <span>Code postal ou commune</span>
+      <input type="search" name="q" placeholder="35000, Saint-Malo, 44600…" autocomplete="postal-code" required minlength="2" />
+    </label>
+    <button type="submit" class={`btn ${sombre ? 'btn--clair' : 'btn--plein'}`}>Trouver le tribunal</button>
+    <a href="/competence-territoriale#carte" class="lien moteur-encart__carte">Voir la carte des juridictions</a>
+  </form>
+</div>
+
+<style>
+  .moteur-encart { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 44px; align-items: center; padding: 30px 34px; background: var(--ivoire); border: 1px solid var(--ligne); border-left: 3px solid var(--laiton); border-radius: var(--r); }
+  .moteur-encart__texte { display: flex; flex-direction: column; gap: 10px; }
+  .moteur-encart__titre { margin: 0; font-size: clamp(24px, 3vw, 32px); }
+  .moteur-encart__chapo { margin: 0; color: var(--muet); font-size: 15.5px; }
+  .moteur-encart__form { display: flex; flex-direction: column; gap: 12px; }
+  .moteur-encart__form input { font-size: 17px; }
+  .moteur-encart__form .btn { align-self: flex-start; }
+  .moteur-encart__carte { font-size: 14px; align-self: flex-start; }
+  .moteur-encart--sombre { background: rgba(244, 239, 230, .06); border-color: rgba(244, 239, 230, .22); border-left-color: var(--laiton-clair); }
+  .moteur-encart--sombre .moteur-encart__titre { color: var(--sur-vert); }
+  .moteur-encart--sombre .moteur-encart__chapo { color: var(--sur-vert-muet); }
+  .moteur-encart--sombre .champ { color: var(--sur-vert); }
+  .moteur-encart--sombre .moteur-encart__carte { color: var(--laiton-clair); }
+  @media (max-width: 820px) {
+    .moteur-encart { grid-template-columns: 1fr; padding: 24px 22px; }
+  }
+</style>
