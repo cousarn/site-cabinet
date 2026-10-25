@@ -12,12 +12,12 @@ const Titre = niveau;
   <div class="moteur-encart__texte">
     <p class="surtitre">Outil gratuit · moteur de compétence territoriale</p>
     <Titre class="moteur-encart__titre">Quel tribunal saisir&nbsp;?</Titre>
-    <p class="moteur-encart__chapo">Un code postal ou une commune de Bretagne, des Pays de la Loire ou de Normandie suffit&nbsp;: tribunal judiciaire, tribunal de proximité, conseil de prud’hommes et cour d’appel compétents, sur la carte, avec les règles de compétence en droit de la famille, des successions, de l’indivision, des référés, de l’expertise et du travail.</p>
+    <p class="moteur-encart__chapo">Un code postal ou une commune, partout en France — outre-mer compris — suffit&nbsp;: tribunal judiciaire, tribunal de proximité, conseil de prud’hommes, cour d’appel et ressort des commissaires de justice, sur la carte, avec les règles de compétence en droit de la famille, des successions, de l’indivision, des référés, de l’expertise et du travail.</p>
   </div>
   <form class="moteur-encart__form" action="/competence-territoriale" method="get" role="search" aria-label="Quel tribunal saisir ?">
     <label class="champ">
       <span>Code postal ou commune</span>
-      <input type="search" name="q" placeholder="35000, Saint-Malo, 44600…" autocomplete="postal-code" required minlength="2" />
+      <input type="search" name="q" placeholder="35000, Lyon 3e, Fort-de-France…" autocomplete="postal-code" required minlength="2" />
     </label>
     <button type="submit" class={`btn ${sombre ? 'btn--clair' : 'btn--plein'}`}>Trouver le tribunal</button>
     <a href="/competence-territoriale#carte" class="lien moteur-encart__carte">Voir la carte des juridictions</a>

@@ -81,7 +81,7 @@ export const navigation = {
     { href: '/reglement-amiable', titre: 'Règlement amiable & médiation', accroche: 'Médiation, conciliation, négociation : y aller accompagné, en sortir avec un bon accord.' },
   ],
   services: [
-    { href: '/competence-territoriale', titre: 'Quel tribunal saisir ?', accroche: 'Moteur de compétence territoriale : un code postal ou une commune, et voici le tribunal judiciaire, le tribunal de proximité, le conseil de prud’hommes et la cour d’appel compétents — Bretagne, Pays de la Loire, Normandie.', vedette: 'Outil gratuit' },
+    { href: '/competence-territoriale', titre: 'Quel tribunal saisir ?', accroche: 'Moteur de compétence territoriale : un code postal ou une commune, et voici le tribunal judiciaire, le tribunal de proximité, le conseil de prud’hommes et la cour d’appel compétents — partout en France, outre-mer compris.', vedette: 'Outil gratuit' },
     { href: '/services/rendez-vous', titre: 'Prendre rendez-vous', accroche: 'Cabinet, visio ou téléphone, créneau choisi en ligne.' },
     { href: '/services/consultation-ecrite', titre: 'Consultation écrite en ligne', accroche: 'Une réponse d’avocat par écrit, sans vous déplacer. Dès 80 €.' },
     { href: '/services/devis-divorce', titre: 'Devis divorce amiable', accroche: 'Votre estimation en sept questions, confirmée par l’avocat.' },

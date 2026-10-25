@@ -30,7 +30,7 @@ faq:
   - q: "L’appel suspend-il l’exécution du jugement ?"
     r: "<p>Plus par principe : depuis 2020, les jugements de première instance sont exécutoires de droit à titre provisoire, sauf exceptions. L’arrêt de l’exécution provisoire peut être demandé au premier président sous conditions strictes.</p>"
   - q: "Quel tribunal est territorialement compétent ?"
-    r: "<p>En principe celui du lieu où demeure le défendeur (art. 42 CPC) ; le tribunal du lieu de l’immeuble en matière réelle immobilière (art. 44) ; celui du lieu d’ouverture de la succession pour les partages successoraux (art. 45) ; le juge aux affaires familiales désigné par l’article 1070. Pour la Bretagne, les Pays de la Loire et la Normandie, le cabinet met à disposition un moteur de compétence territoriale par code postal, avec la carte des juridictions : <a href=\"/competence-territoriale\">« Quel tribunal saisir ? »</a>.</p>"
+    r: "<p>En principe celui du lieu où demeure le défendeur (art. 42 CPC) ; le tribunal du lieu de l’immeuble en matière réelle immobilière (art. 44) ; celui du lieu d’ouverture de la succession pour les partages successoraux (art. 45) ; le juge aux affaires familiales désigné par l’article 1070. Le cabinet met à disposition un moteur de compétence territoriale par code postal pour toute la France, outre-mer compris, avec la carte des juridictions : <a href=\"/competence-territoriale\">« Quel tribunal saisir ? »</a>.</p>"
   - q: "Faut-il un avocat pour faire appel ?"
     r: "<p>Devant la cour d’appel, la représentation par avocat est obligatoire dans la plupart des matières civiles, et cet avocat doit être inscrit à un barreau du ressort de la cour — d’où la postulation pour les confrères extérieurs.</p>"
 fiches: ["pieces-premier-rendez-vous"]

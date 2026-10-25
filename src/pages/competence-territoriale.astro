@@ -5,7 +5,7 @@ import Cta from '../components/Cta.astro';
 import { cabinet } from '../data/cabinet';
 
 const titre = 'Quel tribunal saisir ? Moteur de compétence territoriale';
-const description = 'Quel tribunal saisir ? Moteur de compétence territoriale par code postal : tribunaux, prud’hommes et cours d’appel de Bretagne, Pays de la Loire et Normandie.';
+const description = 'Quel tribunal saisir ? Moteur de compétence territoriale par code postal : tribunaux, prud’hommes et cours d’appel de toute la France, outre-mer compris.';
 
 const faq = [
   { q: 'Quel tribunal saisir pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
@@ -13,6 +13,8 @@ const faq = [
   { q: 'Quel tribunal saisir pour une expertise avant procès (article 145) ?', r: '<p>Au choix du demandeur, la juridiction qui connaîtrait de l’affaire au fond ou celle du lieu où la mesure doit être exécutée&nbsp;; si l’expertise porte sur un immeuble, seul le tribunal du lieu de l’immeuble est compétent (art.&nbsp;145 du code de procédure civile, dans sa rédaction issue du décret n°&nbsp;2025-619 du 8&nbsp;juillet&nbsp;2025, applicable aux instances introduites depuis le 1er&nbsp;septembre&nbsp;2025).</p>' },
   { q: 'Quel juge aux affaires familiales saisir après une séparation ?', r: '<p>Celui du lieu où réside la famille ; si les parents vivent séparément, celui du lieu de résidence du parent chez lequel les enfants mineurs résident habituellement ; dans les autres cas, celui du lieu où réside la partie qui n’a pas pris l’initiative de la procédure (art.&nbsp;1070 du code de procédure civile). La compétence s’apprécie au jour de la demande.</p>' },
   { q: 'Quel conseil de prud’hommes saisir ?', r: '<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail est accompli à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 du code du travail).</p>' },
+  { q: 'Quel commissaire de justice est compétent ?', r: '<p>Pour signifier un acte ou exécuter une décision&nbsp;: un commissaire de justice dont l’office est situé dans le ressort de la cour d’appel. Pour un constat&nbsp;: n’importe quel commissaire de justice, sur tout le territoire national (décret n°&nbsp;2021-1625 du 10&nbsp;décembre&nbsp;2021, art.&nbsp;1er). Le moteur indique la cour d’appel dont dépend chaque commune&nbsp;; l’annuaire officiel de la Chambre nationale des commissaires de justice permet ensuite de trouver un office.</p>' },
+  { q: 'Le moteur couvre-t-il l’outre-mer ?', r: '<p>Oui&nbsp;: Guadeloupe, Martinique, Guyane, La Réunion et Mayotte, ainsi que Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin, la Nouvelle-Calédonie, la Polynésie française, Wallis-et-Futuna et même les Terres australes et l’île de Clipperton, selon le fichier officiel du ministère de la Justice. Dans les collectivités du Pacifique et à Saint-Pierre-et-Miquelon, l’organisation judiciaire et la procédure obéissent en partie à des textes propres.</p>' },
   { q: 'Mon code postal couvre plusieurs communes : laquelle compte ?', r: '<p>La compétence s’apprécie par commune, non par code postal. Un même code postal peut couvrir des communes rattachées à des tribunaux différents : le moteur ci-dessus vous demande alors de préciser la commune.</p>' },
   { q: 'Le cabinet peut-il plaider devant tous ces tribunaux ?', r: '<p>Oui. Le cabinet postule directement devant tous les tribunaux judiciaires du ressort de la cour d’appel de Rennes (Côtes-d’Armor, Finistère, Ille-et-Vilaine, Loire-Atlantique, Morbihan) et plaide devant les conseils de prud’hommes et les autres juridictions de France ; devant les tribunaux judiciaires des autres cours d’appel, il s’adjoint si nécessaire un confrère postulant.</p>' },
 ];
@@ -25,16 +27,16 @@ const jsonLd = {
   url: `${cabinet.siteUrl}/competence-territoriale`,
   isPartOf: { '@id': `${cabinet.siteUrl}/#cabinet` },
   about: ['Compétence territoriale', 'Tribunal judiciaire', 'Tribunal de proximité', 'Conseil de prud’hommes', 'Cour d’appel'],
-  spatialCoverage: ['Bretagne', 'Pays de la Loire', 'Normandie'],
-  dateModified: '2026-10-25',
+  spatialCoverage: ['France métropolitaine', 'Outre-mer'],
+  dateModified: '2026-10-26',
 };
 ---
 <Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Quel tribunal saisir ?', href: '/competence-territoriale' }]}>
   <section class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
     <div class="conteneur pile entree" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 880px">
-      <p class="surtitre">Moteur de compétence territoriale · Grand Ouest</p>
+      <p class="surtitre">Moteur de compétence territoriale · France entière</p>
       <h1>Quel tribunal saisir&nbsp;?</h1>
-      <p class="chapo">Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de Bretagne, des Pays de la Loire et de Normandie. Saisissez un code postal ou une commune&nbsp;: la page indique les juridictions dont elle dépend, les situe sur la carte et rappelle les règles de compétence territoriale en droit de la famille, des successions, de l’indivision, des référés et du travail.</p>
+      <p class="chapo">Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de toute la France, outre-mer compris. Saisissez un code postal ou une commune&nbsp;: la page indique les juridictions dont elle dépend, les situe sur la carte, précise le ressort des commissaires de justice et rappelle les règles de compétence territoriale en droit de la famille, des successions, de l’indivision, des référés, de l’expertise et du travail.</p>
     </div>
   </section>
 
@@ -43,12 +45,12 @@ const jsonLd = {
       <div class="pile" style="gap: 10px; max-width: 720px">
         <p class="surtitre">Moteur de compétence territoriale</p>
         <h2>De quel tribunal dépend votre commune&nbsp;?</h2>
-        <p class="muet">Ressorts officiels du ministère de la Justice (mise à jour de juillet&nbsp;2026), 5&nbsp;081 communes des départements 14, 22, 27, 29, 35, 44, 49, 50, 53, 56, 61, 72, 76 et 85.</p>
+        <p class="muet">Ressorts officiels du ministère de la Justice (mise à jour de juillet&nbsp;2026)&nbsp;: les 35&nbsp;029 communes et territoires de France, métropole et outre-mer — départements et régions d’outre-mer, Saint-Pierre-et-Miquelon, Saint-Barthélemy, Saint-Martin, Nouvelle-Calédonie, Polynésie française, Wallis-et-Futuna.</p>
       </div>
       <form class="recherche" id="form-recherche" autocomplete="off" novalidate>
         <label class="champ" style="flex: 1 1 320px">
           <span>Code postal ou commune</span>
-          <input type="search" id="q" name="q" inputmode="search" placeholder="35000, Rennes, Saint-Malo, 44600…" aria-describedby="aide-q" />
+          <input type="search" id="q" name="q" inputmode="search" placeholder="35000, Lyon 3e, Fort-de-France, 98800…" aria-describedby="aide-q" />
         </label>
         <p id="aide-q" class="muet" style="font-size: 14px; flex-basis: 100%; margin: 0">Un code postal peut couvrir plusieurs communes aux ressorts différents&nbsp;: choisissez alors la commune dans la liste.</p>
       </form>
@@ -62,17 +64,18 @@ const jsonLd = {
     <div class="conteneur pile" style="gap: 24px">
       <div class="pile" style="gap: 10px; max-width: 720px">
         <p class="surtitre">Carte</p>
-        <h2>Les juridictions du Grand Ouest</h2>
-        <p class="muet">25 tribunaux judiciaires, 13 tribunaux de proximité, 31 conseils de prud’hommes, 5 cours d’appel (Rennes, Angers, Caen, Rouen et, pour la Vendée, Poitiers). Cliquez sur un repère pour l’adresse, le téléphone et les horaires d’accueil.</p>
+        <h2>Les juridictions de France</h2>
+        <p class="muet">164 tribunaux judiciaires et 4 tribunaux de première instance, 125 tribunaux de proximité, 211 conseils de prud’hommes et 5 tribunaux du travail, 36 cours d’appel et un tribunal supérieur d’appel. Les boutons sous la carte mènent à l’outre-mer&nbsp;; cliquez sur un repère pour l’adresse, le téléphone et les horaires d’accueil.</p>
       </div>
       <div class="legende" role="group" aria-label="Filtrer les juridictions affichées">
-        <label><input type="checkbox" data-type="TJ" checked /> <span class="puce puce--TJ"></span> Tribunaux judiciaires</label>
+        <label><input type="checkbox" data-type="TJ" checked /> <span class="puce puce--TJ"></span> Tribunaux judiciaires et de première instance</label>
         <label><input type="checkbox" data-type="TPRX" checked /> <span class="puce puce--TPRX"></span> Tribunaux de proximité</label>
-        <label><input type="checkbox" data-type="CPH" checked /> <span class="puce puce--CPH"></span> Conseils de prud’hommes</label>
+        <label><input type="checkbox" data-type="CPH" checked /> <span class="puce puce--CPH"></span> Prud’hommes et tribunaux du travail</label>
         <label><input type="checkbox" data-type="CA" checked /> <span class="puce puce--CA"></span> Cours d’appel</label>
       </div>
-      <div id="map" class="map" role="region" aria-label="Carte des juridictions de Bretagne, Pays de la Loire et Normandie"></div>
-      <p class="muet" style="font-size: 13px">Fond de carte IGN — Géoplateforme. Contours départementaux simplifiés. Adresses et horaires&nbsp;: annuaire de l’administration (service-public.gouv.fr), susceptibles de changer&nbsp;: vérifiez avant de vous déplacer.</p>
+      <div id="map" class="map" role="region" aria-label="Carte des juridictions de France"></div>
+      <div id="outremer" class="outremer" role="group" aria-label="Aller sur la carte de l’outre-mer"></div>
+      <p class="muet" style="font-size: 13px">Fond de carte IGN — Géoplateforme&nbsp;; OpenStreetMap pour la Nouvelle-Calédonie, la Polynésie française et Wallis-et-Futuna. Adresses et horaires&nbsp;: annuaire de l’administration (service-public.gouv.fr), susceptibles de changer&nbsp;: vérifiez avant de vous déplacer.</p>
     </div>
   </section>
 
@@ -82,6 +85,7 @@ const jsonLd = {
         <p class="surtitre">Les règles</p>
         <h2>Compétence territoriale&nbsp;: les principales règles</h2>
         <p class="muet">Savoir <em>quel</em> tribunal est le bon n’est pas un détail&nbsp;: une assignation délivrée devant un tribunal territorialement incompétent fait perdre des mois, et l’exception d’incompétence doit être soulevée dès les premières écritures. Les règles ci-dessous sont celles du code de procédure civile, du code civil, du code de l’organisation judiciaire et du code du travail en vigueur au 25&nbsp;octobre&nbsp;2026.</p>
+        <p class="muet"><strong>Outre-mer.</strong> Ces règles valent dans les départements et régions d’outre-mer. À Saint-Pierre-et-Miquelon, la justice civile de première instance est rendue par un tribunal de première instance, avec un tribunal supérieur d’appel&nbsp;; en Nouvelle-Calédonie, en Polynésie française et à Wallis-et-Futuna, par un tribunal de première instance et, pour les litiges du travail, par un tribunal du travail. L’organisation judiciaire et la procédure y obéissent en partie à des textes propres&nbsp;: vérifiez les règles locales avant d’agir.</p>
       </div>
       <div class="grille grille--2 regles">
         <article class="carte">
@@ -152,6 +156,7 @@ const jsonLd = {
         <li>Annuaire de l’administration, base de données locales de service-public.gouv.fr (DILA), extraction du 25 octobre 2026 — adresses, téléphones, horaires, coordonnées.</li>
         <li>La Poste, base officielle des codes postaux (correspondance commune – code postal).</li>
         <li>Articles 42 à 48, 145, 789, 834, 835 et 1070 du code de procédure civile&nbsp;; 720 et 841 du code civil&nbsp;; L.&nbsp;212-8, L.&nbsp;213-3 et D.&nbsp;212-19-1 du code de l’organisation judiciaire&nbsp;; R.&nbsp;1412-1 et R.&nbsp;1412-4 du code du travail (Légifrance, versions en vigueur au 25 octobre 2026).</li>
+        <li>Ordonnance n°&nbsp;2016-728 du 2&nbsp;juin&nbsp;2016 relative au statut de commissaire de justice, art.&nbsp;1er&nbsp;; décret n°&nbsp;2021-1625 du 10&nbsp;décembre&nbsp;2021 relatif aux compétences des commissaires de justice, art.&nbsp;1er (Légifrance).</li>
         <li>Cass. 1re&nbsp;civ., 23&nbsp;septembre&nbsp;2015, n°&nbsp;14-50.031&nbsp;; TJ Paris, 9&nbsp;avril&nbsp;2025, RG n°&nbsp;24/10716&nbsp;; TJ Lyon, 4&nbsp;août&nbsp;2026, RG n°&nbsp;25/05007 (Judilibre).</li>
       </ul>
       <p class="muet" style="font-size: 14px">Cette page est un outil d’orientation, pas une consultation&nbsp;: les règles comportent des exceptions (clauses attributives, litiges internationaux, procédures collectives, contentieux de la protection…), et les ressorts évoluent. Avant d’assigner, faites vérifier la compétence par un avocat.</p>
@@ -171,13 +176,16 @@ const jsonLd = {
   .resultat__titre h3 { font-size: 26px; margin: 0; }
   .juridictions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; }
   .jur { background: var(--ivoire); border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; border-top: 3px solid var(--laiton); }
-  .jur--TJ { border-top-color: #11352F; } .jur--TPRX { border-top-color: #9A7B4F; } .jur--CPH { border-top-color: #2F5D8A; } .jur--CA { border-top-color: #8A2F2F; }
+  .jur--TJ { border-top-color: #11352F; } .jur--TPRX { border-top-color: #9A7B4F; } .jur--CPH { border-top-color: #2F5D8A; } .jur--CA { border-top-color: #8A2F2F; } .jur--CJ { border-top-color: #5E6B63; }
   .jur .etiquette { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); }
   .jur h4 { font-size: 18px; margin: 0; line-height: 1.25; }
   .jur p { margin: 0; font-size: 14.5px; color: var(--muet); }
   .jur .actions { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; margin-top: 4px; }
   .jur .actions a, .jur .actions button { font: inherit; font-size: 14px; color: var(--laiton-sombre); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
   .jur--vide { border-style: dashed; }
+  .outremer { display: flex; flex-wrap: wrap; gap: 8px; }
+  .outremer :global(button) { font: inherit; font-size: 14px; padding: 7px 13px; border: 1px solid var(--ligne); border-radius: 999px; background: var(--papier); color: var(--encre); cursor: pointer; }
+  .outremer :global(button:hover) { border-color: var(--laiton); color: var(--laiton-sombre); }
   .legende { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; }
   .legende label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
   .puce { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
@@ -204,14 +212,25 @@ const jsonLd = {
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
 
-  type Jur = { t: 'CA' | 'TJ' | 'TPRX' | 'CPH'; n: string; a: string; cp: string; v: string; lat: number; lon: number; tel: string | null; url: string; h: string | null };
-  type Commune = [string, string[], string, string, string, string]; // nom, cps, CA, TJ, TPRX, CPH
-  type Donnees = { maj: string; juridictions: Record<string, Jur>; communes: Record<string, Commune>; departements: GeoJSON.FeatureCollection };
+  type Type = 'CA' | 'TJ' | 'TPRX' | 'CPH';
+  type Jur = { i: string; t: Type; l: string; n: string; a: string; cp: string; v: string; lat: number; lon: number; tel: string | null; url: string; h: string | null };
+  type Ligne = [string, string, string, number, number, number, number]; // insee, nom, codes postaux, CA, TJ, TPRX (-1 si aucun), CPH
+  type Donnees = { maj: string; deps: Record<string, string>; j: Jur[]; c: Ligne[] };
+  type Commune = { insee: string; nom: string; norm: string; cps: string[]; ca: number; tj: number; tprx: number; cph: number; dep: string };
 
-  const COULEURS: Record<string, string> = { TJ: '#11352F', TPRX: '#9A7B4F', CPH: '#2F5D8A', CA: '#8A2F2F' };
-  const LIBELLES: Record<string, string> = { TJ: 'Tribunal judiciaire', TPRX: 'Tribunal de proximité', CPH: 'Conseil de prud’hommes', CA: 'Cour d’appel' };
-  const DECALAGE: Record<string, [number, number]> = { TJ: [0, 0], TPRX: [0, 0.006], CPH: [0, -0.006], CA: [0.005, 0] };
-  const DEPARTEMENTS: Record<string, string> = { '14': 'Calvados', '22': 'Côtes-d’Armor', '27': 'Eure', '29': 'Finistère', '35': 'Ille-et-Vilaine', '44': 'Loire-Atlantique', '49': 'Maine-et-Loire', '50': 'Manche', '53': 'Mayenne', '56': 'Morbihan', '61': 'Orne', '72': 'Sarthe', '76': 'Seine-Maritime', '85': 'Vendée' };
+  const COULEURS: Record<Type, string> = { TJ: '#11352F', TPRX: '#9A7B4F', CPH: '#2F5D8A', CA: '#8A2F2F' };
+  const DECALAGE: Record<Type, [number, number]> = { TJ: [0, 0], TPRX: [0, 0.006], CPH: [0, -0.006], CA: [0.005, 0] };
+  // Collectivités où l'organisation judiciaire et la procédure obéissent en partie à des textes propres
+  const COLLECTIVITES = ['975', '984', '986', '987', '988', '989'];
+  const OUTRE_MER: [string, number, number, number][] = [
+    ['Guadeloupe', 16.17, -61.55, 10], ['Martinique', 14.64, -61.02, 10], ['Guyane', 4.4, -53.1, 8],
+    ['La Réunion', -21.12, 55.53, 10], ['Mayotte', -12.82, 45.15, 11], ['Saint-Pierre-et-Miquelon', 46.95, -56.3, 10],
+    ['Saint-Martin, Saint-Barthélemy', 17.98, -62.95, 11], ['Nouvelle-Calédonie', -21.3, 165.6, 7],
+    ['Polynésie française', -17.65, -149.45, 10], ['Wallis-et-Futuna', -13.8, -177.2, 9],
+  ];
+  const METROPOLE = L.latLngBounds([41.3, -5.2], [51.1, 9.6]);
+  // Le Plan IGN ne couvre pas le Pacifique : OpenStreetMap y prend le relais
+  const PACIFIQUE = [L.latLngBounds([-23.5, 162.5], [-19, 168.5]), L.latLngBounds([-28.5, -155], [-7, -134]), L.latLngBounds([-14.5, -178.5], [-13, -175.5])];
   const NBSP = ' ';
 
   const $ = <T extends HTMLElement>(s: string) => document.querySelector(s) as T;
@@ -220,140 +239,179 @@ const jsonLd = {
   const resultat = $<HTMLDivElement>('#resultat');
   const mapEl = $<HTMLDivElement>('#map');
 
-  const normaliser = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/[^a-z0-9]+/g, ' ').replace(/\bste?\b/g, (m) => (m === 'st' ? 'saint' : 'sainte')).trim();
+  const normaliser = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/æ/g, 'ae').replace(/[^a-z0-9]+/g, ' ').replace(/\bste?\b/g, (m) => (m === 'st' ? 'saint' : 'sainte')).trim();
   const echapper = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
-  const telHref = (t: string) => 'tel:+33' + t.replace(/\s/g, '').replace(/^0/, '');
+  const telHref = (t: string) => 'tel:' + t.replace(/[^\d+]/g, '');
+  const depDe = (insee: string) => (insee.startsWith('97') || insee.startsWith('98') ? insee.slice(0, 3) : insee.slice(0, 2));
+  const ressort = (ca: Jur) => ca.n.replace(/^Cour d’appel/, 'cour d’appel').replace(/^Tribunal supérieur d’appel/, 'tribunal supérieur d’appel');
 
   let donnees: Donnees;
-  let index: { insee: string; nom: string; norm: string; cps: string[] }[] = [];
+  let communes: Commune[] = [];
   let map: L.Map;
-  const marqueurs: Record<string, L.CircleMarker> = {};
+  const marqueurs: L.CircleMarker[] = [];
   const groupes: Record<string, L.LayerGroup> = {};
-  let selection: string[] = [];
+  let selection: number[] = [];
 
   async function charger() {
-    const r = await fetch('/data/competence-territoriale.json');
+    const r = await fetch('/data/competence-territoriale.json?v=2026-07-fr');
     donnees = await r.json();
-    index = Object.entries(donnees.communes).map(([insee, c]) => ({ insee, nom: c[0], norm: normaliser(c[0]), cps: c[1] }));
-    index.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+    communes = donnees.c.map(([insee, nom, cps, ca, tj, tprx, cph]) => ({ insee, nom, norm: normaliser(nom), cps: cps ? cps.split(' ') : [], ca, tj, tprx, cph, dep: depDe(insee) }));
     initCarte();
     champ.disabled = false;
+    champ.placeholder = '35000, Lyon 3e, Fort-de-France, 98800…';
     // ?q=… (encarts du site, formulaire sans JavaScript) ou #q=… (lien partagé depuis la page)
     const q = new URLSearchParams(location.search).get('q') ?? new URLSearchParams(location.hash.replace(/^#/, '')).get('q');
     if (q) {
       champ.value = q;
       chercher(q, true);
       if (resultat.hidden) {
-        const exactes = index.filter((c) => c.norm === normaliser(q));
-        if (exactes.length === 1) afficher(exactes[0].insee);
+        const exactes = communes.filter((c) => c.norm === normaliser(q));
+        if (exactes.length === 1) afficher(exactes[0]);
       }
       document.getElementById('moteur')?.scrollIntoView({ block: 'start' });
     }
   }
 
+  const cle = (c: Commune) => `${c.ca}|${c.tj}|${c.tprx}|${c.cph}`;
+  const memesJuridictions = (cs: Commune[]) => cs.every((c) => cle(c) === cle(cs[0]));
+
   function chercher(brut: string, auto = false) {
     const q = brut.trim();
     propositions.innerHTML = '';
+    // nouvelle recherche : l'ancien résultat et sa mise en valeur sur la carte disparaissent
+    resultat.hidden = true;
+    if (selection.length) { selection = []; mettreEnValeur([]); }
     if (q.length < 2) { propositions.hidden = true; return; }
-    let trouvees: typeof index;
-    if (/^\d+$/.test(q)) {
-      trouvees = index.filter((c) => c.cps.some((cp) => cp.startsWith(q)));
+    let trouvees: Commune[];
+    if (/^\d+$/.test(q) || /^2[ab]\d*$/i.test(q)) {
+      trouvees = communes.filter((c) => c.cps.some((cp) => cp.startsWith(q)));
     } else {
       const n = normaliser(q);
-      trouvees = index.filter((c) => c.norm.startsWith(n));
-      if (trouvees.length < 8) trouvees = trouvees.concat(index.filter((c) => !c.norm.startsWith(n) && c.norm.includes(n)));
+      trouvees = communes.filter((c) => c.norm.startsWith(n));
+      if (trouvees.length < 8) trouvees = trouvees.concat(communes.filter((c) => !c.norm.startsWith(n) && c.norm.includes(n)));
     }
-    // Un code postal complet : si toutes les communes ont les mêmes juridictions, on affiche directement
     if (trouvees.length === 0) {
       propositions.hidden = false;
-      propositions.innerHTML = `<p class="muet" style="margin:0">Aucune commune trouvée dans les 14 départements couverts pour «${NBSP}${echapper(q)}${NBSP}». Hors Bretagne, Pays de la Loire et Normandie, consultez <a href="https://www.justice.fr/recherche/annuaires" rel="noopener">l’annuaire du ministère de la Justice</a>.</p>`;
+      propositions.innerHTML = `<p class="muet" style="margin:0">Aucune commune trouvée pour «${NBSP}${echapper(q)}${NBSP}». Vérifiez l’orthographe ou essayez le code postal.</p>`;
       resultat.hidden = true;
       return;
     }
     const liste = trouvees.slice(0, 40);
     propositions.hidden = false;
-    propositions.innerHTML = liste.map((c) => `<button type="button" role="option" data-insee="${c.insee}">${echapper(c.nom)} <small>${c.cps[0] ?? ''} · ${DEPARTEMENTS[c.insee.slice(0, 2)] ?? ''}</small></button>`).join('') + (trouvees.length > 40 ? `<p class="muet" style="margin:0;flex-basis:100%;font-size:14px">${trouvees.length} communes&nbsp;: précisez.</p>` : '');
-    if (trouvees.length === 1 || (auto && /^\d{5}$/.test(q) && memesJuridictions(trouvees))) afficher(trouvees[0].insee, /^\d{5}$/.test(q) && trouvees.length > 1 ? trouvees : undefined);
-    else if (/^\d{5}$/.test(q) && memesJuridictions(trouvees)) afficher(trouvees[0].insee, trouvees);
+    propositions.innerHTML = liste.map((c, k) => `<button type="button" role="option" data-k="${k}">${echapper(c.nom)} <small>${c.cps[0] ?? ''} · ${echapper(donnees.deps[c.dep] ?? '')}</small></button>`).join('')
+      + (trouvees.length > 40 ? `<p class="muet" style="margin:0;flex-basis:100%;font-size:14px">${trouvees.length.toLocaleString('fr-FR')} communes${NBSP}: précisez.</p>` : '');
+    (propositions as any)._liste = liste;
+    const cpComplet = /^\d{5}$/.test(q);
+    const exactes = cpComplet ? [] : trouvees.filter((c) => c.norm === normaliser(q));
+    if (trouvees.length === 1) afficher(trouvees[0]);
+    else if (cpComplet && memesJuridictions(trouvees)) afficher(trouvees[0], trouvees);
+    else if (exactes.length === 1) afficher(exactes[0]);
   }
 
-  function memesJuridictions(cs: typeof index) {
-    const cle = (i: string) => donnees.communes[i].slice(2).join('|');
-    return cs.every((c) => cle(c.insee) === cle(cs[0].insee));
-  }
-
-  function carteJur(id: string, type: string) {
-    const j = donnees.juridictions[id];
-    if (!j) {
-      return `<div class="jur jur--${type} jur--vide"><span class="etiquette">${LIBELLES[type]}</span><h4>Pas de tribunal de proximité</h4><p>Cette commune relève directement du siège du tribunal judiciaire, y compris pour les contentieux habituellement confiés aux chambres de proximité.</p></div>`;
+  function carteJur(idx: number, type: Type) {
+    if (idx < 0) {
+      return `<div class="jur jur--${type} jur--vide"><span class="etiquette">Tribunal de proximité</span><h4>Pas de tribunal de proximité</h4><p>Cette commune relève directement du siège du tribunal, y compris pour les contentieux habituellement confiés aux chambres de proximité.</p></div>`;
     }
-    return `<div class="jur jur--${type}"><span class="etiquette">${LIBELLES[type]}</span><h4>${echapper(j.n)}</h4><p>${echapper(j.a)}<br>${j.cp} ${echapper(j.v)}</p>${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<div class="actions">${j.tel ? `<a href="${telHref(j.tel)}">${j.tel}</a>` : ''}<button type="button" data-voir="${id}">Voir sur la carte</button><a href="${j.url}" rel="noopener">Fiche annuaire</a></div></div>`;
+    const j = donnees.j[idx];
+    return `<div class="jur jur--${type}"><span class="etiquette">${echapper(j.l)}</span><h4>${echapper(j.n)}</h4><p>${echapper(j.a)}${j.a ? '<br>' : ''}${j.cp} ${echapper(j.v)}</p>${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<div class="actions">${j.tel ? `<a href="${telHref(j.tel)}">${echapper(j.tel)}</a>` : ''}<button type="button" data-voir="${idx}">Voir sur la carte</button><a href="${j.url}" rel="noopener">Fiche annuaire</a></div></div>`;
   }
 
-  function afficher(insee: string, groupe?: typeof index) {
-    const c = donnees.communes[insee];
-    const [nom, cps, ca, tj, tprx, cph] = c;
-    propositions.querySelectorAll('button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.insee === insee)));
+  function carteCommissaire(c: Commune) {
+    if (COLLECTIVITES.includes(c.dep)) return '';
+    const ca = donnees.j[c.ca];
+    return `<div class="jur jur--CJ"><span class="etiquette">Commissaire de justice</span><h4>Ressort de la ${echapper(ressort(ca))}</h4><p>Pour signifier un acte ou exécuter une décision${NBSP}: un commissaire de justice dont l’office est situé dans ce ressort. Pour un constat${NBSP}: n’importe quel commissaire de justice, partout en France (décret n°${NBSP}2021-1625, art.${NBSP}1er).</p><div class="actions"><a href="https://annuaire.commissaire-justice.fr/" rel="noopener">Annuaire officiel des commissaires de justice</a></div></div>`;
+  }
+
+  function afficher(c: Commune, groupe?: Commune[]) {
+    propositions.querySelectorAll<HTMLButtonElement>('button[data-k]').forEach((b) => {
+      const liste = (propositions as any)._liste as Commune[] | undefined;
+      b.setAttribute('aria-selected', String(!!liste && liste[Number(b.dataset.k)] === c));
+    });
     const titre = groupe && groupe.length > 1
-      ? `<h3>Code postal ${cps[0]}</h3><span class="muet">${groupe.length} communes, mêmes juridictions${NBSP}: ${echapper(groupe.map((g) => g.nom).join(', '))}</span>`
-      : `<h3>${echapper(nom)}</h3><span class="muet">${cps.join(', ')} · ${DEPARTEMENTS[insee.slice(0, 2)] ?? ''}</span>`;
-    const postule = ca === 'CA-11';
+      ? `<h3>Code postal ${c.cps.find((cp) => groupe.every((g) => g.cps.includes(cp))) ?? c.cps[0]}</h3><span class="muet">${groupe.length} communes, mêmes juridictions${NBSP}: ${echapper(groupe.map((g) => g.nom).join(', '))}</span>`
+      : `<h3>${echapper(c.nom)}</h3><span class="muet">${c.cps.join(', ')}${c.cps.length ? ' · ' : ''}${echapper(donnees.deps[c.dep] ?? '')}</span>`;
+    const ca = donnees.j[c.ca];
+    const notes: string[] = [];
+    notes.push(ca.i === 'CA-11'
+      ? `Ressort de la cour d’appel de Rennes${NBSP}: le cabinet postule directement devant ce tribunal judiciaire et plaide devant le conseil de prud’hommes et la cour.`
+      : `Hors ressort de la cour d’appel de Rennes${NBSP}: le cabinet plaide devant ces juridictions et s’adjoint, lorsque la postulation est obligatoire devant le tribunal, un confrère du ressort.`);
+    if (COLLECTIVITES.includes(c.dep)) notes.push(`Collectivité d’outre-mer${NBSP}: l’organisation judiciaire et la procédure y obéissent en partie à des textes propres (tribunal de première instance, tribunal du travail ou tribunal supérieur d’appel)${NBSP}; vérifiez les règles locales avant d’agir.`);
+    notes.push(`Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants${NBSP}; expertise d’un immeuble avant tout procès${NBSP}: celle où se trouve l’immeuble (<a href="#regles">voir les règles</a>).`);
     resultat.hidden = false;
     resultat.innerHTML = `<div class="resultat__titre">${titre}</div>
-      <div class="juridictions">${carteJur(tj, 'TJ')}${carteJur(tprx, 'TPRX')}${carteJur(cph, 'CPH')}${carteJur(ca, 'CA')}</div>
-      <p class="avertissement">${postule
-        ? 'Ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet postule directement devant ce tribunal judiciaire et plaide devant le conseil de prud’hommes et la cour.'
-        : 'Hors ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet plaide devant ces juridictions et s’adjoint, lorsque la postulation est obligatoire devant le tribunal judiciaire, un confrère local.'}
-      Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants${NBSP}; expertise d’un immeuble avant tout procès${NBSP}: celle où se trouve l’immeuble (<a href="#regles">voir les règles</a>).</p>`;
-    selection = [tj, tprx, cph, ca].filter(Boolean);
-    mettreEnValeur();
+      <div class="juridictions">${carteJur(c.tj, 'TJ')}${carteJur(c.tprx, 'TPRX')}${carteJur(c.cph, 'CPH')}${carteJur(c.ca, 'CA')}${carteCommissaire(c)}</div>
+      <p class="avertissement">${notes.join(' ')}</p>`;
+    selection = [c.tj, c.tprx, c.cph, c.ca].filter((i) => i >= 0);
+    mettreEnValeur([c.tj, c.tprx, c.cph].filter((i) => i >= 0));
     history.replaceState(null, '', location.pathname + '#q=' + encodeURIComponent(champ.value.trim()));
   }
 
   function initCarte() {
-    map = L.map(mapEl, { scrollWheelZoom: false, attributionControl: true });
+    map = L.map(mapEl, { scrollWheelZoom: false, preferCanvas: true, attributionControl: true });
     L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng', {
-      attribution: '© <a href="https://www.ign.fr/" rel="noopener">IGN</a> – Géoplateforme · Ressorts © Ministère de la Justice (07/2026)', maxZoom: 18, minZoom: 6,
+      attribution: '© <a href="https://www.ign.fr/" rel="noopener">IGN</a> – Géoplateforme · Ressorts © Ministère de la Justice (07/2026)', maxZoom: 18, minZoom: 2,
     }).addTo(map);
-    const deps = L.geoJSON(donnees.departements, { style: { color: '#11352F', weight: 1, opacity: .55, fillColor: '#11352F', fillOpacity: .03 }, interactive: false }).addTo(map);
-    map.fitBounds(deps.getBounds(), { padding: [10, 10] });
+    for (const b of PACIFIQUE) {
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { bounds: b, maxZoom: 18, attribution: '© <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>' }).addTo(map);
+    }
+    map.fitBounds(METROPOLE);
     for (const t of ['CA', 'CPH', 'TPRX', 'TJ']) groupes[t] = L.layerGroup().addTo(map);
-    for (const [id, j] of Object.entries(donnees.juridictions)) {
+    donnees.j.forEach((j, idx) => {
       const [dlat, dlon] = DECALAGE[j.t];
-      const m = L.circleMarker([j.lat + dlat, j.lon + dlon], { radius: j.t === 'TJ' || j.t === 'CA' ? 8 : 6, color: '#fff', weight: 1.5, fillColor: COULEURS[j.t], fillOpacity: .95 });
-      m.bindPopup(`<h4>${echapper(j.n)}</h4><p>${echapper(j.a)}<br>${j.cp} ${echapper(j.v)}</p>${j.tel ? `<p><a href="${telHref(j.tel)}">${j.tel}</a></p>` : ''}${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<p><a href="${j.url}" rel="noopener">Fiche annuaire</a></p>`);
+      const m = L.circleMarker([j.lat + dlat, j.lon + dlon], { radius: j.t === 'TJ' || j.t === 'CA' ? 6 : 4.5, color: '#fff', weight: 1.2, fillColor: COULEURS[j.t], fillOpacity: .95 });
+      m.bindPopup(`<h4>${echapper(j.n)}</h4><p>${echapper(j.a)}${j.a ? '<br>' : ''}${j.cp} ${echapper(j.v)}</p>${j.tel ? `<p><a href="${telHref(j.tel)}">${echapper(j.tel)}</a></p>` : ''}${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<p><a href="${j.url}" rel="noopener">Fiche annuaire</a></p>`);
       m.bindTooltip(j.n, { direction: 'top', offset: [0, -6] });
       m.addTo(groupes[j.t]);
-      marqueurs[id] = m;
-    }
+      marqueurs[idx] = m;
+    });
     document.querySelectorAll<HTMLInputElement>('.legende input').forEach((cb) => cb.addEventListener('change', () => {
       const g = groupes[cb.dataset.type!];
       if (cb.checked) g.addTo(map); else map.removeLayer(g);
     }));
+    const om = document.getElementById('outremer');
+    if (om) {
+      om.innerHTML = `<button type="button" data-metropole>France métropolitaine</button>` + OUTRE_MER.map(([nom], k) => `<button type="button" data-om="${k}">${nom}</button>`).join('');
+      om.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+        if (!b) return;
+        if (b.dataset.metropole !== undefined) map.fitBounds(METROPOLE);
+        else { const [, lat, lon, z] = OUTRE_MER[Number(b.dataset.om)]; map.setView([lat, lon], z); }
+      });
+    }
   }
 
-  function mettreEnValeur() {
-    for (const [id, m] of Object.entries(marqueurs)) {
-      const j = donnees.juridictions[id];
-      const actif = selection.includes(id);
-      m.setStyle({ radius: actif ? 12 : j.t === 'TJ' || j.t === 'CA' ? 8 : 6, weight: actif ? 3 : 1.5, color: actif ? '#F4D58D' : '#fff' });
+  function mettreEnValeur(cadrage: number[]) {
+    marqueurs.forEach((m, idx) => {
+      const j = donnees.j[idx];
+      const actif = selection.includes(idx);
+      m.setStyle({ radius: actif ? 11 : j.t === 'TJ' || j.t === 'CA' ? 6 : 4.5, weight: actif ? 3 : 1.2, color: actif ? '#F4D58D' : '#fff' });
       if (actif) m.bringToFront();
-    }
-    if (selection.length) {
-      const b = L.latLngBounds(selection.map((id) => marqueurs[id].getLatLng()));
+    });
+    if (cadrage.length) {
+      const b = L.latLngBounds(cadrage.map((i) => marqueurs[i].getLatLng()));
       map.fitBounds(b.pad(.6), { maxZoom: 11 });
     }
   }
 
   champ.disabled = true;
+  champ.placeholder = 'Chargement des 35 029 communes…';
   champ.addEventListener('input', () => chercher(champ.value));
-  $<HTMLFormElement>('#form-recherche').addEventListener('submit', (e) => { e.preventDefault(); chercher(champ.value, true); const b = propositions.querySelector<HTMLButtonElement>('button'); if (b && resultat.hidden) b.click(); });
-  propositions.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-insee]'); if (b) afficher(b.dataset.insee!); });
+  $<HTMLFormElement>('#form-recherche').addEventListener('submit', (e) => {
+    e.preventDefault();
+    chercher(champ.value, true);
+    if (resultat.hidden) { const exactes = communes.filter((c) => c.norm === normaliser(champ.value)); if (exactes.length === 1) afficher(exactes[0]); }
+  });
+  propositions.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-k]');
+    const liste = (propositions as any)._liste as Commune[] | undefined;
+    if (b && liste) afficher(liste[Number(b.dataset.k)]);
+  });
   resultat.addEventListener('click', (e) => {
     const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-voir]');
     if (!b) return;
-    const m = marqueurs[b.dataset.voir!];
-    const j = donnees.juridictions[b.dataset.voir!];
+    const idx = Number(b.dataset.voir);
+    const m = marqueurs[idx];
+    const j = donnees.j[idx];
     if (!map.hasLayer(groupes[j.t])) { groupes[j.t].addTo(map); const cb = document.querySelector<HTMLInputElement>(`.legende input[data-type=${j.t}]`); if (cb) cb.checked = true; }
     mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     map.setView(m.getLatLng(), 14);
