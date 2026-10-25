@@ -35,5 +35,11 @@ faq:
     r: "<p>Pas sans précaution : la jouissance du logement se règle par accord ou par le juge, et un départ précipité peut peser sur l’organisation de la résidence des enfants. Parlons-en avant.</p>"
   - q: "Mon conjoint et moi sommes d’accord : avons-nous besoin de deux avocats ?"
     r: "<p>Oui, depuis 2017 : le divorce par consentement mutuel sans juge exige un avocat par époux. C’est la garantie que chacun a été conseillé.</p>"
+  - q: "Quel juge pour un divorce à Rennes ?"
+    r: "<p>Le juge aux affaires familiales du tribunal judiciaire du lieu de résidence de la famille ou du parent chez qui vivent les enfants : Rennes, Saint-Malo, Saint-Brieuc, Nantes ou une autre juridiction selon votre situation. Le divorce par consentement mutuel se fait sans juge, par acte d’avocats déposé chez un notaire. Le cabinet intervient devant toutes les juridictions du ressort de la cour d’appel de Rennes et au-delà.</p>"
+  - q: "Mon enfant majeur peut-il réclamer lui-même une pension ?"
+    r: "<p>Oui, depuis un arrêt de la Cour de cassation du 4 mars 2026 : l’enfant majeur a le droit et l’intérêt d’agir contre son père ou sa mère en contribution à son entretien et à son éducation. Le cabinet explique ce revirement et ses conséquences dans un <a href=\"/fiches/enfant-majeur-action-directe-contribution\">billet</a>.</p>"
+  - q: "Peut-on divorcer à distance ?"
+    r: "<p>Les rendez-vous peuvent se tenir en visioconférence ou par téléphone, les pièces se déposent en ligne de façon sécurisée ; seule la signature de la convention de divorce par consentement mutuel réunit les époux et leurs avocats. Pour un divorce judiciaire, la représentation par avocat dispense de comparaître à la plupart des audiences.</p>"
 fiches: ["enfant-majeur-action-directe-contribution", "estimation-biens-partage-succession-indivision", "indivision-bloquee"]
 ---

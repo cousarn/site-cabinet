@@ -39,5 +39,11 @@ faq:
     r: "<p>Oui, sous conditions : la vente peut être autorisée à la majorité des deux tiers (art. 815-5-1 C. civ.) ou ordonnée par le tribunal lorsque le refus met en péril l’intérêt commun (art. 815-5). À défaut, la licitation intervient dans le cadre du partage judiciaire.</p>"
   - q: "L’aide juridictionnelle est-elle possible en matière de succession ?"
     r: "<p>Le cabinet n’intervient pas à l’aide juridictionnelle en matière de succession. Une assurance de protection juridique peut en revanche prendre en charge une partie des frais : on vérifie avec vous.</p>"
+  - q: "Quel tribunal est compétent pour une succession à Rennes ou en Bretagne ?"
+    r: "<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt : Rennes, Saint-Malo, Saint-Brieuc, Nantes, Lorient, Vannes, Quimper ou Brest selon les cas. L’appel relève de la cour d’appel de Rennes pour toute la Bretagne et la Loire-Atlantique. Le cabinet plaide devant toutes ces juridictions et, au-delà, dans toute la France.</p>"
+  - q: "Que change la réforme du partage judiciaire au 1er janvier 2027 ?"
+    r: "<p>Avocat obligatoire à toutes les étapes, y compris devant le notaire ; juge commis et notaire commis désignés dès le début ; contestations à former dans les quatre mois à peine d’irrecevabilité. Le cabinet en a publié une <a href=\"/fiches/reforme-partage-judiciaire-2027\">analyse complète</a>.</p>"
+  - q: "Combien coûte un avocat pour une succession ?"
+    r: "<p>Première consultation d’une heure à tarif fixe, puis convention d’honoraires écrite : au temps passé pour les dossiers contentieux, avec un budget prévisionnel par étape, ou au forfait pour les actes simples. Les frais de notaire et d’expertise s’y ajoutent et se partagent en principe entre copartageants. Voir la page <a href=\"/honoraires\">Honoraires</a>.</p>"
 fiches: ["reforme-partage-judiciaire-2027", "partage-judiciaire-articles-1359-1380-cpc", "estimation-biens-partage-succession-indivision", "sortie-indivision-loi-2026", "indivision-bloquee", "recel-successoral", "delivrance-legs", "salaire-differe-agricole"]
 ---
