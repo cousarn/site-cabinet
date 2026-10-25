@@ -31,7 +31,7 @@ Décret n° 2026-964 du 18 octobre 2026, JO du 20 octobre ; CPC, art. 1359 à
 
 </div>
 
-## 1. Ce qu’il faut en retenir, côté client — à lire en premier
+## 1. Ce qu’il faut en retenir, côté client
 
 - **Un avocat du premier au dernier jour.** Plus de phase notariale « sans avocat » : la constitution est obligatoire dès l’assignation et jusqu’au jugement qui met fin à l’instance, et seuls les dires des avocats comptent chez le notaire.
 - **Quatre mois pour poser les vraies questions.** Donation déguisée, recel, validité d’un testament, régime matrimonial, attribution préférentielle, mesures de gestion de l’indivision : à soumettre au juge commis dans les quatre mois de sa désignation, sinon irrecevable. Le dossier doit être prêt avant l’assignation, pas après.
