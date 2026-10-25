@@ -150,7 +150,7 @@ Production : créer un tag `vX.Y.Z` sur le commit validé — soit `git tag vX.Y
 
 | Service | Compte | Ce qu'un agent peut faire | Ce qui reste à Arnaud |
 |---|---|---|---|
-| GitHub | `cousarn` | lire, committer, pousser sur `main`, préparer une release | publier la release de production si l'outil le refuse ; gérer les webhooks (mode sudo) |
+| GitHub | `cousarn` | lire, committer, pousser sur `main`, **publier la release de production** (autorisation permanente d'Arnaud du 25/10/2026 : depuis son Chrome, page « New release », sans confirmation à lui demander) | gérer les webhooks (mode sudo) ; le clic « Publish release » seulement si le garde-fou de l'outil le refuse à l'agent |
 | OVH (manager) | compte client Arnaud | zone DNS (TXT/CNAME de vérification), multisite, suivi des tâches | mot de passe, SFTP, facturation, certificats |
 | Serveur (SFTP) | `arnaudcoqa` | rien directement : passer par FileZilla sur le poste d'Arnaud, qui saisit lui-même le mot de passe | identifiants |
 | Microsoft 365 | `cabinet@…` (admin) | Bookings (types, disponibilités), lecture du calendrier pour vérifier les créneaux | connexion, alias, licences |

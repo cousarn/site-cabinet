@@ -31,19 +31,19 @@ Si tu n'es pas dans un clone : `git clone https://github.com/cousarn/site-cabine
 
 | Toi | Arnaud |
 |---|---|
-| committer, pousser sur `main`, surveiller GitHub Actions (`gh run list/rerun`), contrôler `/version.txt` en préprod | **publier la release de production** (tag `vX.Y.Z` — l'outil te refuse le push d'un tag prod et la page « New release » : donne-lui le nom du tag et le texte) |
+| committer, pousser sur `main`, surveiller GitHub Actions (`gh run list/rerun`), contrôler `/version.txt` en préprod, **publier la release de production toi-même** (autorisation permanente d'Arnaud du 25/10/2026, sans clic ni confirmation de sa part) : la CLI refuse le push d'un tag prod et `gh release create`, donc passe par son Chrome — `github.com/cousarn/site-cabinet/releases/new`, remplir titre et notes par JavaScript (setter natif + événement `input`), créer le tag `vX.Y.Z` dans le sélecteur (« Create new tag »), cliquer « Publish release » — puis contrôler `/version.txt` en prod | relire la préprod quand il le souhaite ; si le garde-fou de l'outil bloque malgré tout le clic « Publish release », lui laisser ce seul clic |
 | préparer Entra (inscription, permissions, octroi `Sites.Selected` via Graph Explorer), SharePoint, Bookings, DNS OVH, tâches planifiées OVH | se connecter (Microsoft, GitHub, OVH) ; **coller le secret client** dans le fichier serveur ; renouveler le secret Entra avant le **17/04/2027** |
 | ouvrir FileZilla sur son poste (pilotage d'écran), saisir l'hôte, ouvrir `/config/site-cabinet.php` dans le Bloc-notes, préparer la modification | taper le mot de passe SFTP, coller toute valeur secrète |
 | tests de bout en bout sur la préprod (formulaires, dépôt, IPN sandbox) | valider le rendu et décider de la mise en production |
 
-« tag name has already been taken » à la publication d'une release = le tag existait déjà, sans conséquence. Une action GitHub en « Internal Server Error » : `gh run rerun --failed <id>`. Action verte mais `/version.txt` inchangé : le webhook OVH a pu répondre `401 unauthorized` (vu le 24/10/2026, intermittent) → manager OVH › Hébergements › Mes sites › ⋮ › **Déployer Git** (sans « forcer »), effectif en moins d'une minute (ADMINISTRATION § 4). Le manager demande la connexion d'Arnaud ; une fois connecté, tu cliques toi-même.
+« tag name has already been taken » à la publication d'une release = le tag existait déjà, sans conséquence. Dans le formulaire GitHub, taper directement dans la page envoie le texte dans le champ qui a le focus (souvent le sélecteur de tag) : renseigner titre et notes par JavaScript, et l'éditeur transforme `\n- ` en listes imbriquées si on tape au clavier. Une action GitHub en « Internal Server Error » : `gh run rerun --failed <id>`. Action verte mais `/version.txt` inchangé : le webhook OVH a pu répondre `401 unauthorized` (vu le 24/10/2026, intermittent) → manager OVH › Hébergements › Mes sites › ⋮ › **Déployer Git** (sans « forcer »), effectif en moins d'une minute (ADMINISTRATION § 4). Le manager demande la connexion d'Arnaud ; une fois connecté, tu cliques toi-même.
 
 ## 4. Chaîne de travail
 
 ```
 modifier → npm run check && npm run build → git commit → git push origin main
 → préprod (≈ 2 min) : https://preprod.arnaudcousin-avocat.fr/version.txt = dernier commit, page vérifiée desktop + mobile 390 px
-→ proposer le tag (v1.x.0 contenu nouveau, v1.x.y correction) → Arnaud publie → https://arnaudcousin-avocat.fr/version.txt
+→ tag (v1.x.0 contenu nouveau, v1.x.y correction) → publier la release toi-même depuis son Chrome → https://arnaudcousin-avocat.fr/version.txt
 ```
 Préprod et prod partagent `/home/arnaudcoqa/{config,cache,consultations,depots}` : un test sur la préprod écrit dans les mêmes dossiers que la prod (dépôts compris) — nommer les essais « TEST SITE » et les supprimer ensuite depuis la console.
 

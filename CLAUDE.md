@@ -5,5 +5,5 @@ Dépôt public du site statique arnaudcousin-avocat.fr (Astro 5, PHP 8 pour les 
 - Lire `ADMINISTRATION.md` puis `README.md` avant toute modification ; l'agent webmestre est décrit dans
   `.claude/skills/site-cabinet-webmestre/SKILL.md` (rôles, interdits, pièges connus).
 - Aucun secret dans ce dépôt ni dans la conversation (dépôt public) : tout vit dans `/home/arnaudcoqa/config/site-cabinet.php`.
-- Chaîne : `npm run check && npm run build` → commit → `git push origin main` (préprod) → tag `vX.Y.Z` publié par Arnaud (prod).
+- Chaîne : `npm run check && npm run build` → commit → `git push origin main` (préprod) → tag `vX.Y.Z` publié par l’agent depuis le Chrome d’Arnaud (prod ; autorisation permanente du 25/10/2026).
 - Ne jamais réécrire les branches `deploy-*`. Pas de jurisprudence de mémoire. Textes en français, typographie française.
