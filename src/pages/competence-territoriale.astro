@@ -1,0 +1,338 @@
+---
+import Base from '../layouts/Base.astro';
+import Faq from '../components/Faq.astro';
+import Cta from '../components/Cta.astro';
+import { cabinet } from '../data/cabinet';
+
+const titre = 'Quel tribunal est compétent ? Carte et moteur par code postal';
+const description = 'Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de Bretagne, Pays de la Loire et Normandie : carte, recherche par code postal, règles de compétence.';
+
+const faq = [
+  { q: 'Quel tribunal est compétent pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
+  { q: 'Quel juge aux affaires familiales saisir après une séparation ?', r: '<p>Celui du lieu où réside la famille ; si les parents vivent séparément, celui du lieu de résidence du parent chez lequel les enfants mineurs résident habituellement ; dans les autres cas, celui du lieu où réside la partie qui n’a pas pris l’initiative de la procédure (art.&nbsp;1070 du code de procédure civile). La compétence s’apprécie au jour de la demande.</p>' },
+  { q: 'Quel conseil de prud’hommes saisir ?', r: '<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail est accompli à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 du code du travail).</p>' },
+  { q: 'Mon code postal couvre plusieurs communes : laquelle compte ?', r: '<p>La compétence s’apprécie par commune, non par code postal. Un même code postal peut couvrir des communes rattachées à des tribunaux différents : le moteur ci-dessus vous demande alors de préciser la commune.</p>' },
+  { q: 'Le cabinet peut-il plaider devant tous ces tribunaux ?', r: '<p>Oui. Le cabinet postule directement devant tous les tribunaux judiciaires du ressort de la cour d’appel de Rennes (Côtes-d’Armor, Finistère, Ille-et-Vilaine, Loire-Atlantique, Morbihan) et plaide devant les conseils de prud’hommes et les autres juridictions de France ; devant les tribunaux judiciaires des autres cours d’appel, il s’adjoint si nécessaire un confrère postulant.</p>' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: titre,
+  description,
+  url: `${cabinet.siteUrl}/competence-territoriale`,
+  isPartOf: { '@id': `${cabinet.siteUrl}/#cabinet` },
+  about: ['Compétence territoriale', 'Tribunal judiciaire', 'Tribunal de proximité', 'Conseil de prud’hommes', 'Cour d’appel'],
+  spatialCoverage: ['Bretagne', 'Pays de la Loire', 'Normandie'],
+  dateModified: '2026-10-25',
+};
+---
+<Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Compétence territoriale', href: '/competence-territoriale' }]}>
+  <section class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
+    <div class="conteneur pile entree" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 880px">
+      <p class="surtitre">Outil pratique · Grand Ouest</p>
+      <h1>Quel tribunal est compétent&nbsp;?</h1>
+      <p class="chapo">Tribunaux judiciaires, tribunaux de proximité, conseils de prud’hommes et cours d’appel de Bretagne, des Pays de la Loire et de Normandie. Saisissez un code postal ou une commune&nbsp;: la page indique les juridictions dont elle dépend, les situe sur la carte et rappelle les règles de compétence territoriale en droit de la famille, des successions, de l’indivision, des référés et du travail.</p>
+    </div>
+  </section>
+
+  <section class="section" id="moteur">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="gap: 10px; max-width: 720px">
+        <p class="surtitre">Moteur de compétence</p>
+        <h2>De quel tribunal dépend votre commune&nbsp;?</h2>
+        <p class="muet">Ressorts officiels du ministère de la Justice (mise à jour de juillet&nbsp;2026), 5&nbsp;081 communes des départements 14, 22, 27, 29, 35, 44, 49, 50, 53, 56, 61, 72, 76 et 85.</p>
+      </div>
+      <form class="recherche" id="form-recherche" autocomplete="off" novalidate>
+        <label class="champ" style="flex: 1 1 320px">
+          <span>Code postal ou commune</span>
+          <input type="search" id="q" name="q" inputmode="search" placeholder="35000, Rennes, Saint-Malo, 44600…" aria-describedby="aide-q" />
+        </label>
+        <p id="aide-q" class="muet" style="font-size: 14px; flex-basis: 100%; margin: 0">Un code postal peut couvrir plusieurs communes aux ressorts différents&nbsp;: choisissez alors la commune dans la liste.</p>
+      </form>
+      <div id="propositions" class="propositions" role="listbox" aria-label="Communes correspondantes" hidden></div>
+      <div id="resultat" class="resultat" aria-live="polite" hidden></div>
+      <noscript><p class="muet">Le moteur nécessite JavaScript. Le fichier des ressorts est téléchargeable&nbsp;: <a href="/data/competence-territoriale.json">competence-territoriale.json</a>.</p></noscript>
+    </div>
+  </section>
+
+  <section class="section section--ivoire" id="carte">
+    <div class="conteneur pile" style="gap: 24px">
+      <div class="pile" style="gap: 10px; max-width: 720px">
+        <p class="surtitre">Carte</p>
+        <h2>Les juridictions du Grand Ouest</h2>
+        <p class="muet">25 tribunaux judiciaires, 13 tribunaux de proximité, 31 conseils de prud’hommes, 5 cours d’appel (Rennes, Angers, Caen, Rouen et, pour la Vendée, Poitiers). Cliquez sur un repère pour l’adresse, le téléphone et les horaires d’accueil.</p>
+      </div>
+      <div class="legende" role="group" aria-label="Filtrer les juridictions affichées">
+        <label><input type="checkbox" data-type="TJ" checked /> <span class="puce puce--TJ"></span> Tribunaux judiciaires</label>
+        <label><input type="checkbox" data-type="TPRX" checked /> <span class="puce puce--TPRX"></span> Tribunaux de proximité</label>
+        <label><input type="checkbox" data-type="CPH" checked /> <span class="puce puce--CPH"></span> Conseils de prud’hommes</label>
+        <label><input type="checkbox" data-type="CA" checked /> <span class="puce puce--CA"></span> Cours d’appel</label>
+      </div>
+      <div id="map" class="map" role="region" aria-label="Carte des juridictions de Bretagne, Pays de la Loire et Normandie"></div>
+      <p class="muet" style="font-size: 13px">Fond de carte IGN — Géoplateforme. Contours départementaux simplifiés. Adresses et horaires&nbsp;: annuaire de l’administration (service-public.gouv.fr), susceptibles de changer&nbsp;: vérifiez avant de vous déplacer.</p>
+    </div>
+  </section>
+
+  <section class="section" id="regles">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="gap: 10px; max-width: 760px">
+        <p class="surtitre">Les règles</p>
+        <h2>Compétence territoriale&nbsp;: les principales règles</h2>
+        <p class="muet">Savoir <em>quel</em> tribunal est le bon n’est pas un détail&nbsp;: une assignation délivrée devant un tribunal territorialement incompétent fait perdre des mois, et l’exception d’incompétence doit être soulevée dès les premières écritures. Les règles ci-dessous sont celles du code de procédure civile, du code civil, du code de l’organisation judiciaire et du code du travail en vigueur au 25&nbsp;octobre&nbsp;2026.</p>
+      </div>
+      <div class="grille grille--2 regles">
+        <article class="carte">
+          <h3>Le principe&nbsp;: le tribunal du défendeur</h3>
+          <p class="muet">Sauf disposition contraire, la juridiction compétente est celle du lieu où demeure le défendeur&nbsp;: son domicile ou, à défaut, sa résidence pour une personne physique&nbsp;; le lieu où elle est établie pour une personne morale (art.&nbsp;42 et 43 CPC). S’il y a plusieurs défendeurs, le demandeur choisit le tribunal de l’un d’eux. Si le défendeur n’a ni domicile ni résidence connus, le demandeur peut saisir le tribunal de son propre domicile.</p>
+          <p class="muet">Options du demandeur (art.&nbsp;46 CPC)&nbsp;: en matière contractuelle, le lieu de livraison ou d’exécution de la prestation&nbsp;; en matière délictuelle, le lieu du fait dommageable ou celui où le dommage a été subi&nbsp;; en matière mixte, le lieu de l’immeuble&nbsp;; en matière d’aliments ou de contribution aux charges du mariage, le lieu où demeure le créancier.</p>
+        </article>
+        <article class="carte">
+          <h3>Successions et partages successoraux</h3>
+          <p class="muet">Jusqu’au partage inclus, les demandes entre héritiers, celles des créanciers du défunt et celles relatives à l’exécution des dispositions à cause de mort (testaments, legs) sont portées devant le tribunal dans le ressort duquel la succession est ouverte (art.&nbsp;45 CPC), c’est-à-dire au <strong>dernier domicile du défunt</strong> (art.&nbsp;720 C.&nbsp;civ.). Peu importent le domicile des héritiers et la situation des immeubles.</p>
+          <p class="muet">Ce tribunal est <strong>exclusivement</strong> compétent pour l’action en partage, les contestations nées du maintien de l’indivision ou survenues au cours des opérations, les licitations, la garantie des lots, la nullité du partage et le complément de part (art.&nbsp;841 C.&nbsp;civ., dans sa rédaction issue de la loi n°&nbsp;2026-248 du 7&nbsp;avril&nbsp;2026, qui reconnaît aussi la compétence du juge commis pour trancher les contestations et ordonner les licitations). Voir notre analyse de la <a href="/fiches/reforme-partage-judiciaire-2027">réforme du partage judiciaire applicable au 1er&nbsp;janvier&nbsp;2027</a>.</p>
+        </article>
+        <article class="carte">
+          <h3>Indivision, immeubles, patrimoine</h3>
+          <p class="muet">En matière réelle immobilière (revendication, servitude, bornage, action en nullité d’une vente immobilière…), le tribunal du lieu de l’immeuble est <strong>seul</strong> compétent (art.&nbsp;44 CPC). Pour les actions mixtes, à la fois personnelles et réelles — et le partage d’un immeuble indivis hors succession en est l’exemple classique —, le demandeur choisit entre le tribunal du défendeur et celui de l’immeuble (art.&nbsp;46 CPC).</p>
+          <p class="muet">Entre époux, partenaires de PACS ou concubins, la liquidation et le partage des intérêts patrimoniaux, le fonctionnement du régime matrimonial et l’indivision relèvent du juge aux affaires familiales (art.&nbsp;L.&nbsp;213-3 COJ), territorialement désigné selon l’article&nbsp;1070 CPC ci-contre — sauf en cas de décès, où l’on revient aux règles successorales. Pour les <strong>SCI familiales</strong>, c’est le siège social qui fixe le tribunal du défendeur (art.&nbsp;43 CPC)&nbsp;; une clause attributive de compétence n’est valable qu’entre commerçants (art.&nbsp;48 CPC).</p>
+        </article>
+        <article class="carte">
+          <h3>Affaires familiales&nbsp;: divorce, enfants, pensions</h3>
+          <p class="muet">Le juge aux affaires familiales territorialement compétent est (art.&nbsp;1070 CPC)&nbsp;: celui du lieu où se trouve la <strong>résidence de la famille</strong>&nbsp;; si les parents vivent séparément, celui du lieu de résidence du parent avec lequel résident habituellement les enfants mineurs (autorité parentale conjointe) ou du parent qui exerce seul l’autorité parentale&nbsp;; dans les autres cas, celui du lieu où réside celui qui <strong>n’a pas pris l’initiative</strong> de la procédure. En cas de demande conjointe, les parties choisissent le juge du lieu de résidence de l’une ou de l’autre.</p>
+          <p class="muet">Lorsque le litige porte seulement sur la pension alimentaire, la contribution à l’entretien et à l’éducation de l’enfant, la contribution aux charges du mariage ou la prestation compensatoire, le juge peut être celui du lieu où réside l’époux créancier ou le parent qui assume à titre principal la charge des enfants, même majeurs. La compétence s’apprécie au jour de la demande&nbsp;: un déménagement postérieur ne la modifie pas.</p>
+        </article>
+        <article class="carte">
+          <h3>Référés et mesures d’instruction</h3>
+          <p class="muet">Le président du tribunal judiciaire statue en référé dans tous les cas d’urgence, ou pour prévenir un dommage imminent, faire cesser un trouble manifestement illicite ou accorder une provision (art.&nbsp;834 et 835 CPC). Territorialement, le juge des référés compétent est celui de la juridiction qui connaîtrait de l’affaire au fond selon les règles ci-dessus (défendeur, immeuble, succession, famille)&nbsp;; en pratique, pour une indivision immobilière ou une succession, on saisit le président du tribunal du lieu de l’immeuble ou de l’ouverture de la succession.</p>
+          <p class="muet">Pour les mesures d’instruction avant tout procès — expertise, constat, communication de pièces —, l’article&nbsp;145 CPC, dans sa rédaction issue du décret n°&nbsp;2025-619 du 8&nbsp;juillet&nbsp;2025, fixe désormais la règle&nbsp;: au choix du demandeur, la juridiction susceptible de connaître du fond ou celle dans le ressort de laquelle la mesure doit être exécutée&nbsp;; si la mesure porte sur un immeuble, le tribunal du lieu de l’immeuble est seul compétent.</p>
+        </article>
+        <article class="carte">
+          <h3>Prud’hommes</h3>
+          <p class="muet">Le conseil de prud’hommes compétent est celui dans le ressort duquel est situé l’<strong>établissement où le travail est accompli</strong>&nbsp;; lorsque le travail est accompli à domicile ou en dehors de toute entreprise ou établissement (télétravail intégral, itinérants, VRP), celui du <strong>domicile du salarié</strong>. Le salarié peut également saisir le conseil du lieu où l’engagement a été contracté ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 C.&nbsp;trav.). Toute clause du contrat de travail qui y déroge est réputée non écrite (art.&nbsp;R.&nbsp;1412-4).</p>
+          <p class="muet">Le ressort des conseils de prud’hommes ne coïncide pas toujours avec celui des tribunaux judiciaires&nbsp;: une commune peut dépendre du tribunal judiciaire de Rennes et du conseil de prud’hommes de Saint-Malo, ou du tribunal de Saint-Brieuc et du conseil de Guingamp ou de Dinan. Vérifiez avec le moteur ci-dessus.</p>
+        </article>
+      </div>
+      <div class="encadre" style="max-width: 980px">
+        <h3 style="margin-top: 0">Trois précisions utiles</h3>
+        <ul class="carte__liste">
+          <li><strong>Tribunal de proximité.</strong> C’est une chambre détachée du tribunal judiciaire, siégeant dans une autre ville (art.&nbsp;L.&nbsp;212-8 COJ), compétente pour les contentieux listés aux tableaux IV-II et IV-III annexés au code de l’organisation judiciaire (art.&nbsp;D.&nbsp;212-19-1) — pour l’essentiel les petits litiges civils et certains contentieux de la protection. Les successions, partages, divorces et affaires familiales restent au siège du tribunal judiciaire. Lorsque le moteur n’affiche aucun tribunal de proximité, la commune relève directement du siège.</li>
+          <li><strong>Magistrats et auxiliaires de justice.</strong> Lorsqu’un magistrat ou un auxiliaire de justice (avocat, notaire, commissaire de justice…) est partie au litige dans le ressort où il exerce, le demandeur peut saisir une juridiction d’un ressort limitrophe, et le défendeur demander le renvoi (art.&nbsp;47 CPC).</li>
+          <li><strong>Postulation.</strong> Devant le tribunal judiciaire, lorsque la représentation est obligatoire, seul un avocat inscrit dans le ressort de la cour d’appel peut accomplir les actes de procédure. Le cabinet postule devant tous les tribunaux judiciaires du ressort de la cour d’appel de Rennes — Rennes, Saint-Malo, Saint-Brieuc, Brest, Quimper, Lorient, Vannes, <strong>Nantes et Saint-Nazaire</strong> — et plaide dans toute la France, avec un confrère postulant lorsque c’est nécessaire.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ivoire">
+    <div class="conteneur" style="max-width: 880px">
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <Cta titre="Un doute sur le tribunal à saisir ?" texte="Le choix de la juridiction se décide avec la stratégie du dossier : délais, mesures provisoires, exécution. Le cabinet vous répond par écrit ou en rendez-vous, à Rennes, en visio ou par téléphone." />
+
+  <section class="section" id="sources">
+    <div class="conteneur pile" style="gap: 10px; max-width: 880px">
+      <p class="surtitre">Sources</p>
+      <ul class="carte__liste muet" style="font-size: 14px">
+        <li>Ministère de la Justice, <em>Liste des juridictions compétentes pour les communes de France</em>, édition de juillet 2026 (data.gouv.fr, licence ouverte).</li>
+        <li>Annuaire de l’administration, base de données locales de service-public.gouv.fr (DILA), extraction du 25 octobre 2026 — adresses, téléphones, horaires, coordonnées.</li>
+        <li>La Poste, base officielle des codes postaux (correspondance commune – code postal).</li>
+        <li>Articles 42 à 48, 145, 834, 835 et 1070 du code de procédure civile&nbsp;; 720 et 841 du code civil&nbsp;; L.&nbsp;212-8, L.&nbsp;213-3 et D.&nbsp;212-19-1 du code de l’organisation judiciaire&nbsp;; R.&nbsp;1412-1 et R.&nbsp;1412-4 du code du travail (Légifrance, versions en vigueur au 25 octobre 2026).</li>
+      </ul>
+      <p class="muet" style="font-size: 14px">Cette page est un outil d’orientation, pas une consultation&nbsp;: les règles comportent des exceptions (clauses attributives, litiges internationaux, procédures collectives, contentieux de la protection…), et les ressorts évoluent. Avant d’assigner, faites vérifier la compétence par un avocat.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .recherche { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: flex-end; max-width: 720px; }
+  .recherche input { font-size: 18px; }
+  .propositions { display: flex; flex-wrap: wrap; gap: 8px; max-width: 920px; }
+  .propositions button { font: inherit; font-size: 14.5px; padding: 8px 14px; border: 1px solid var(--ligne); border-radius: 999px; background: var(--ivoire); color: var(--encre); cursor: pointer; transition: border-color .2s ease, color .2s ease; }
+  .propositions button:hover, .propositions button[aria-selected=true] { border-color: var(--laiton); color: var(--laiton-sombre); }
+  .propositions button small { color: var(--muet); }
+  .resultat { display: flex; flex-direction: column; gap: 18px; }
+  .resultat__titre { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  .resultat__titre h3 { font-size: 26px; margin: 0; }
+  .juridictions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+  .jur { background: var(--ivoire); border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; border-top: 3px solid var(--laiton); }
+  .jur--TJ { border-top-color: #11352F; } .jur--TPRX { border-top-color: #9A7B4F; } .jur--CPH { border-top-color: #2F5D8A; } .jur--CA { border-top-color: #8A2F2F; }
+  .jur .etiquette { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--laiton-sombre); }
+  .jur h4 { font-size: 18px; margin: 0; line-height: 1.25; }
+  .jur p { margin: 0; font-size: 14.5px; color: var(--muet); }
+  .jur .actions { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; margin-top: 4px; }
+  .jur .actions a, .jur .actions button { font: inherit; font-size: 14px; color: var(--laiton-sombre); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .jur--vide { border-style: dashed; }
+  .legende { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14.5px; }
+  .legende label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .puce { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+  .puce--TJ { background: #11352F; } .puce--TPRX { background: #9A7B4F; } .puce--CPH { background: #2F5D8A; } .puce--CA { background: #8A2F2F; }
+  .map { height: min(72vh, 680px); min-height: 420px; border: 1px solid var(--ligne); border-radius: var(--r); background: #EEF0EA; z-index: 0; }
+  .map :global(.leaflet-popup-content) { font: 14px/1.45 inherit; margin: 14px 16px; }
+  .map :global(.leaflet-popup-content h4) { margin: 0 0 6px; font-size: 16px; }
+  .map :global(.leaflet-popup-content p) { margin: 0 0 4px; }
+  .map :global(.leaflet-container a) { color: var(--laiton-sombre); }
+  .map :global(.leaflet-container) { font-family: inherit; }
+  .regles .carte { gap: 10px; }
+  .regles .carte h3 { font-size: 21px; }
+  .regles .carte p { font-size: 15px; }
+  .encadre { background: var(--ivoire); border: 1px solid var(--ligne); border-left: 3px solid var(--laiton); border-radius: var(--r); padding: 24px 28px; }
+  .encadre li { font-size: 15px; }
+  .avertissement { font-size: 14px; color: var(--muet); border-top: 1px solid var(--ligne-douce); padding-top: 10px; }
+</style>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  type Jur = { t: 'CA' | 'TJ' | 'TPRX' | 'CPH'; n: string; a: string; cp: string; v: string; lat: number; lon: number; tel: string | null; url: string; h: string | null };
+  type Commune = [string, string[], string, string, string, string]; // nom, cps, CA, TJ, TPRX, CPH
+  type Donnees = { maj: string; juridictions: Record<string, Jur>; communes: Record<string, Commune>; departements: GeoJSON.FeatureCollection };
+
+  const COULEURS: Record<string, string> = { TJ: '#11352F', TPRX: '#9A7B4F', CPH: '#2F5D8A', CA: '#8A2F2F' };
+  const LIBELLES: Record<string, string> = { TJ: 'Tribunal judiciaire', TPRX: 'Tribunal de proximité', CPH: 'Conseil de prud’hommes', CA: 'Cour d’appel' };
+  const DECALAGE: Record<string, [number, number]> = { TJ: [0, 0], TPRX: [0, 0.006], CPH: [0, -0.006], CA: [0.005, 0] };
+  const DEPARTEMENTS: Record<string, string> = { '14': 'Calvados', '22': 'Côtes-d’Armor', '27': 'Eure', '29': 'Finistère', '35': 'Ille-et-Vilaine', '44': 'Loire-Atlantique', '49': 'Maine-et-Loire', '50': 'Manche', '53': 'Mayenne', '56': 'Morbihan', '61': 'Orne', '72': 'Sarthe', '76': 'Seine-Maritime', '85': 'Vendée' };
+  const NBSP = ' ';
+
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector(s) as T;
+  const champ = $<HTMLInputElement>('#q');
+  const propositions = $<HTMLDivElement>('#propositions');
+  const resultat = $<HTMLDivElement>('#resultat');
+  const mapEl = $<HTMLDivElement>('#map');
+
+  const normaliser = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/œ/g, 'oe').replace(/[^a-z0-9]+/g, ' ').replace(/\bste?\b/g, (m) => (m === 'st' ? 'saint' : 'sainte')).trim();
+  const echapper = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
+  const telHref = (t: string) => 'tel:+33' + t.replace(/\s/g, '').replace(/^0/, '');
+
+  let donnees: Donnees;
+  let index: { insee: string; nom: string; norm: string; cps: string[] }[] = [];
+  let map: L.Map;
+  const marqueurs: Record<string, L.CircleMarker> = {};
+  const groupes: Record<string, L.LayerGroup> = {};
+  let selection: string[] = [];
+
+  async function charger() {
+    const r = await fetch('/data/competence-territoriale.json');
+    donnees = await r.json();
+    index = Object.entries(donnees.communes).map(([insee, c]) => ({ insee, nom: c[0], norm: normaliser(c[0]), cps: c[1] }));
+    index.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+    initCarte();
+    champ.disabled = false;
+    const h = new URLSearchParams(location.hash.replace(/^#/, ''));
+    const q = h.get('q');
+    if (q) { champ.value = q; chercher(q, true); }
+  }
+
+  function chercher(brut: string, auto = false) {
+    const q = brut.trim();
+    propositions.innerHTML = '';
+    if (q.length < 2) { propositions.hidden = true; return; }
+    let trouvees: typeof index;
+    if (/^\d+$/.test(q)) {
+      trouvees = index.filter((c) => c.cps.some((cp) => cp.startsWith(q)));
+    } else {
+      const n = normaliser(q);
+      trouvees = index.filter((c) => c.norm.startsWith(n));
+      if (trouvees.length < 8) trouvees = trouvees.concat(index.filter((c) => !c.norm.startsWith(n) && c.norm.includes(n)));
+    }
+    // Un code postal complet : si toutes les communes ont les mêmes juridictions, on affiche directement
+    if (trouvees.length === 0) {
+      propositions.hidden = false;
+      propositions.innerHTML = `<p class="muet" style="margin:0">Aucune commune trouvée dans les 14 départements couverts pour «${NBSP}${echapper(q)}${NBSP}». Hors Bretagne, Pays de la Loire et Normandie, consultez <a href="https://www.justice.fr/recherche/annuaires" rel="noopener">l’annuaire du ministère de la Justice</a>.</p>`;
+      resultat.hidden = true;
+      return;
+    }
+    const liste = trouvees.slice(0, 40);
+    propositions.hidden = false;
+    propositions.innerHTML = liste.map((c) => `<button type="button" role="option" data-insee="${c.insee}">${echapper(c.nom)} <small>${c.cps[0] ?? ''} · ${DEPARTEMENTS[c.insee.slice(0, 2)] ?? ''}</small></button>`).join('') + (trouvees.length > 40 ? `<p class="muet" style="margin:0;flex-basis:100%;font-size:14px">${trouvees.length} communes&nbsp;: précisez.</p>` : '');
+    if (trouvees.length === 1 || (auto && /^\d{5}$/.test(q) && memesJuridictions(trouvees))) afficher(trouvees[0].insee, /^\d{5}$/.test(q) && trouvees.length > 1 ? trouvees : undefined);
+    else if (/^\d{5}$/.test(q) && memesJuridictions(trouvees)) afficher(trouvees[0].insee, trouvees);
+  }
+
+  function memesJuridictions(cs: typeof index) {
+    const cle = (i: string) => donnees.communes[i].slice(2).join('|');
+    return cs.every((c) => cle(c.insee) === cle(cs[0].insee));
+  }
+
+  function carteJur(id: string, type: string) {
+    const j = donnees.juridictions[id];
+    if (!j) {
+      return `<div class="jur jur--${type} jur--vide"><span class="etiquette">${LIBELLES[type]}</span><h4>Pas de tribunal de proximité</h4><p>Cette commune relève directement du siège du tribunal judiciaire, y compris pour les contentieux habituellement confiés aux chambres de proximité.</p></div>`;
+    }
+    return `<div class="jur jur--${type}"><span class="etiquette">${LIBELLES[type]}</span><h4>${echapper(j.n)}</h4><p>${echapper(j.a)}<br>${j.cp} ${echapper(j.v)}</p>${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<div class="actions">${j.tel ? `<a href="${telHref(j.tel)}">${j.tel}</a>` : ''}<button type="button" data-voir="${id}">Voir sur la carte</button><a href="${j.url}" rel="noopener">Fiche annuaire</a></div></div>`;
+  }
+
+  function afficher(insee: string, groupe?: typeof index) {
+    const c = donnees.communes[insee];
+    const [nom, cps, ca, tj, tprx, cph] = c;
+    propositions.querySelectorAll('button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.insee === insee)));
+    const titre = groupe && groupe.length > 1
+      ? `<h3>Code postal ${cps[0]}</h3><span class="muet">${groupe.length} communes, mêmes juridictions${NBSP}: ${echapper(groupe.map((g) => g.nom).join(', '))}</span>`
+      : `<h3>${echapper(nom)}</h3><span class="muet">${cps.join(', ')} · ${DEPARTEMENTS[insee.slice(0, 2)] ?? ''}</span>`;
+    const postule = ca === 'CA-11';
+    resultat.hidden = false;
+    resultat.innerHTML = `<div class="resultat__titre">${titre}</div>
+      <div class="juridictions">${carteJur(tj, 'TJ')}${carteJur(tprx, 'TPRX')}${carteJur(cph, 'CPH')}${carteJur(ca, 'CA')}</div>
+      <p class="avertissement">${postule
+        ? 'Ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet postule directement devant ce tribunal judiciaire et plaide devant le conseil de prud’hommes et la cour.'
+        : 'Hors ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet plaide devant ces juridictions et s’adjoint, lorsque la postulation est obligatoire devant le tribunal judiciaire, un confrère local.'}
+      Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants (<a href="#regles">voir les règles</a>).</p>`;
+    selection = [tj, tprx, cph, ca].filter(Boolean);
+    mettreEnValeur();
+    history.replaceState(null, '', '#q=' + encodeURIComponent(champ.value.trim()));
+  }
+
+  function initCarte() {
+    map = L.map(mapEl, { scrollWheelZoom: false, attributionControl: true });
+    L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fpng', {
+      attribution: '© <a href="https://www.ign.fr/" rel="noopener">IGN</a> – Géoplateforme · Ressorts © Ministère de la Justice (07/2026)', maxZoom: 18, minZoom: 6,
+    }).addTo(map);
+    const deps = L.geoJSON(donnees.departements, { style: { color: '#11352F', weight: 1, opacity: .55, fillColor: '#11352F', fillOpacity: .03 }, interactive: false }).addTo(map);
+    map.fitBounds(deps.getBounds(), { padding: [10, 10] });
+    for (const t of ['CA', 'CPH', 'TPRX', 'TJ']) groupes[t] = L.layerGroup().addTo(map);
+    for (const [id, j] of Object.entries(donnees.juridictions)) {
+      const [dlat, dlon] = DECALAGE[j.t];
+      const m = L.circleMarker([j.lat + dlat, j.lon + dlon], { radius: j.t === 'TJ' || j.t === 'CA' ? 8 : 6, color: '#fff', weight: 1.5, fillColor: COULEURS[j.t], fillOpacity: .95 });
+      m.bindPopup(`<h4>${echapper(j.n)}</h4><p>${echapper(j.a)}<br>${j.cp} ${echapper(j.v)}</p>${j.tel ? `<p><a href="${telHref(j.tel)}">${j.tel}</a></p>` : ''}${j.h ? `<p>Accueil${NBSP}: ${echapper(j.h)}</p>` : ''}<p><a href="${j.url}" rel="noopener">Fiche annuaire</a></p>`);
+      m.bindTooltip(j.n, { direction: 'top', offset: [0, -6] });
+      m.addTo(groupes[j.t]);
+      marqueurs[id] = m;
+    }
+    document.querySelectorAll<HTMLInputElement>('.legende input').forEach((cb) => cb.addEventListener('change', () => {
+      const g = groupes[cb.dataset.type!];
+      if (cb.checked) g.addTo(map); else map.removeLayer(g);
+    }));
+  }
+
+  function mettreEnValeur() {
+    for (const [id, m] of Object.entries(marqueurs)) {
+      const j = donnees.juridictions[id];
+      const actif = selection.includes(id);
+      m.setStyle({ radius: actif ? 12 : j.t === 'TJ' || j.t === 'CA' ? 8 : 6, weight: actif ? 3 : 1.5, color: actif ? '#F4D58D' : '#fff' });
+      if (actif) m.bringToFront();
+    }
+    if (selection.length) {
+      const b = L.latLngBounds(selection.map((id) => marqueurs[id].getLatLng()));
+      map.fitBounds(b.pad(.6), { maxZoom: 11 });
+    }
+  }
+
+  champ.disabled = true;
+  champ.addEventListener('input', () => chercher(champ.value));
+  $<HTMLFormElement>('#form-recherche').addEventListener('submit', (e) => { e.preventDefault(); chercher(champ.value, true); const b = propositions.querySelector<HTMLButtonElement>('button'); if (b && resultat.hidden) b.click(); });
+  propositions.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-insee]'); if (b) afficher(b.dataset.insee!); });
+  resultat.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-voir]');
+    if (!b) return;
+    const m = marqueurs[b.dataset.voir!];
+    const j = donnees.juridictions[b.dataset.voir!];
+    if (!map.hasLayer(groupes[j.t])) { groupes[j.t].addTo(map); const cb = document.querySelector<HTMLInputElement>(`.legende input[data-type=${j.t}]`); if (cb) cb.checked = true; }
+    mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    map.setView(m.getLatLng(), 14);
+    m.openPopup();
+  });
+  charger().catch(() => { resultat.hidden = false; resultat.innerHTML = '<p class="muet">Le fichier des ressorts n’a pas pu être chargé. Réessayez dans un instant.</p>'; });
+</script>

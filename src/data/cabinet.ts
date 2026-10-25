@@ -86,9 +86,11 @@ export const navigation = {
     { href: '/services/devis-divorce', titre: 'Devis divorce amiable', accroche: 'Votre estimation en sept questions, confirmée par l’avocat.' },
     { href: '/services/depot-pieces', titre: 'Déposer des pièces', accroche: 'Vos documents, en sécurité, directement dans votre dossier.' },
     { href: '/services/pre-entretien', titre: 'Assistant de pré-entretien', accroche: 'Une dizaine de minutes pour préparer votre rendez-vous.' },
+    { href: '/competence-territoriale', titre: 'Quel tribunal est compétent ?', accroche: 'Carte et moteur par code postal : tribunaux, prud’hommes, cours d’appel du Grand Ouest.' },
     { href: '/notaires-confreres', titre: 'Notaires & confrères', accroche: 'Postulation, partage judiciaire : saisir le cabinet.' },
   ],
   pied: [
+    { href: '/competence-territoriale', label: 'Quel tribunal est compétent ?' },
     { href: '/mentions-legales', label: 'Mentions légales' },
     { href: '/mentions-legales#rgpd', label: 'Confidentialité' },
     { href: '/mentions-legales#cookies', label: 'Cookies' },

@@ -29,6 +29,8 @@ faq:
     r: "<p>Un mois à compter de la signification du jugement en matière contentieuse ordinaire (art. 538 CPC), quinze jours en référé et en matière gracieuse. Les délais sont augmentés pour les parties domiciliées outre-mer ou à l’étranger.</p>"
   - q: "L’appel suspend-il l’exécution du jugement ?"
     r: "<p>Plus par principe : depuis 2020, les jugements de première instance sont exécutoires de droit à titre provisoire, sauf exceptions. L’arrêt de l’exécution provisoire peut être demandé au premier président sous conditions strictes.</p>"
+  - q: "Quel tribunal est territorialement compétent ?"
+    r: "<p>En principe celui du lieu où demeure le défendeur (art. 42 CPC) ; le tribunal du lieu de l’immeuble en matière réelle immobilière (art. 44) ; celui du lieu d’ouverture de la succession pour les partages successoraux (art. 45) ; le juge aux affaires familiales désigné par l’article 1070. Le cabinet met à disposition une <a href=\"/competence-territoriale\">carte des juridictions de Bretagne, des Pays de la Loire et de Normandie avec un moteur par code postal</a>.</p>"
   - q: "Faut-il un avocat pour faire appel ?"
     r: "<p>Devant la cour d’appel, la représentation par avocat est obligatoire dans la plupart des matières civiles, et cet avocat doit être inscrit à un barreau du ressort de la cour — d’où la postulation pour les confrères extérieurs.</p>"
 fiches: ["pieces-premier-rendez-vous"]
