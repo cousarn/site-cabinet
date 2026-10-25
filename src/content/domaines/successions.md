@@ -39,5 +39,5 @@ faq:
     r: "<p>Oui, sous conditions : la vente peut être autorisée à la majorité des deux tiers (art. 815-5-1 C. civ.) ou ordonnée par le tribunal lorsque le refus met en péril l’intérêt commun (art. 815-5). À défaut, la licitation intervient dans le cadre du partage judiciaire.</p>"
   - q: "L’aide juridictionnelle est-elle possible en matière de succession ?"
     r: "<p>Le cabinet n’intervient pas à l’aide juridictionnelle en matière de succession. Une assurance de protection juridique peut en revanche prendre en charge une partie des frais : on vérifie avec vous.</p>"
-fiches: ["sortie-indivision-loi-2026", "recel-successoral", "delivrance-legs", "indivision-bloquee", "salaire-differe-agricole"]
+fiches: ["reforme-partage-judiciaire-2027", "partage-judiciaire-articles-1359-1380-cpc", "estimation-biens-partage-succession-indivision", "sortie-indivision-loi-2026", "indivision-bloquee", "recel-successoral", "delivrance-legs", "salaire-differe-agricole"]
 ---

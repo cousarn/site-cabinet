@@ -33,6 +33,8 @@ Deux outils, souvent confondus :
 
 Lorsque ni l’accord ni la vente forcée ne sont possibles, reste le partage judiciaire (art. 840 et suivants ; art. 1359 et suivants CPC) :
 
+> **Réforme au 1er janvier 2027.** Le décret n° 2026-964 du 18 octobre 2026 réécrit cette procédure pour les instances introduites à compter du 1er janvier 2027 (avocat obligatoire jusque devant le notaire, juge et notaire commis désignés dès l’orientation, contestations à former dans les quatre mois) : voir notre [billet](/fiches/reforme-partage-judiciaire-2027) et la fiche [articles 1359 à 1380 CPC](/fiches/partage-judiciaire-articles-1359-1380-cpc). Les étapes ci-dessous décrivent la procédure applicable jusqu’au 31 décembre 2026.
+
 1. **L’assignation** devant le tribunal judiciaire du lieu d’ouverture de la succession. Elle doit contenir un descriptif sommaire du patrimoine et préciser les intentions du demandeur quant à la répartition des biens, ainsi que les diligences entreprises pour parvenir à un partage amiable (art. 1360 CPC) — d’où l’importance de la phase 2.
 2. **Le jugement** qui ordonne le partage et, si la situation est complexe, désigne un **notaire commis** pour dresser l’état liquidatif, le cas échéant sous la surveillance d’un juge commis (art. 1364 CPC).
 3. **Les opérations notariales** : le notaire convoque les parties, dresse un projet, et, à défaut d’accord, un **procès-verbal de difficultés** qui retourne au tribunal pour trancher les points de désaccord (art. 1373 et suivants).

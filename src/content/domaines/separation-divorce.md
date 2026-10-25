@@ -35,5 +35,5 @@ faq:
     r: "<p>Pas sans précaution : la jouissance du logement se règle par accord ou par le juge, et un départ précipité peut peser sur l’organisation de la résidence des enfants. Parlons-en avant.</p>"
   - q: "Mon conjoint et moi sommes d’accord : avons-nous besoin de deux avocats ?"
     r: "<p>Oui, depuis 2017 : le divorce par consentement mutuel sans juge exige un avocat par époux. C’est la garantie que chacun a été conseillé.</p>"
-fiches: ["indivision-bloquee"]
+fiches: ["enfant-majeur-action-directe-contribution", "estimation-biens-partage-succession-indivision", "indivision-bloquee"]
 ---
