@@ -12,11 +12,22 @@ Le [décret n° 2026-964 du 18 octobre 2026](https://www.legifrance.gouv.fr/jor
 
 <div class="encadre">
 
-**L’essentiel en trente secondes.**
+**Pour les familles — l’essentiel en trente secondes**
 
-*Pour les familles.* À partir du 1er janvier 2027, un partage qui passe par le tribunal se fera obligatoirement avec un avocat, du premier au dernier jour, y compris chez le notaire. Les contestations importantes — une donation à rapporter, un testament à discuter, le régime du mariage, qui garde la maison — devront être soulevées dans les quatre premiers mois, sinon elles seront perdues. Le tribunal ne tranchera plus au début : le dossier partira chez le notaire, neutre par principe, et les vraies difficultés ne seront jugées que bien plus tard. Les ventes aux enchères des biens difficiles à partager seront plus faciles à ordonner, au détriment des prix. Le cabinet anticipe ces effets depuis longtemps : dossier constitué avant l’assignation, contestations chiffrées dès les premiers mois, préférence pour la vente de gré à gré. Plus de vingt-cinq ans de pratique des partages judiciaires — et plus de quinze ans à chercher, pour ses clients, les voies qui évitent la lenteur de ces procédures, que la réforme va très probablement aggraver.
+- À partir du 1er janvier 2027, un partage qui passe par le tribunal se fera **obligatoirement avec un avocat**, du premier au dernier jour, y compris chez le notaire : seules les observations des avocats seront prises en compte.
+- Les contestations importantes — une donation à rapporter, un testament à discuter, le régime du mariage, qui garde la maison — devront être soulevées **dans les quatre premiers mois**. Passé ce délai, elles seront perdues.
+- Le tribunal ne tranchera plus au début : le dossier partira chez le notaire, neutre par principe, et les vraies difficultés ne seront jugées que **bien plus tard**.
+- Les **ventes aux enchères** des biens difficiles à partager seront plus faciles à ordonner, au détriment des prix.
+- Le notaire sera **payé dès le départ** et devra mener la liquidation jusqu’au bout, lots compris ; un héritier qui bloque s’expose à un tirage au sort.
+- Le cabinet anticipe ces effets depuis longtemps : dossier constitué avant l’assignation, demandes formées et chiffrées dès les premiers mois, préférence pour la vente de gré à gré. Plus de vingt-cinq ans de pratique des partages judiciaires, et plus de quinze ans à chercher pour ses clients les voies qui évitent la lenteur de ces procédures — que la réforme va très probablement aggraver.
 
-*Pour les praticiens.* Décret n° 2026-964 du 18 octobre 2026, JO du 20 octobre ; CPC, art. 1359 à 1378 réécrits ; COJ, art. R. 213-12-3 nouveau. Procédure unique avec désignation du juge commis et du notaire commis à l’orientation (1362) ; ministère d’avocat obligatoire jusque devant le notaire (1361, 1370) ; juge commis statuant par jugement sur la gestion de l’indivision, la licitation, la loi applicable, la validité des dispositions à cause de mort, le régime matrimonial, les attributions préférentielles et l’existence de libéralités, saisi à peine d’irrecevabilité dans les quatre mois (1364) ; appel à quinze jours, bref délai (1365) ; mission du notaire de dix-huit mois, prorogations de six mois (1363, 1367), provision et radiation (1369), technicien (1371), dires sous deux mois (1372), conclusions limitées aux désaccords subsistants (1373) ; entrée en vigueur au 1er janvier 2027 avec application aux instances en cours non orientées ou sur accord écrit des avocats (art. 4). Le décret parachève Cass. 1re civ., 27 mars 2024, n° 22-13.041.
+</div>
+
+<div class="encadre">
+
+**Pour les praticiens — la note en bref**
+
+Décret n° 2026-964 du 18 octobre 2026, JO du 20 octobre ; CPC, art. 1359 à 1378 réécrits ; COJ, art. R. 213-12-3 nouveau. Procédure unique avec désignation du juge commis et du notaire commis à l’orientation (1362) ; ministère d’avocat obligatoire jusque devant le notaire (1361, 1370) ; juge commis statuant par jugement sur la gestion de l’indivision, la licitation, la loi applicable, la validité des dispositions à cause de mort, le régime matrimonial, les attributions préférentielles et l’existence de libéralités, saisi par conclusions à peine d’irrecevabilité dans les quatre mois (1364) — forclusion dont la conformité à l’article 34 de la Constitution interroge ; appel à quinze jours, bref délai, appel immédiat des décisions de mise en état soumis à autorisation (1365) ; mission du notaire de dix-huit mois, prorogations de six mois (1363, 1367), provision et radiation (1369), technicien (1371), dires sous deux mois (1372), conclusions limitées aux désaccords subsistants (1373) ; entrée en vigueur au 1er janvier 2027 avec application aux instances en cours non orientées ou sur accord écrit des avocats (art. 4). Le décret parachève Cass. 1re civ., 27 mars 2024, n° 22-13.041, et consolide Cass., avis, 18 déc. 2020, n° 20-70.004. Attention à la prescription : seule la demande en justice l’interrompt (C. civ., art. 2241) — tout former dès les premières conclusions. Détail au § 4, tableau avant/après au § 7.
 
 </div>
 
