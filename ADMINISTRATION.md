@@ -176,6 +176,7 @@ Jamais : saisir un mot de passe, un code, une clé API, un IBAN dans une convers
 | Chaque mois | Lien Bookings : réserver un créneau test et l'annuler ; vérifier que les RDV Outlook bloquent bien les créneaux | Bookings |
 | Chaque mois | Fiche Google Business : horaires, avis à répondre, photos | Google |
 | Chaque mois | Veille jurisprudentielle pour les fiches existantes (recel, délivrance de legs, indivision, salaire différé) : Judilibre, 1re civ., arrêts publiés ; mettre à jour la fiche (`updated:` dans le frontmatter) si un arrêt change la règle | Judilibre |
+| Deux fois par an | Moteur « Quel tribunal saisir ? » : nouvelle édition du fichier ministériel des ressorts (data.gouv.fr) ? Régénérer `public/data/competence-territoriale.json` avec `outils/competence-territoriale/construire.py` (mode d'emploi dans le README du dossier), changer le `?v=` du `fetch` et les effectifs affichés au-dessus de la carte | data.gouv.fr |
 | Octobre | `public/.well-known/security.txt` : repousser la date `Expires` d'un an (contact de signalement des failles) | dépôt |
 | Janvier | Barème de l'aide juridictionnelle (circulaire du ministère de la Justice, NOR JUST…) → `aj` dans `honoraires.ts` | justice.gouv.fr |
 | Janvier | Notice RCP du Barreau de Rennes (assureur, n° de contrat) → `cabinet.assureur` ; millésime du barème d'honoraires si révisé | courrier de l'Ordre |
