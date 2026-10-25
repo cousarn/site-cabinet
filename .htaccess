@@ -86,8 +86,8 @@ ErrorDocument 404 /404.html
     Header always set X-Robots-Tag "noindex, nofollow"
   </If>
   # CSP : à élargir à la mise en place de Bookings / Stripe (frame-src, script-src)
-  # img-src data.geopf.fr : fonds de carte IGN (Géoplateforme) de la page /competence-territoriale
-  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: https://data.geopf.fr; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'"
+  # img-src data.geopf.fr et tile.openstreetmap.org : fonds de carte (IGN ; OSM pour le Pacifique) de la page /competence-territoriale
+  Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: https://data.geopf.fr https://tile.openstreetmap.org; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'"
   # Les fichiers générés par Astro portent un hash : cache long
   <FilesMatch "\.(css|js|woff2|webp|avif|jpg|jpeg|png|svg)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
