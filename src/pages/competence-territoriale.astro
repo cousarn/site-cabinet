@@ -9,6 +9,8 @@ const description = 'Quel tribunal saisir ? Moteur de compétence territoriale 
 
 const faq = [
   { q: 'Quel tribunal saisir pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
+  { q: 'Quel tribunal saisir pour sortir d’une indivision hors succession ?', r: '<p>L’action en partage d’une indivision est une action mixte&nbsp;: au choix du demandeur, le tribunal judiciaire du domicile du défendeur ou celui du lieu où est situé l’immeuble (art.&nbsp;46 du code de procédure civile&nbsp;; Cass. 1re&nbsp;civ., 23&nbsp;sept. 2015, n°&nbsp;14-50.031). Entre époux, partenaires de PACS ou concubins, le partage relève du juge aux affaires familiales (art.&nbsp;L.&nbsp;213-3 du code de l’organisation judiciaire), sauf en cas de décès.</p>' },
+  { q: 'Quel tribunal saisir pour une expertise avant procès (article 145) ?', r: '<p>Au choix du demandeur, la juridiction qui connaîtrait de l’affaire au fond ou celle du lieu où la mesure doit être exécutée&nbsp;; si l’expertise porte sur un immeuble, seul le tribunal du lieu de l’immeuble est compétent (art.&nbsp;145 du code de procédure civile, dans sa rédaction issue du décret n°&nbsp;2025-619 du 8&nbsp;juillet&nbsp;2025, applicable aux instances introduites depuis le 1er&nbsp;septembre&nbsp;2025).</p>' },
   { q: 'Quel juge aux affaires familiales saisir après une séparation ?', r: '<p>Celui du lieu où réside la famille ; si les parents vivent séparément, celui du lieu de résidence du parent chez lequel les enfants mineurs résident habituellement ; dans les autres cas, celui du lieu où réside la partie qui n’a pas pris l’initiative de la procédure (art.&nbsp;1070 du code de procédure civile). La compétence s’apprécie au jour de la demande.</p>' },
   { q: 'Quel conseil de prud’hommes saisir ?', r: '<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail est accompli à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 du code du travail).</p>' },
   { q: 'Mon code postal couvre plusieurs communes : laquelle compte ?', r: '<p>La compétence s’apprécie par commune, non par code postal. Un même code postal peut couvrir des communes rattachées à des tribunaux différents : le moteur ci-dessus vous demande alors de préciser la commune.</p>' },
@@ -94,7 +96,7 @@ const jsonLd = {
         </article>
         <article class="carte">
           <h3>Indivision, immeubles, patrimoine</h3>
-          <p class="muet">En matière réelle immobilière (revendication, servitude, bornage, action en nullité d’une vente immobilière…), le tribunal du lieu de l’immeuble est <strong>seul</strong> compétent (art.&nbsp;44 CPC). Pour les actions mixtes, à la fois personnelles et réelles — et le partage d’un immeuble indivis hors succession en est l’exemple classique —, le demandeur choisit entre le tribunal du défendeur et celui de l’immeuble (art.&nbsp;46 CPC).</p>
+          <p class="muet">En matière réelle immobilière (revendication, servitude, bornage, action en nullité d’une vente immobilière…), le tribunal du lieu de l’immeuble est <strong>seul</strong> compétent (art.&nbsp;44 CPC). L’<strong>action en partage d’une indivision hors succession</strong> est une action mixte, qui met en cause à la fois un droit personnel et un droit réel — qualification approuvée par la Cour de cassation (Cass. 1re&nbsp;civ., 23&nbsp;sept. 2015, n°&nbsp;14-50.031) et appliquée par les juges du fond (TJ Lyon, 4&nbsp;août 2026, RG n°&nbsp;25/05007)&nbsp;: le demandeur choisit entre le tribunal du domicile du défendeur — de l’un d’eux s’il y en a plusieurs — et celui du lieu où est situé l’immeuble (art.&nbsp;42 et 46 CPC)&nbsp;; s’il y a plusieurs immeubles, le lieu de l’un d’eux suffit (TJ Paris, 9&nbsp;avr. 2025, RG n°&nbsp;24/10716).</p>
           <p class="muet">Entre époux, partenaires de PACS ou concubins, la liquidation et le partage des intérêts patrimoniaux, le fonctionnement du régime matrimonial et l’indivision relèvent du juge aux affaires familiales (art.&nbsp;L.&nbsp;213-3 COJ), territorialement désigné selon l’article&nbsp;1070 CPC ci-contre — sauf en cas de décès, où l’on revient aux règles successorales. Pour les <strong>SCI familiales</strong>, c’est le siège social qui fixe le tribunal du défendeur (art.&nbsp;43 CPC)&nbsp;; une clause attributive de compétence n’est valable qu’entre commerçants (art.&nbsp;48 CPC).</p>
         </article>
         <article class="carte">
@@ -103,14 +105,24 @@ const jsonLd = {
           <p class="muet">Lorsque le litige porte seulement sur la pension alimentaire, la contribution à l’entretien et à l’éducation de l’enfant, la contribution aux charges du mariage ou la prestation compensatoire, le juge peut être celui du lieu où réside l’époux créancier ou le parent qui assume à titre principal la charge des enfants, même majeurs. La compétence s’apprécie au jour de la demande&nbsp;: un déménagement postérieur ne la modifie pas.</p>
         </article>
         <article class="carte">
-          <h3>Référés et mesures d’instruction</h3>
-          <p class="muet">Le président du tribunal judiciaire statue en référé dans tous les cas d’urgence, ou pour prévenir un dommage imminent, faire cesser un trouble manifestement illicite ou accorder une provision (art.&nbsp;834 et 835 CPC). Territorialement, le juge des référés compétent est celui de la juridiction qui connaîtrait de l’affaire au fond selon les règles ci-dessus (défendeur, immeuble, succession, famille)&nbsp;; en pratique, pour une indivision immobilière ou une succession, on saisit le président du tribunal du lieu de l’immeuble ou de l’ouverture de la succession.</p>
-          <p class="muet">Pour les mesures d’instruction avant tout procès — expertise, constat, communication de pièces —, l’article&nbsp;145 CPC, dans sa rédaction issue du décret n°&nbsp;2025-619 du 8&nbsp;juillet&nbsp;2025, fixe désormais la règle&nbsp;: au choix du demandeur, la juridiction susceptible de connaître du fond ou celle dans le ressort de laquelle la mesure doit être exécutée&nbsp;; si la mesure porte sur un immeuble, le tribunal du lieu de l’immeuble est seul compétent.</p>
+          <h3>Référés</h3>
+          <p class="muet">Le président du tribunal judiciaire statue en référé dans tous les cas d’urgence, ou pour prévenir un dommage imminent, faire cesser un trouble manifestement illicite ou accorder une provision (art.&nbsp;834 et 835 CPC). En principe, le juge des référés territorialement compétent est celui de la juridiction qui connaîtrait de l’affaire au fond, selon les règles ci-dessus&nbsp;: pour une succession, le président du tribunal du lieu d’ouverture&nbsp;; pour une indivision hors succession, au choix, celui du domicile du défendeur ou du lieu de l’immeuble. L’expertise obéit à des règles propres (ci-dessous).</p>
+          <p class="muet">Une fois le tribunal saisi au fond et le juge de la mise en état désigné, c’est lui seul, à l’exclusion de toute autre formation du tribunal, qui accorde les provisions et ordonne les mesures provisoires et les mesures d’instruction (art.&nbsp;789 CPC).</p>
         </article>
         <article class="carte">
           <h3>Prud’hommes</h3>
           <p class="muet">Le conseil de prud’hommes compétent est celui dans le ressort duquel est situé l’<strong>établissement où le travail est accompli</strong>&nbsp;; lorsque le travail est accompli à domicile ou en dehors de toute entreprise ou établissement (télétravail intégral, itinérants, VRP), celui du <strong>domicile du salarié</strong>. Le salarié peut également saisir le conseil du lieu où l’engagement a été contracté ou celui du lieu où l’employeur est établi (art.&nbsp;R.&nbsp;1412-1 C.&nbsp;trav.). Toute clause du contrat de travail qui y déroge est réputée non écrite (art.&nbsp;R.&nbsp;1412-4).</p>
           <p class="muet">Le ressort des conseils de prud’hommes ne coïncide pas toujours avec celui des tribunaux judiciaires&nbsp;: une commune peut dépendre du tribunal judiciaire de Rennes et du conseil de prud’hommes de Saint-Malo, ou du tribunal de Saint-Brieuc et du conseil de Guingamp ou de Dinan. Vérifiez avec le moteur ci-dessus.</p>
+        </article>
+        <article class="carte carte--large carte--accent" id="expertise">
+          <h3>Expertise avant procès&nbsp;: les règles spéciales de l’article&nbsp;145</h3>
+          <p class="muet">Lorsqu’il existe un motif légitime de conserver ou d’établir, avant tout procès, la preuve de faits dont pourrait dépendre la solution d’un litige, une expertise, un constat ou la production de pièces peuvent être ordonnés sur requête ou en référé. Depuis le décret n°&nbsp;2025-619 du 8&nbsp;juillet&nbsp;2025, l’article&nbsp;145 CPC fixe lui-même la compétence territoriale&nbsp;:</p>
+          <ul class="regles__liste">
+            <li><strong>Une option pour le demandeur.</strong> La juridiction susceptible de connaître de l’affaire au fond ou, s’il y a lieu, celle dans le ressort de laquelle la mesure d’instruction doit être exécutée.</li>
+            <li><strong>Une compétence exclusive pour les immeubles.</strong> Lorsque la mesure porte sur un immeuble, la juridiction du lieu où il est situé est seule compétente — même si le procès au fond relèvera d’un autre tribunal. Exemple&nbsp;: avant toute assignation en partage, l’expertise de la maison de famille de Saint-Malo se demande au président du tribunal judiciaire de Saint-Malo, alors que le partage de la succession, ouverte à Nantes, sera jugé à Nantes.</li>
+            <li><strong>Avant tout procès seulement.</strong> Une fois le tribunal saisi au fond et le juge de la mise en état désigné, c’est à ce dernier que l’expertise se demande (art.&nbsp;789, 5°&nbsp;CPC).</li>
+            <li><strong>Dans le temps.</strong> Ces règles s’appliquent aux seules instances introduites à compter du 1er&nbsp;septembre&nbsp;2025&nbsp;; les instances antérieures restent régies par l’ancienne rédaction du texte.</li>
+          </ul>
         </article>
       </div>
       <div class="encadre" style="max-width: 980px">
@@ -139,7 +151,8 @@ const jsonLd = {
         <li>Ministère de la Justice, <em>Liste des juridictions compétentes pour les communes de France</em>, édition de juillet 2026 (data.gouv.fr, licence ouverte).</li>
         <li>Annuaire de l’administration, base de données locales de service-public.gouv.fr (DILA), extraction du 25 octobre 2026 — adresses, téléphones, horaires, coordonnées.</li>
         <li>La Poste, base officielle des codes postaux (correspondance commune – code postal).</li>
-        <li>Articles 42 à 48, 145, 834, 835 et 1070 du code de procédure civile&nbsp;; 720 et 841 du code civil&nbsp;; L.&nbsp;212-8, L.&nbsp;213-3 et D.&nbsp;212-19-1 du code de l’organisation judiciaire&nbsp;; R.&nbsp;1412-1 et R.&nbsp;1412-4 du code du travail (Légifrance, versions en vigueur au 25 octobre 2026).</li>
+        <li>Articles 42 à 48, 145, 789, 834, 835 et 1070 du code de procédure civile&nbsp;; 720 et 841 du code civil&nbsp;; L.&nbsp;212-8, L.&nbsp;213-3 et D.&nbsp;212-19-1 du code de l’organisation judiciaire&nbsp;; R.&nbsp;1412-1 et R.&nbsp;1412-4 du code du travail (Légifrance, versions en vigueur au 25 octobre 2026).</li>
+        <li>Cass. 1re&nbsp;civ., 23&nbsp;septembre&nbsp;2015, n°&nbsp;14-50.031&nbsp;; TJ Paris, 9&nbsp;avril&nbsp;2025, RG n°&nbsp;24/10716&nbsp;; TJ Lyon, 4&nbsp;août&nbsp;2026, RG n°&nbsp;25/05007 (Judilibre).</li>
       </ul>
       <p class="muet" style="font-size: 14px">Cette page est un outil d’orientation, pas une consultation&nbsp;: les règles comportent des exceptions (clauses attributives, litiges internationaux, procédures collectives, contentieux de la protection…), et les ressorts évoluent. Avant d’assigner, faites vérifier la compétence par un avocat.</p>
     </div>
@@ -178,6 +191,10 @@ const jsonLd = {
   .regles .carte { gap: 10px; }
   .regles .carte h3 { font-size: 21px; }
   .regles .carte p { font-size: 15px; }
+  .regles .carte--large { grid-column: 1 / -1; }
+  .regles .carte--accent { border-left: 3px solid var(--laiton); }
+  .regles__liste { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: var(--muet); font-size: 15px; }
+  .regles__liste strong { color: var(--encre); }
   .encadre { background: var(--ivoire); border: 1px solid var(--ligne); border-left: 3px solid var(--laiton); border-radius: var(--r); padding: 24px 28px; }
   .encadre li { font-size: 15px; }
   .avertissement { font-size: 14px; color: var(--muet); border-top: 1px solid var(--ligne-douce); padding-top: 10px; }
@@ -279,7 +296,7 @@ const jsonLd = {
       <p class="avertissement">${postule
         ? 'Ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet postule directement devant ce tribunal judiciaire et plaide devant le conseil de prud’hommes et la cour.'
         : 'Hors ressort de la cour d’appel de Rennes' + NBSP + ': le cabinet plaide devant ces juridictions et s’adjoint, lorsque la postulation est obligatoire devant le tribunal judiciaire, un confrère local.'}
-      Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants (<a href="#regles">voir les règles</a>).</p>`;
+      Successions et partages${NBSP}: la commune à retenir est celle du <strong>dernier domicile du défunt</strong>${NBSP}; affaires familiales${NBSP}: celle de la résidence de la famille ou des enfants${NBSP}; expertise d’un immeuble avant tout procès${NBSP}: celle où se trouve l’immeuble (<a href="#regles">voir les règles</a>).</p>`;
     selection = [tj, tprx, cph, ca].filter(Boolean);
     mettreEnValeur();
     history.replaceState(null, '', '#q=' + encodeURIComponent(champ.value.trim()));
