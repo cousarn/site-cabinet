@@ -1,7 +1,7 @@
 ---
 title: "Partage judiciaire : les articles 1359 à 1380 du code de procédure civile, étape par étape"
 titreCourt: "Partage judiciaire : articles 1359 à 1380 CPC, mode d’emploi"
-description: "Assignation, juge et notaire commis, dires, état liquidatif, licitation, tirage au sort : la procédure de partage judiciaire article par article, avant et après le 1er janvier 2027."
+description: "Assignation, juge et notaire commis, dires, état liquidatif, licitation : la procédure de partage judiciaire article par article, avant et après le 1er janvier 2027."
 date: 2026-10-25
 domaine: successions
 type: fiche
