@@ -251,25 +251,30 @@ const jsonLd = {
   const marqueurs: L.CircleMarker[] = [];
   const groupes: Record<string, L.LayerGroup> = {};
   let selection: number[] = [];
+  let carteFaite = false;
+  let cadrageEnAttente: number[] = [];
+  let pret: Promise<void> | null = null;
 
-  async function charger() {
-    const r = await fetch('/data/competence-territoriale.json?v=2026-07-fr');
-    donnees = await r.json();
-    communes = donnees.c.map(([insee, nom, cps, ca, tj, tprx, cph]) => ({ insee, nom, norm: normaliser(nom), cps: cps ? cps.split(' ') : [], ca, tj, tprx, cph, dep: depDe(insee) }));
-    initCarte();
-    champ.disabled = false;
-    champ.placeholder = '35000, Lyon 3e, Fort-de-France, 98800…';
-    // ?q=… (encarts du site, formulaire sans JavaScript) ou #q=… (lien partagé depuis la page)
-    const q = new URLSearchParams(location.search).get('q') ?? new URLSearchParams(location.hash.replace(/^#/, '')).get('q');
-    if (q) {
-      champ.value = q;
-      chercher(q, true);
-      if (resultat.hidden) {
-        const exactes = communes.filter((c) => c.norm === normaliser(q));
-        if (exactes.length === 1) afficher(exactes[0]);
-      }
-      document.getElementById('moteur')?.scrollIntoView({ block: 'start' });
+  // Les données (35 029 communes, ~530 Ko compressés) ne sont chargées qu'au premier usage du moteur,
+  // ou quand la carte approche de l'écran : l'affichage initial de la page reste léger.
+  function chargerDonnees() {
+    if (!pret) {
+      pret = (async () => {
+        const r = await fetch('/data/competence-territoriale.json?v=2026-07-fr');
+        if (!r.ok) throw new Error(String(r.status));
+        donnees = await r.json();
+        communes = donnees.c.map(([insee, nom, cps, ca, tj, tprx, cph]) => ({ insee, nom, norm: normaliser(nom), cps: cps ? cps.split(' ') : [], ca, tj, tprx, cph, dep: depDe(insee) }));
+      })();
+      pret.catch(() => { pret = null; resultat.hidden = false; resultat.innerHTML = '<p class="muet">Le fichier des ressorts n’a pas pu être chargé. Réessayez dans un instant.</p>'; });
     }
+    return pret;
+  }
+
+  function assurerCarte() {
+    if (carteFaite || !donnees) return;
+    carteFaite = true;
+    initCarte();
+    if (selection.length) mettreEnValeur(cadrageEnAttente);
   }
 
   const cle = (c: Commune) => `${c.ca}|${c.tj}|${c.tprx}|${c.cph}`;
@@ -381,6 +386,7 @@ const jsonLd = {
   }
 
   function mettreEnValeur(cadrage: number[]) {
+    if (!carteFaite) { cadrageEnAttente = cadrage; return; }
     marqueurs.forEach((m, idx) => {
       const j = donnees.j[idx];
       const actif = selection.includes(idx);
@@ -393,13 +399,18 @@ const jsonLd = {
     }
   }
 
-  champ.disabled = true;
-  champ.placeholder = 'Chargement des 35 029 communes…';
-  champ.addEventListener('input', () => chercher(champ.value));
+  const rechercheExacte = (q: string) => {
+    chercher(q, true);
+    if (resultat.hidden) { const exactes = communes.filter((c) => c.norm === normaliser(q)); if (exactes.length === 1) afficher(exactes[0]); }
+  };
+  champ.addEventListener('focus', () => { chargerDonnees(); }, { once: true });
+  champ.addEventListener('input', () => {
+    if (!donnees && champ.value.trim().length >= 2) { propositions.hidden = false; propositions.innerHTML = '<p class="muet" style="margin:0">Chargement des 35&nbsp;029 communes…</p>'; }
+    chargerDonnees().then(() => chercher(champ.value));
+  });
   $<HTMLFormElement>('#form-recherche').addEventListener('submit', (e) => {
     e.preventDefault();
-    chercher(champ.value, true);
-    if (resultat.hidden) { const exactes = communes.filter((c) => c.norm === normaliser(champ.value)); if (exactes.length === 1) afficher(exactes[0]); }
+    chargerDonnees().then(() => rechercheExacte(champ.value));
   });
   propositions.addEventListener('click', (e) => {
     const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-k]');
@@ -410,6 +421,7 @@ const jsonLd = {
     const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-voir]');
     if (!b) return;
     const idx = Number(b.dataset.voir);
+    assurerCarte();
     const m = marqueurs[idx];
     const j = donnees.j[idx];
     if (!map.hasLayer(groupes[j.t])) { groupes[j.t].addTo(map); const cb = document.querySelector<HTMLInputElement>(`.legende input[data-type=${j.t}]`); if (cb) cb.checked = true; }
@@ -417,5 +429,20 @@ const jsonLd = {
     map.setView(m.getLatLng(), 14);
     m.openPopup();
   });
-  charger().catch(() => { resultat.hidden = false; resultat.innerHTML = '<p class="muet">Le fichier des ressorts n’a pas pu être chargé. Réessayez dans un instant.</p>'; });
+  // ?q=… (encarts du site, formulaire sans JavaScript) ou #q=… (lien partagé depuis la page)
+  const qInitiale = new URLSearchParams(location.search).get('q') ?? new URLSearchParams(location.hash.replace(/^#/, '')).get('q');
+  if (qInitiale) {
+    champ.value = qInitiale;
+    document.getElementById('moteur')?.scrollIntoView({ block: 'start' });
+    chargerDonnees().then(() => rechercheExacte(qInitiale));
+  }
+  // La carte (Leaflet, tuiles, 546 repères) se construit quand elle approche de l'écran
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entrees) => {
+      if (entrees.some((e) => e.isIntersecting)) { obs.disconnect(); chargerDonnees().then(assurerCarte); }
+    }, { rootMargin: '200px 0px' });
+    obs.observe(mapEl);
+  } else {
+    chargerDonnees().then(assurerCarte);
+  }
 </script>
