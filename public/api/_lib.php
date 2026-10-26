@@ -114,6 +114,8 @@ function honeypot_ok(): bool {
  *    Refus = page d'erreur lisible (une personne sans JavaScript sait quoi faire) ; aucun courriel ne part.
  * 3. Contenu suspect (lien dans le texte libre) : le message arrive au cabinet préfixé « [SPAM ?] »,
  *    sans accusé de réception à l'adresse saisie, qui peut être celle d'un tiers.
+ * 4. Démarchage commercial présumé (formulaire de contact, voir _demarchage.php) : préfixe « [DÉMARCHAGE ?] »,
+ *    sans accusé de réception ; rien n'est supprimé.
  * Les refus sont comptés dans le journal (cache/site-cabinet/journal.log), sans contenu personnel. */
 const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation', 'pre-entretien'];
 const JETON_DELAI_MIN   = 3;          // secondes : personne ne remplit un formulaire plus vite

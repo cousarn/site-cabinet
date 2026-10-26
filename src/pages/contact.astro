@@ -32,13 +32,14 @@ import Jeton from '../components/Jeton.astro';
         </div>
         <label class="champ">Courriel<input type="email" name="email" required autocomplete="email" /></label>
         <label class="champ">Objet
-          <select name="objet"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Notaire / confrère</option><option>Autre</option></select>
+          <select name="objet"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Notaire / confrère</option><option>Autre</option><option value="Proposition commerciale">Proposition commerciale (agences, fournisseurs)</option></select>
         </label>
         <label class="champ">Votre situation, en quelques lignes<textarea name="message" required></textarea></label>
         <label style="display: flex; gap: 10px; font-size: 14px; color: var(--muet); align-items: flex-start"><input type="checkbox" name="consentement" required style="margin-top: 4px" /> J’accepte que ces informations soient utilisées pour me répondre. <a href="/mentions-legales#rgpd" class="lien" style="margin-left: 4px">Confidentialité</a></label>
         <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
         <Jeton formulaire="contact" />
         <button type="submit" class="btn btn--plein" style="align-self: flex-start">Envoyer</button>
+        <p class="muet" style="font-size: 13px; margin: 0">Ce formulaire est réservé aux personnes qui souhaitent consulter le cabinet. Les sollicitations commerciales (agences web, référencement, logiciels, fournisseurs) ne reçoivent pas de réponse.</p>
       </form>
     </div>
   </section>
