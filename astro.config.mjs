@@ -6,7 +6,8 @@ export default defineConfig({
   site: 'https://arnaudcousin-avocat.fr',
   // URLs sans extension ni barre finale : /cabinet, /domaines/successions …
   // (le .htaccess d'OVH sert cabinet.html pour /cabinet)
-  build: { format: 'file' },
+  // Feuilles de style intégrées à chaque page : aucune requête CSS bloquant l'affichage (8 Ko compressés au plus)
+  build: { format: 'file', inlineStylesheets: 'always' },
   trailingSlash: 'never',
   integrations: [
     sitemap({
