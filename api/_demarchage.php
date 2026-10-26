@@ -7,8 +7,6 @@ declare(strict_types=1);
  * Rien n'est supprimé ni refusé : un vrai client mal classé reste lisible dans la boîte du cabinet.
  * Seuil volontairement prudent : « votre site » ou « je me permets » seuls ne suffisent pas (un client les écrit aussi). */
 
-/** Objet du formulaire de contact réservé aux sollicitations commerciales (valeur de l'option). */
-const OBJET_DEMARCHAGE = 'Proposition commerciale';
 const SEUIL_DEMARCHAGE = 3;
 
 /** Motif => points. Les motifs à 2 points relèvent du vocabulaire de la prospection ; à 1 point, de tournures fréquentes. */
@@ -34,10 +32,10 @@ function score_demarchage(string ...$textes): int {
     return $s;
 }
 
-/** Vrai si l'objet choisi est « Proposition commerciale » ou si le texte atteint le seuil. */
-function demarchage_presume(string $objet, string ...$textes): bool {
-    return $objet === OBJET_DEMARCHAGE || score_demarchage(...$textes) >= SEUIL_DEMARCHAGE;
+/** Vrai si les textes atteignent le seuil (aucun objet « démarchage » n'est proposé dans le formulaire : ce serait l'inviter). */
+function demarchage_presume(string ...$textes): bool {
+    return score_demarchage(...$textes) >= SEUIL_DEMARCHAGE;
 }
 
 /** Bandeau placé en tête du courriel au cabinet. */
-const AVERTISSEMENT_DEMARCHAGE = "⚠ Démarchage commercial présumé (objet « Proposition commerciale » ou vocabulaire de prospection) : aucun accusé de réception n'a été adressé. S'il s'agit d'un vrai client, répondez-lui directement.\n\n";
+const AVERTISSEMENT_DEMARCHAGE = "⚠ Démarchage commercial présumé (vocabulaire de prospection) : aucun accusé de réception n'a été adressé. S'il s'agit d'un vrai client, répondez-lui directement.\n\n";
