@@ -18,7 +18,7 @@ if (!$ok) { erreur('Merci de cocher la case de consentement : sans elle, le cabi
 if (mb_strlen($msg) < 20) { erreur('Quelques lignes de plus nous aideront à vous répondre utilement.'); }
 
 $suspect = contenu_suspect($nom, $msg);
-$demarchage = !$suspect && demarchage_presume($objet, $nom, $email, $msg);
+$demarchage = !$suspect && demarchage_presume($nom, $email, $msg);
 $ref = reference();
 $corps = ($suspect ? AVERTISSEMENT_SUSPECT : ($demarchage ? AVERTISSEMENT_DEMARCHAGE : '')) . "Nouveau message depuis le site — réf. $ref\n\n"
        . "Objet : $objet\nNom : $nom\nCourriel : $email\nTéléphone : " . ($tel ?: '—') . "\n\n"
