@@ -12,7 +12,7 @@ Cette fiche suit la procédure de partage judiciaire dans l’ordre des articles
 
 ## Avant d’assigner : à quoi sert le partage judiciaire
 
-Nul ne peut être contraint à demeurer dans l’indivision ; lorsque les indivisaires ne s’accordent pas sur un partage amiable, l’un d’eux saisit le tribunal judiciaire du lieu d’ouverture de la succession ou, pour un couple, du juge aux affaires familiales. Depuis la loi du 7 avril 2026, la procédure s’applique expressément à la liquidation des intérêts patrimoniaux des époux, partenaires de pacs et concubins (art. 840 C. civ.). Le juge ordonne le partage, fait établir les comptes et l’état liquidatif, tranche les désaccords, et, si les biens ne peuvent être commodément partagés, ordonne leur vente aux enchères (licitation).
+Nul ne peut être contraint à demeurer dans l’indivision ; lorsque les indivisaires ne s’accordent pas sur un partage amiable, l’un d’eux saisit le tribunal judiciaire du lieu d’ouverture de la succession ou, pour un couple, le juge aux affaires familiales ([de quel tribunal dépend votre commune ?](/competence-territoriale)). Depuis la loi du 7 avril 2026, la procédure s’applique expressément à la liquidation des intérêts patrimoniaux des époux, partenaires de pacs et concubins (art. 840 C. civ.). Le juge ordonne le partage, fait établir les comptes et l’état liquidatif, tranche les désaccords, et, si les biens ne peuvent être commodément partagés, ordonne leur vente aux enchères (licitation).
 
 ## Article 1359 — Qui est demandeur
 
