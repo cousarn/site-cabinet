@@ -40,7 +40,7 @@ faq:
   - q: "L’aide juridictionnelle est-elle possible en matière de succession ?"
     r: "<p>Le cabinet n’intervient pas à l’aide juridictionnelle en matière de succession. Une assurance de protection juridique peut en revanche prendre en charge une partie des frais : on vérifie avec vous.</p>"
   - q: "Quel tribunal est compétent pour une succession à Rennes ou en Bretagne ?"
-    r: "<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt : Rennes, Saint-Malo, Saint-Brieuc, Nantes, Lorient, Vannes, Quimper ou Brest selon les cas. L’appel relève de la cour d’appel de Rennes pour toute la Bretagne et la Loire-Atlantique. Le cabinet plaide devant toutes ces juridictions et, au-delà, dans toute la France.</p>"
+    r: "<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt : Rennes, Saint-Malo, Saint-Brieuc, Nantes, Lorient, Vannes, Quimper ou Brest selon les cas. L’appel relève de la cour d’appel de Rennes pour toute la Bretagne et la Loire-Atlantique. Le cabinet plaide devant toutes ces juridictions et, au-delà, dans toute la France. Le moteur du cabinet donne le tribunal compétent pour chaque commune de France : <a href=\"/competence-territoriale\">de quel tribunal dépend votre commune ?</a></p>"
   - q: "Que change la réforme du partage judiciaire au 1er janvier 2027 ?"
     r: "<p>Avocat obligatoire à toutes les étapes, y compris devant le notaire ; juge commis et notaire commis désignés dès le début ; contestations à former dans les quatre mois à peine d’irrecevabilité. Le cabinet en a publié une <a href=\"/fiches/reforme-partage-judiciaire-2027\">analyse complète</a>.</p>"
   - q: "Combien coûte un avocat pour une succession ?"

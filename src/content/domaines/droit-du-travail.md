@@ -27,6 +27,8 @@ encadre:
 faq:
   - q: "Combien de temps ai-je pour contester mon licenciement ?"
     r: "<p>Douze mois à compter de la notification pour saisir le conseil de prud’hommes (art. L. 1471-1 C. trav.). D’autres délais sont plus courts : quinze jours pour contester un avis du médecin du travail, quinze jours calendaires pour se rétracter d’une rupture conventionnelle.</p>"
+  - q: "Quel conseil de prud’hommes saisir ?"
+    r: "<p>Celui du lieu de l’établissement où le travail est accompli ; si le travail s’effectue à domicile ou hors de tout établissement, celui du domicile du salarié. Le salarié peut aussi choisir le conseil du lieu où le contrat a été conclu ou celui du lieu où l’employeur est établi (art. R. 1412-1 C. trav.). Le moteur du cabinet indique le conseil compétent pour chaque commune : <a href=\"/competence-territoriale\">de quel tribunal dépend votre commune ?</a></p>"
   - q: "Mon licenciement est-il abusif ?"
     r: "<p>La question se tranche sur la lettre de licenciement, les faits reprochés et la procédure suivie. Apportez la lettre, votre contrat, vos trois derniers bulletins et tout écrit de l’employeur : une consultation suffit souvent à y voir clair.</p>"
   - q: "Que peut m’apporter un avocat dans une rupture conventionnelle ?"
