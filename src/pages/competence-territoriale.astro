@@ -4,8 +4,8 @@ import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
 import { cabinet } from '../data/cabinet';
 
-const titre = 'Quel tribunal saisir ? Moteur de compétence territoriale';
-const description = 'Quel tribunal saisir ? Moteur de compétence territoriale par code postal : tribunaux, prud’hommes et cours d’appel de toute la France, outre-mer compris.';
+const titre = 'De quel tribunal dépend ma commune ? Compétence territoriale';
+const description = 'Trouvez le tribunal compétent pour une commune : tribunal judiciaire, prud’hommes et cour d’appel, toute la France sur la carte, outre-mer compris.';
 
 const faq = [
   { q: 'Quel tribunal saisir pour une succession ou un partage ?', r: '<p>Le tribunal judiciaire du lieu d’ouverture de la succession, c’est-à-dire du dernier domicile du défunt (art.&nbsp;720 et 841 du code civil, art.&nbsp;45 du code de procédure civile), pour toutes les demandes entre héritiers jusqu’au partage inclus — où que résident les héritiers et où que soient situés les biens.</p>' },
@@ -28,7 +28,7 @@ const jsonLd = {
   isPartOf: { '@id': `${cabinet.siteUrl}/#cabinet` },
   about: ['Compétence territoriale', 'Tribunal judiciaire', 'Tribunal de proximité', 'Conseil de prud’hommes', 'Cour d’appel'],
   spatialCoverage: ['France métropolitaine', 'Outre-mer'],
-  dateModified: '2026-10-26',
+  dateModified: '2026-11-04',
 };
 ---
 <Base title={titre} description={description} jsonLd={jsonLd} fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Quel tribunal saisir ?', href: '/competence-territoriale' }]}>
