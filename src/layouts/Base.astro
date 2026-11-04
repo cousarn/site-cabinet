@@ -80,5 +80,7 @@ const donnees = [organisation, filAriane, ...(Array.isArray(jsonLd) ? jsonLd : j
     <slot />
   </main>
   <Footer />
+  {/* Mesure d'audience interne, sans cookie ni service tiers (public/api/_mesure.php). */}
+  <script src="/mesure.js" defer is:inline></script>
 </body>
 </html>

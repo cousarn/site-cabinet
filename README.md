@@ -13,6 +13,17 @@ npm run preview    # sert dist/ en local
 npm run check      # vérification TypeScript / Astro
 ```
 
+## Mesure d'audience
+
+Mesure interne, sans cookie ni service tiers (aucun bandeau nécessaire).
+
+- `public/mesure.js` → `public/api/mesure.php` → journaux NDJSON quotidiens dans `cache/site-cabinet/mesure/` (hors racine web, purge à 400 jours ; la préprod écrit dans `mesure/preprod/`).
+- Visite identifiée par `sha256(sel du jour + IP + navigateur)` tronqué : le sel change chaque jour et le précédent est écrasé, l'IP n'est jamais conservée.
+- Robots connus et navigateurs *Do Not Track* ignorés ; `/depot/<jeton>` réduit à `/depot/`.
+- Console `/admin/stats` (API `public/api/stats.php`, clé `depot.cle_admin`, session 8 h) : visites, pages vues, courbe quotidienne, pages les plus lues, provenance, appareils.
+- Information du public : section « Cookies et mesure d'audience » des mentions légales.
+- Détail et exploitation : `ADMINISTRATION.md` § 8.7.
+
 ## Arborescence
 
 | Dossier | Contenu |

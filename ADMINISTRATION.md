@@ -22,6 +22,7 @@ Mode d'emploi du site du Cabinet Arnaud Cousin, avocat au Barreau de Rennes. Il 
 | Paiement | PayPal « Payments Standard » (lien hébergé, identifiant marchand public dans `_lib.php`), RIB en secours ; notification IPN (`api/paypal-ipn.php`) qui marque la consultation « payée » et prévient cabinet et client |
 | Dépôt de pièces | lien personnel `/depot/<jeton>` créé depuis la console `/admin/depots` ; pièces hors racine web puis relayées dans SharePoint (site « Dépôts clients », application Entra `Sites.Selected`) |
 | Pré-entretien | questionnaire guidé `/services/pre-entretien` (arbre dans `src/data/pre-entretien.ts`), synthèse au cabinet ; analyse IA facultative pour l'avocat seul (clé dans le fichier serveur) |
+| Audience | Mesure interne sans cookie ni tiers (`api/mesure.php`, journaux hors racine web) ; console `/admin/stats` (même clé que `/admin/depots`) |
 | Référencement | Google Search Console (propriété domaine, validée par TXT DNS), Bing Webmaster (validé par CNAME DNS), sitemap `/sitemap-index.xml` |
 
 Vérifier d'un coup d'œil quelle version est en ligne : `https://arnaudcousin-avocat.fr/version.txt` (hash du commit, date, référence), idem sur la préprod.
@@ -225,6 +226,17 @@ Requêtes principales, toutes avec « Rennes » ou « avocat » : *avocat succes
 
 ### 8.6 Ce qu'on ne fait pas
 Pas de texte généré en masse, pas de pages « ville » dupliquées (Rennes, Saint-Malo, Saint-Brieuc… : une mention naturelle du ressort suffit), pas de mots-clés cachés, pas d'avis sollicités en échange d'un avantage, pas de promesse de résultat (déontologie : RIN art. 10). Le contenu doit rester celui d'un avocat qui explique ; c'est ce qui le fait référencer et ce qui fait venir les clients.
+
+### 8.7 Mesurer la fréquentation (console `/admin/stats`)
+
+Depuis le 04/11/2026, le site mesure lui-même son audience : pas de Matomo, pas de Google Analytics, aucun service tiers, aucun cookie — donc aucun bandeau à afficher.
+
+- **Collecte.** `public/mesure.js` (chargé par `Base.astro`, servi depuis `public/`, donc compatible avec la CSP `script-src 'self'`) envoie en `sendBeacon` un petit JSON à `api/mesure.php` : chemin de la page, référent, `utm_source`. Le serveur y ajoute l'heure, la famille d'appareil et une **empreinte de visite** `sha256(sel du jour + IP + navigateur)` tronquée à 8 caractères. Le sel est tiré au hasard chaque jour dans `cache/site-cabinet/mesure/sel.json` et **écrase celui de la veille** : deux jours ne peuvent pas être recoupés, même par le cabinet. L'adresse IP n'est jamais écrite.
+- **Journaux.** Un fichier NDJSON par jour dans `/home/arnaudcoqa/cache/site-cabinet/mesure/` (hors racine web, 0600), purgé au-delà de 400 jours. La **préproduction écrit dans `mesure/preprod/`** pour ne pas fausser les chiffres ; la console a une case pour l'y basculer.
+- **Exclusions.** Robots connus (liste dans `_mesure.php`), navigateurs qui émettent *Do Not Track*, requêtes d'une autre origine. Les liens personnels `/depot/<jeton>` sont réduits à `/depot/` : aucun jeton dans les journaux.
+- **Console.** `/admin/stats` (noindex, hors sitemap, non liée), même clé que la console des dépôts (`depot.cle_admin`), API `api/stats.php`, session `statsadmin` de 8 h. Visites, pages vues, pages par visite, courbe quotidienne, pages les plus lues, provenance, appareils, sur 7/30/90/365 jours.
+- **Ce que cela ne remplace pas.** Search Console reste la seule source pour les **requêtes** tapées dans Google, les impressions et les positions ; la mesure interne dit ce qui se passe **sur** le site (pages réellement lues, provenance, appareils, profondeur de visite). Les deux se lisent ensemble : Search Console pour attirer, la console d'audience pour vérifier que la page retient.
+- **Information du public.** Section « Cookies et mesure d'audience » des mentions légales : à tenir à jour si la collecte change.
 
 ## 9. Ce qui n'est pas encore fait (phase 2)
 

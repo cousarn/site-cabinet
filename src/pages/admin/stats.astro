@@ -1,0 +1,225 @@
+---
+/**
+ * Console du cabinet — audience du site. Page privée (noindex, hors sitemap, non liée) ; l'accès réel est
+ * contrôlé côté serveur par la clé `depot.cle_admin` (session). API : /api/stats.php.
+ * Les chiffres viennent de la mesure interne (sans cookie, sans tiers) décrite dans public/api/_mesure.php.
+ */
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Console — audience du site | Cabinet Arnaud Cousin" description="Console privée du cabinet : fréquentation du site, pages les plus lues et sources de visites." noindex>
+  <section class="section">
+    <div class="conteneur pile" style="gap: 28px">
+      <div class="pile" style="gap: 6px">
+        <p class="surtitre">Console du cabinet</p>
+        <h1 style="font-size: clamp(30px, 4vw, 40px)">Audience du site</h1>
+        <p class="muet" style="max-width: 760px">Mesure interne, sans cookie et sans service tiers&nbsp;: une visite est identifiée pour la journée seulement, par une empreinte que rien ne permet de rattacher à une personne ni de suivre d’un jour sur l’autre.</p>
+      </div>
+
+      <form id="st-connexion" class="carte pile" style="max-width: 460px; gap: 14px">
+        <h2 style="font-size: 22px">Connexion</h2>
+        <label class="champ">Clé de la console<input type="password" id="st-cle" autocomplete="current-password" required /></label>
+        <button class="btn btn--plein" type="submit">Ouvrir la console</button>
+        <p id="st-connexion-erreur" class="muet" style="font-size: 14px; color: #9c4a42" hidden></p>
+      </form>
+
+      <div id="st-app" class="pile" style="gap: 26px" hidden>
+        <div class="st-barre">
+          <div class="st-periodes" role="group" aria-label="Période">
+            <button type="button" class="btn btn--contour st-periode" data-jours="7">7 jours</button>
+            <button type="button" class="btn btn--contour st-periode est-actif" data-jours="30">30 jours</button>
+            <button type="button" class="btn btn--contour st-periode" data-jours="90">90 jours</button>
+            <button type="button" class="btn btn--contour st-periode" data-jours="365">1 an</button>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+            <label class="muet" style="font-size: 14px; display: flex; gap: 6px; align-items: center">
+              <input type="checkbox" id="st-preprod" /> préproduction
+            </label>
+            <button id="st-sortir" type="button" class="btn btn--contour" style="min-height: 40px">Quitter</button>
+          </div>
+        </div>
+
+        <div class="st-chiffres" id="st-chiffres"></div>
+
+        <div class="carte pile" style="gap: 14px">
+          <h2 style="font-size: 20px">Visites par jour</h2>
+          <div id="st-courbe" class="st-courbe"></div>
+        </div>
+
+        <div class="grille grille--2" style="gap: 20px; align-items: start">
+          <div class="carte pile" style="gap: 12px">
+            <h2 style="font-size: 20px">Pages les plus lues</h2>
+            <table class="st-table" id="st-pages"></table>
+          </div>
+          <div class="pile" style="gap: 20px">
+            <div class="carte pile" style="gap: 12px">
+              <h2 style="font-size: 20px">D’où viennent les visites</h2>
+              <table class="st-table" id="st-sources"></table>
+            </div>
+            <div class="carte pile" style="gap: 12px">
+              <h2 style="font-size: 20px">Appareils</h2>
+              <table class="st-table" id="st-appareils"></table>
+            </div>
+          </div>
+        </div>
+
+        <p class="muet" style="font-size: 13px">Journaux conservés 13&nbsp;mois, puis effacés. Les robots connus ne sont pas comptés&nbsp;; les visiteurs dont le navigateur demande à ne pas être suivi non plus. La préproduction est comptée séparément.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  .st-barre { display: flex; gap: 14px; flex-wrap: wrap; justify-content: space-between; align-items: center }
+  .st-periodes { display: flex; gap: 8px; flex-wrap: wrap }
+  .st-periode { min-height: 40px }
+  .st-periode.est-actif { background: var(--vert); color: #fff; border-color: var(--vert) }
+  .st-chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px }
+  .st-chiffre { background: var(--ivoire); border: 1px solid var(--ligne); border-radius: 10px; padding: 16px 18px }
+  .st-chiffre b { display: block; font-size: 30px; font-weight: 600; line-height: 1.1; font-family: var(--titre, inherit) }
+  .st-chiffre span { display: block; font-size: 13px; color: var(--encre-douce, #5c6360); margin-top: 4px }
+  .st-courbe svg { width: 100%; height: auto; display: block }
+  .st-table { width: 100%; border-collapse: collapse; font-size: 15px }
+  .st-table td { padding: 7px 0; border-bottom: 1px solid var(--ligne); vertical-align: baseline }
+  .st-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 12px }
+  .st-table td a { color: inherit }
+  .st-vide { color: var(--encre-douce, #5c6360); font-style: italic }
+  [hidden] { display: none !important }
+</style>
+
+<script>
+  const API = '/api/stats.php';
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  let jours = 30;
+
+  async function api(action: string, donnees: Record<string, string> = {}) {
+    const fd = new FormData();
+    fd.set('action', action);
+    for (const [k, v] of Object.entries(donnees)) fd.set(k, v);
+    const r = await fetch(API, { method: 'POST', body: fd, credentials: 'same-origin', headers: { 'X-Requested-With': 'stats-admin' } });
+    const j = await r.json().catch(() => ({ ok: false, erreur: 'Réponse illisible du serveur.' }));
+    if (r.status === 401 && action !== 'connexion') { montrerConnexion(j.erreur); throw new Error('déconnecté'); }
+    if (!j.ok && action !== 'connexion') throw new Error(j.erreur || 'Erreur');
+    return j;
+  }
+
+  function montrerConnexion(erreur?: string) {
+    $('st-app').hidden = true;
+    $('st-connexion').hidden = false;
+    const e = $('st-connexion-erreur');
+    e.textContent = erreur || '';
+    e.hidden = !erreur;
+  }
+
+  const nombre = (n: number) => n.toLocaleString('fr-FR');
+  const jourCourt = (d: string) => {
+    const [, m, j] = d.split('-');
+    return `${j}/${m}`;
+  };
+
+  function chiffres(r: any) {
+    const moyenne = r.serie.length ? Math.round(r.visites / r.serie.length) : 0;
+    const items = [
+      [nombre(r.visites), 'visites'],
+      [nombre(r.pages), 'pages vues'],
+      [String(r.parVisite).replace('.', ','), 'pages par visite'],
+      [nombre(moyenne), 'visites par jour en moyenne'],
+    ];
+    $('st-chiffres').innerHTML = items
+      .map(([v, l]) => `<div class="st-chiffre"><b>${v}</b><span>${l}</span></div>`)
+      .join('');
+  }
+
+  let derniereSerie: { jour: string; visites: number }[] = [];
+
+  function courbe(serie: { jour: string; visites: number }[]) {
+    derniereSerie = serie;
+    const hote = $('st-courbe');
+    if (!serie.length) { hote.innerHTML = '<p class="st-vide">Aucune donnée.</p>'; return; }
+    // Sur un écran étroit, un cadre plus ramassé garde les repères lisibles une fois le SVG réduit.
+    const etroit = hote.clientWidth > 0 && hote.clientWidth < 560;
+    const L = etroit ? 420 : 900, H = etroit ? 200 : 240, mg = { g: etroit ? 32 : 40, d: 14, h: 14, b: 26 };
+    const max = Math.max(4, ...serie.map((p) => p.visites));
+    const x = (i: number) => mg.g + (i * (L - mg.g - mg.d)) / Math.max(1, serie.length - 1);
+    const y = (v: number) => mg.h + (1 - v / max) * (H - mg.h - mg.b);
+    const pts = serie.map((p, i) => `${x(i).toFixed(1)},${y(p.visites).toFixed(1)}`).join(' ');
+    const aire = `M ${x(0).toFixed(1)},${(H - mg.b).toFixed(1)} L ${pts.split(' ').join(' L ')} L ${x(serie.length - 1).toFixed(1)},${(H - mg.b).toFixed(1)} Z`;
+    const paliers = [0, Math.round(max / 2), max];
+    const grille = paliers
+      .map((v) => `<line x1="${mg.g}" y1="${y(v).toFixed(1)}" x2="${L - mg.d}" y2="${y(v).toFixed(1)}" stroke="#e3ded3" stroke-width="1"/>`
+        + `<text x="${mg.g - 8}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end" font-size="12" fill="#5c6360">${v}</text>`)
+      .join('');
+    const pas = Math.ceil(serie.length / (etroit ? 4 : 8));
+    // Repères comptés depuis la fin : le dernier jour est toujours nommé, sans chevaucher le précédent.
+    const dernier = serie.length - 1;
+    const montrer = (i: number) => (dernier - i) % pas === 0;
+    const dates = serie
+      .map((p, i) => montrer(i)
+        ? `<text x="${x(i).toFixed(1)}" y="${H - 6}" text-anchor="${i === dernier ? 'end' : i === 0 ? 'start' : 'middle'}" font-size="12" fill="#5c6360">${jourCourt(p.jour)}</text>`
+        : '')
+      .join('');
+    hote.innerHTML =
+      `<svg viewBox="0 0 ${L} ${H}" role="img" aria-label="Visites par jour sur la période">`
+      + grille
+      + `<path d="${aire}" fill="#11352F" fill-opacity="0.08"/>`
+      + `<polyline points="${pts}" fill="none" stroke="#11352F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`
+      + serie.map((p, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.visites).toFixed(1)}" r="2.5" fill="#9A7B4F"><title>${jourCourt(p.jour)} : ${p.visites} visite${p.visites > 1 ? 's' : ''}</title></circle>`).join('')
+      + dates
+      + '</svg>';
+  }
+
+  function table(hote: HTMLElement, lignes: { libelle: string; href?: string; n: number }[], total: number) {
+    if (!lignes.length) { hote.innerHTML = '<tr><td class="st-vide">Aucune donnée.</td></tr>'; return; }
+    hote.innerHTML = lignes
+      .map((l) => {
+        const part = total > 0 ? Math.round((l.n / total) * 100) : 0;
+        const nom = l.href
+          ? `<a href="${l.href}" target="_blank" rel="noopener">${l.libelle}</a>`
+          : l.libelle;
+        return `<tr><td>${nom}</td><td>${nombre(l.n)} <span class="muet">(${part}&nbsp;%)</span></td></tr>`;
+      })
+      .join('');
+  }
+
+  async function charger() {
+    const j = await api('rapport', { jours: String(jours), preprod: ($('st-preprod') as HTMLInputElement).checked ? '1' : '0' });
+    const r = j.rapport;
+    chiffres(r);
+    courbe(r.serie);
+    table($('st-pages'), r.top_pages.map((p: any) => ({ libelle: p.p, href: p.p, n: p.n })), r.pages);
+    table($('st-sources'), r.top_sources.map((s: any) => ({ libelle: s.r, n: s.n })), r.visites);
+    const noms: Record<string, string> = { o: 'Ordinateur', m: 'Téléphone', t: 'Tablette' };
+    table(
+      $('st-appareils'),
+      Object.entries(r.appareils).map(([k, n]) => ({ libelle: noms[k] || k, n: n as number })).sort((a, b) => b.n - a.n),
+      r.visites,
+    );
+  }
+
+  $('st-connexion').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const j = await api('connexion', { cle: ($('st-cle') as HTMLInputElement).value });
+    if (!j.ok) { montrerConnexion(j.erreur); return; }
+    ($('st-cle') as HTMLInputElement).value = '';
+    $('st-connexion').hidden = true;
+    $('st-app').hidden = false;
+    await charger();
+  });
+
+  $('st-sortir').addEventListener('click', async () => { await api('deconnexion'); montrerConnexion(); });
+  $('st-preprod').addEventListener('change', () => { charger(); });
+
+  let redessin: number | undefined;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(redessin);
+    redessin = window.setTimeout(() => { if (derniereSerie.length) courbe(derniereSerie); }, 200);
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.st-periode').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.st-periode').forEach((o) => o.classList.remove('est-actif'));
+      b.classList.add('est-actif');
+      jours = Number(b.dataset.jours) || 30;
+      charger();
+    });
+  });
+</script>
