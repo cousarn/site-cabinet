@@ -41,5 +41,5 @@ faq:
     r: "<p>Oui, depuis un arrêt de la Cour de cassation du 4 mars 2026 : l’enfant majeur a le droit et l’intérêt d’agir contre son père ou sa mère en contribution à son entretien et à son éducation. Le cabinet explique ce revirement et ses conséquences dans un <a href=\"/fiches/enfant-majeur-action-directe-contribution\">billet</a>.</p>"
   - q: "Peut-on divorcer à distance ?"
     r: "<p>Les rendez-vous peuvent se tenir en visioconférence ou par téléphone, les pièces se déposent en ligne de façon sécurisée ; seule la signature de la convention de divorce par consentement mutuel réunit les époux et leurs avocats. Pour un divorce judiciaire, la représentation par avocat dispense de comparaître à la plupart des audiences.</p>"
-fiches: ["enfant-majeur-action-directe-contribution", "estimation-biens-partage-succession-indivision", "indivision-bloquee"]
+fiches: ["indemnite-occupation-ordonnance-protection", "enfant-majeur-action-directe-contribution", "estimation-biens-partage-succession-indivision", "indivision-bloquee"]
 ---
