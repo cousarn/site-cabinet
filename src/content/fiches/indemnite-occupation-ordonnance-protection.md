@@ -32,7 +32,7 @@ Le cabinet défend une autre lecture, selon laquelle celui qui s’est privé du
 
 **Le montant.** L’indemnité se calcule sur la valeur locative du bien, le plus souvent diminuée d’un abattement ; sur la base des 1125 € par mois retenus par la cour d’appel, chiffre qui sera rediscuté devant la cour de renvoi, les vingt-deux mois qu’elle avait écartés représentent près de 25.000 €.
 
-**Le bénéficiaire.** L’indemnité n’est pas versée directement à l’auteur des violences, puisqu’elle est due à l’indivision et se règle au moment du partage, mais l’indivision, ici, ce sont eux deux, et la moitié de ce que Madame doit revient à Monsieur.
+**Le bénéficiaire.** L’indemnité n’est pas versée directement à l’auteur des violences, puisqu’elle est due à l’indivision et se règle au moment du partage, mais l’indivision, ici, ce sont eux deux, et ce que Madame doit revient à Monsieur à proportion de son droit dans le bien, soit la moitié s’il a été acquis par moitié.
 
 **Les précautions à prendre** si vous êtes victime de violences et copropriétaire de votre logement :
 
@@ -154,9 +154,35 @@ Si la cause de la privation compte quand elle tient à l’état de santé de ce
 
 On répond que l’indemnité est due à l’indivision, et non à l’homme expulsé.
 
-L’argument est de pure forme : dans un couple, l’indivision n’a que deux membres, et la moitié de l’indemnité finit dans le patrimoine de celui qui a frappé.
+Mais, dans un couple, l’indivision n’a que deux membres.
 
-Rien n’empêchait d’opposer sa faute à la part qui lui revient.
+L’indemnité finit dans le patrimoine de celui qui a frappé, à proportion de son droit dans l’indivision, c’est-à-dire la moitié si le bien a été acquis par moitié.
+
+L’indemnité d’occupation n’est pas davantage d’ordre public.
+
+Elle peut faire l’objet d’un aménagement conventionnel, puisque l’article 815-9 ne la prévoit que « sauf convention contraire ».
+
+Aucun texte n’interdit de prendre en compte la faute de la victime, même si l’indemnité est due à l’indivision.
+
+Rien n’interdit non plus au juge de créer une fin de non-recevoir.
+
+La Cour de cassation ne s’en prive pas.
+
+Elle juge que « les fins de non-recevoir ne sont pas limitativement énumérées » ([chambre mixte, 14 février 2003, n°00-19.423](https://www.legifrance.gouv.fr/juri/id/JURITEXT000007047169), publié).
+
+Elle admet aussi, sans texte, qu’une partie qui se contredit au détriment d’autrui puisse se voir opposer une fin de non-recevoir ([assemblée plénière, 27 février 2009, n°07-19.841](https://www.legifrance.gouv.fr/juri/id/JURITEXT000020321498), publié).
+
+La règle tiendrait en peu de mots.
+
+Elle vaudrait pour les indivisions de couple, qui ne comptent que deux indivisaires.
+
+Lorsque l’indemnité d’occupation est déclenchée par la mesure d’éloignement, la faute de la victime rendrait la demande irrecevable, pour la période que le juge apprécie.
+
+Si l’indemnité courait déjà avant la mesure, parce que le couple était séparé, le lien de causalité n’existe plus et la question ne se pose pas.
+
+Or, dans un couple, seul celui qui est parti a intérêt à demander une indemnité d’occupation.
+
+Déclarer sa demande irrecevable revient donc à protéger la victime des violences.
 
 On répond aussi que le juge du partage n’a pas à refaire le procès du couple.
 
@@ -170,7 +196,7 @@ La loi du 31 mai 2024 permet de priver de ses avantages matrimoniaux l’époux 
 
 La loi du 13 juin 2024 a porté de six à douze mois la durée des mesures de protection ([article 515-12](https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000049715061)), ce qui double la somme en jeu.
 
-Une protection que la victime paie pour moitié à son agresseur n’est plus tout à fait une protection.
+Une protection dont la victime paie le prix à son agresseur n’est plus tout à fait une protection.
 
 Le raisonnement vaut pour l’abandon du domicile conjugal : l’époux qui part sans y être contraint est seul à l’origine de sa privation, et le juge devrait pouvoir en tenir compte avant de lui allouer sa part d’un loyer.
 
@@ -208,4 +234,4 @@ Le cabinet assiste les victimes de violences devant le juge aux affaires familia
 
 </div>
 
-*Sources : Code civil, articles 255, 262-1, 373-2-9-1, 515-11, 515-12, 815-9, 815-10, 815-13 et 1399-2 ; Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590 (publié) ; 2 juillet 2025, n°23-14.165 ; 12 juin 2025, n°23-22.003 (publié) ; 7 février 2024, n°22-13.749 ; 1er juin 2023, n°21-14.924 (publié) ; 15 mars 2023, n°21-15.183 ; 3 octobre 2018, n°17-26.020 (publié) ; 31 mars 2016, n°15-10.748 (publié) ; 28 mai 2014, n°13-14.884 (publié) ; 23 octobre 2013, n°12-21.556 (publié) ; 14 juin 2000, n°98-20.285 (publié). Textes et décisions consultés sur Légifrance le 18 novembre 2026 ; arrêt du 21 octobre 2026 lu dans son texte intégral sur Lexis 360 et Lexbase, le site de la Cour de cassation étant en maintenance ce jour-là.*
+*Sources : Code civil, articles 255, 262-1, 373-2-9-1, 515-11, 515-12, 815-9, 815-10, 815-13 et 1399-2 ; Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590 (publié) ; 2 juillet 2025, n°23-14.165 ; 12 juin 2025, n°23-22.003 (publié) ; 7 février 2024, n°22-13.749 ; 1er juin 2023, n°21-14.924 (publié) ; 15 mars 2023, n°21-15.183 ; 3 octobre 2018, n°17-26.020 (publié) ; 31 mars 2016, n°15-10.748 (publié) ; 28 mai 2014, n°13-14.884 (publié) ; 23 octobre 2013, n°12-21.556 (publié) ; 14 juin 2000, n°98-20.285 (publié) ; chambre mixte, 14 février 2003, n°00-19.423 (publié) ; assemblée plénière, 27 février 2009, n°07-19.841 (publié). Textes et décisions consultés sur Légifrance le 18 novembre 2026 ; arrêt du 21 octobre 2026 lu dans son texte intégral sur Lexis 360 et Lexbase, le site de la Cour de cassation étant en maintenance ce jour-là.*
