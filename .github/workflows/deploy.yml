@@ -45,6 +45,22 @@ jobs:
         run: npm run build
         env:
           PUBLIC_ENV: ${{ startsWith(github.ref, 'refs/tags/v') && 'prod' || 'preprod' }}
+      # Avec build.format 'file', Astro.url.pathname finit par « .html » à la construction : la balise
+      # canonique et og:url doivent rester sans extension, comme le sitemap (anomalie corrigée en v1.13.1).
+      # Un échec ici arrête le déploiement avant toute publication.
+      - name: Contrôler les adresses canoniques (jamais de .html)
+        run: |
+          pages=$(grep -rlE 'rel="canonical" href="https://' dist --include='*.html' | wc -l)
+          if [ "$pages" -eq 0 ]; then
+            echo "::error::Aucune balise canonique trouvée dans dist/ : le contrôle ne reconnaît plus le gabarit."
+            exit 1
+          fi
+          fautifs=$(grep -rlE '(rel="canonical" href|property="og:url" content)="[^"]*\.html"' dist --include='*.html' || true)
+          if [ -n "$fautifs" ]; then
+            echo "::error::Balise canonique ou og:url en .html : $(echo $fautifs | head -c 600)"
+            exit 1
+          fi
+          echo "Balises canoniques et og:url sans .html sur $pages pages."
       - name: Ajouter le marqueur de version
         run: echo "${{ github.sha }} $(date -u +%FT%TZ) ${{ github.ref_name }}" > dist/version.txt
       - name: Publier dist/ sur la branche de déploiement
