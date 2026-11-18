@@ -56,7 +56,7 @@ La cour d’appel de Paris refuse de remonter aussi loin, en retenant que « l�
 
 Pour elle, l’indemnité ne court donc qu’à partir du 12 août 2022, quand l’interdiction pénale prend fin.
 
-La Cour de cassation casse, sur un moyen qu’elle relève d’office, au visa des articles 515-11, 4°, et 815-9 du Code civil ([Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590](https://www.courdecassation.fr/recherche-judilibre?search_api_fulltext=25-10.590&op=Rechercher), publié).
+La Cour de cassation casse, sur un moyen qu’elle relève d’office, au visa des articles 515-11, 4°, et 815-9 du Code civil ([Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590](https://www.courdecassation.fr/decision/6ad888ab7a1020213707fcba), publié).
 
 Deux phrases portent l’arrêt.
 
@@ -180,6 +180,8 @@ Lorsque l’indemnité d’occupation est déclenchée par la mesure d’éloign
 
 Si l’indemnité courait déjà avant la mesure, parce que le couple était séparé, le lien de causalité n’existe plus et la question ne se pose pas.
 
+La cour d’appel de Paris faisait la même réserve, puisque l’indemnité restait due « s’il est acquis que la jouissance privative est antérieure au comportement de ce dernier ».
+
 Or, dans un couple, seul celui qui est parti a intérêt à demander une indemnité d’occupation.
 
 Déclarer sa demande irrecevable revient donc à protéger la victime des violences.
@@ -234,4 +236,4 @@ Le cabinet assiste les victimes de violences devant le juge aux affaires familia
 
 </div>
 
-*Sources : Code civil, articles 255, 262-1, 373-2-9-1, 515-11, 515-12, 815-9, 815-10, 815-13 et 1399-2 ; Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590 (publié) ; 2 juillet 2025, n°23-14.165 ; 12 juin 2025, n°23-22.003 (publié) ; 7 février 2024, n°22-13.749 ; 1er juin 2023, n°21-14.924 (publié) ; 15 mars 2023, n°21-15.183 ; 3 octobre 2018, n°17-26.020 (publié) ; 31 mars 2016, n°15-10.748 (publié) ; 28 mai 2014, n°13-14.884 (publié) ; 23 octobre 2013, n°12-21.556 (publié) ; 14 juin 2000, n°98-20.285 (publié) ; chambre mixte, 14 février 2003, n°00-19.423 (publié) ; assemblée plénière, 27 février 2009, n°07-19.841 (publié). Textes et décisions consultés sur Légifrance le 18 novembre 2026 ; arrêt du 21 octobre 2026 lu dans son texte intégral sur Lexis 360 et Lexbase, le site de la Cour de cassation étant en maintenance ce jour-là.*
+*Sources : Code civil, articles 255, 262-1, 373-2-9-1, 515-11, 515-12, 815-9, 815-10, 815-13 et 1399-2 ; Cour de cassation, 1re chambre civile, 21 octobre 2026, n°25-10.590 (publié) ; 2 juillet 2025, n°23-14.165 ; 12 juin 2025, n°23-22.003 (publié) ; 7 février 2024, n°22-13.749 ; 1er juin 2023, n°21-14.924 (publié) ; 15 mars 2023, n°21-15.183 ; 3 octobre 2018, n°17-26.020 (publié) ; 31 mars 2016, n°15-10.748 (publié) ; 28 mai 2014, n°13-14.884 (publié) ; 23 octobre 2013, n°12-21.556 (publié) ; 14 juin 2000, n°98-20.285 (publié) ; chambre mixte, 14 février 2003, n°00-19.423 (publié) ; assemblée plénière, 27 février 2009, n°07-19.841 (publié). Textes et décisions consultés sur Légifrance et Judilibre le 18 novembre 2026.*
