@@ -18,7 +18,10 @@ interface Props {
 const { title, description, canonical, noindex: noindexProp = false, image = '/og/cabinet.jpg', jsonLd, fil } = Astro.props;
 // La préproduction (PUBLIC_ENV=preprod) n'est jamais indexée.
 const noindex = noindexProp || import.meta.env.PUBLIC_ENV === 'preprod';
-const url = new URL(canonical ?? Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site!.href;
+// Avec build.format 'file', Astro.url.pathname vaut « /cabinet.html » à la construction :
+// l'adresse publique (celle du sitemap, servie par le .htaccess) est sans extension.
+const chemin = (canonical ?? Astro.url.pathname).replace(/\.html$/, '').replace(/\/index$/, '/');
+const url = new URL(chemin, Astro.site).href.replace(/\/$/, '') || Astro.site!.href;
 
 const organisation = {
   '@context': 'https://schema.org',

@@ -1,7 +1,8 @@
 ---
 import { cabinet, navigation } from '../data/cabinet';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Même normalisation que dans Base.astro : sans « .html » (build.format 'file'), sans barre finale.
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/$/, '') || '/';
 const estCourant = (href: string) =>
   href === '/' ? path === '/' : path === href || path.startsWith(href + '/') || (href === '/services' && (path.startsWith('/services') || path === '/competence-territoriale')) || (href === '/fiches' && path.startsWith('/fiches')) || (href === '/domaines' && path.startsWith('/domaines'));
 
