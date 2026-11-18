@@ -13,6 +13,30 @@ export async function getStaticPaths() {
 const { f } = Astro.props;
 const { Content, headings } = await render(f);
 const fmt = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// <title> : le nom du cabinet n'est ajouté que s'il tient dans les 65 caractères (ADMINISTRATION.md § 8.5).
+const base = f.data.titreCourt ?? f.data.title;
+const titrePage = `${base} | Arnaud Cousin`.length <= 65 ? `${base} | Arnaud Cousin` : base;
+
+// Lien vers la page du domaine (aucune page pour « cabinet »).
+const libellesDomaine: Record<string, string> = {
+  successions: 'Successions',
+  'separation-divorce': 'Séparation & divorce',
+  'droit-du-travail': 'Droit du travail',
+  'procedure-appel': 'Procédure & appel',
+};
+const libelleDomaine = libellesDomaine[f.data.domaine];
+const lienDomaine = libelleDomaine ? `/domaines/${f.data.domaine}` : null;
+
+// « À lire aussi » : trois fiches au plus du même domaine, prises à la suite de la fiche courante
+// dans l'ordre chronologique inverse (liste circulaire), pour que chaque fiche soit citée par d'autres.
+const memeDomaine = (await getCollection('fiches', (x) => !x.data.draft && x.data.domaine === f.data.domaine))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+const rang = memeDomaine.findIndex((x) => x.id === f.id);
+const voisines = [1, 2, 3]
+  .map((k) => memeDomaine[(rang + k) % memeDomaine.length])
+  .filter((x, i, t) => x && x.id !== f.id && t.findIndex((y) => y && y.id === x.id) === i);
+
 const jsonLd = {
   '@context': 'https://schema.org', '@type': 'Article', headline: f.data.title, description: f.data.description,
   datePublished: f.data.date.toISOString(), dateModified: (f.data.updated ?? f.data.date).toISOString(),
@@ -20,11 +44,11 @@ const jsonLd = {
   publisher: { '@id': `${cabinet.siteUrl}/#cabinet` }, mainEntityOfPage: `${cabinet.siteUrl}/fiches/${f.id}`, inLanguage: 'fr-FR',
 };
 ---
-<Base title={`${f.data.titreCourt ?? f.data.title} | Arnaud Cousin`} description={f.data.description} jsonLd={jsonLd} fil={[{ label: 'Fiches & actualités', href: '/fiches' }, { label: f.data.titreCourt ?? f.data.title, href: `/fiches/${f.id}` }]}>
+<Base title={titrePage} description={f.data.description} jsonLd={jsonLd} fil={[{ label: 'Fiches & actualités', href: '/fiches' }, { label: f.data.titreCourt ?? f.data.title, href: `/fiches/${f.id}` }]}>
   <article>
     <header class="hero-clair" style="background: var(--ivoire); border-bottom: 1px solid var(--ligne)">
       <div class="conteneur pile" style="padding-top: 64px; padding-bottom: 48px; gap: 18px; max-width: 900px">
-        <p class="surtitre">{f.data.type} · {fmt(f.data.updated ?? f.data.date)}{f.data.lecture ? ` · ${f.data.lecture} de lecture` : ''}</p>
+        <p class="surtitre">{lienDomaine && <><a href={lienDomaine} style="color: inherit">{libelleDomaine}</a> · </>}{f.data.type} · {fmt(f.data.updated ?? f.data.date)}{f.data.lecture ? ` · ${f.data.lecture} de lecture` : ''}</p>
         <h1 style="font-size: clamp(32px, 4vw, 48px)">{f.data.title}</h1>
         <p class="chapo">{f.data.description}</p>
         <p class="muet" style="font-size: 13px">Par {cabinet.avocat}, avocat au {cabinet.barreau}. Information générale : elle ne remplace pas une consultation sur votre situation.</p>
@@ -46,6 +70,22 @@ const jsonLd = {
       </div>
     </div>
   </article>
+  {voisines.length > 0 && (
+    <section class="section" style="padding-top: 0">
+      <div class="conteneur pile" style="gap: 20px">
+        <h2 style="font-size: 26px">À lire aussi</h2>
+        <div class="grille grille--3" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr))">
+          {voisines.map((v) => (
+            <a href={`/fiches/${v.id}`} class="carte carte--lien">
+              <span class="surtitre">{v.data.type} · {fmt(v.data.updated ?? v.data.date)}</span>
+              <h3>{v.data.title}</h3>
+            </a>
+          ))}
+        </div>
+        {lienDomaine && <p><a href={lienDomaine} class="lien">Tout le domaine «&nbsp;{libelleDomaine}&nbsp;»</a></p>}
+      </div>
+    </section>
+  )}
   <Cta titre="Votre situation ressemble à celle-ci ?" texte="Une consultation écrite en ligne répond à une question précise sous cinq jours ; un rendez-vous au cabinet, en visio ou par téléphone permet d’aller plus loin." />
 </Base>
 

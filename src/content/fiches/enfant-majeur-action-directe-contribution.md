@@ -1,6 +1,6 @@
 ---
 title: "L’enfant majeur peut poursuivre lui-même ses parents : un revirement qui interroge"
-titreCourt: "Enfant majeur : action directe en contribution (Cass. 4 mars 2026)"
+titreCourt: "Enfant majeur : action directe en contribution (4 mars 2026)"
 description: "Cass. 1re civ., 4 mars 2026 : l’enfant majeur peut agir seul contre son père ou sa mère en contribution à son entretien. Ce qui change, et les réserves du cabinet."
 date: 2026-10-25
 domaine: separation-divorce

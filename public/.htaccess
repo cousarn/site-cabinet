@@ -49,6 +49,12 @@ ErrorDocument 404 /404.html
   RewriteRule ^contact\.html$ https://%{HTTP_HOST}/contact [R=301,L]
   RewriteCond %{ENV:REDIRECT_STATUS} ^$
   RewriteRule ^mentions-legales\.html$ https://%{HTTP_HOST}/mentions-legales [R=301,L]
+  # Anciens téléchargements TOWeb (formulaire d'aide juridictionnelle, barème) encore affichés par Google : vers la page Honoraires
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteCond %{QUERY_STRING} ddl=formulaire-aj [NC]
+  RewriteRule ^_iserv/dlfiles/dl\.php$ https://%{HTTP_HOST}/honoraires#aide-juridictionnelle [R=301,NE,QSD,L]
+  RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  RewriteRule ^_iserv/ https://%{HTTP_HOST}/honoraires#grille [R=301,NE,QSD,L]
 
   # 2 bis. Lien personnel de dépôt de pièces : /depot/<jeton> → page statique (le jeton est lu par le script de la page)
   RewriteRule ^depot/[A-Za-z0-9_-]{20,}/?$ /services/depot-pieces.html [L]
@@ -94,6 +100,11 @@ ErrorDocument 404 /404.html
   </FilesMatch>
   <FilesMatch "\.(html|xml|txt)$">
     Header set Cache-Control "public, max-age=600, must-revalidate"
+  </FilesMatch>
+  # Fichiers de données (moteur de compétence territoriale) : utiles à la page, sans intérêt dans l'index de Google
+  <FilesMatch "\.json$">
+    Header set X-Robots-Tag "noindex"
+    Header set Cache-Control "public, max-age=86400"
   </FilesMatch>
 </IfModule>
 
