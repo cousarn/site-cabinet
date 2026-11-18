@@ -283,7 +283,7 @@ Le cabinet assiste les victimes de violences devant le juge aux affaires familia
 
 <div class="encadre">
 
-**Le réflexe.** Vous demandez une ordonnance de protection et le logement vous appartient à tous les deux ? L’indemnité d’occupation se discute dès la requête, pas trois ans plus tard devant le notaire. Demandez au juge de dire que vous occuperez le logement gratuitement et que les frais resteront définitivement à la charge de l’auteur des violences. Deux cours d’appel ont jugé que le texte ne prévoit pas la gratuité, et le juge peut refuser, mais ce qui n’est pas demandé ne peut pas être accordé. Faire seulement désigner celui qui paie le crédit ne suffit pas, puisque les comptes se feront au partage. La seule issue durable est de sortir de l’indivision, par la vente du bien ou le rachat de la part de l’autre.
+**Le réflexe.** Vous demandez une ordonnance de protection et le logement vous appartient à tous les deux ? L’indemnité d’occupation se discute dès la requête, pas trois ans plus tard devant le notaire. Demandez au juge de dire que vous occuperez le logement gratuitement et que les frais resteront définitivement à la charge de l’auteur des violences. Deux cours d’appel ont jugé que le texte ne prévoit pas la gratuité, et le juge peut refuser, mais tant que la Cour de cassation ne s’est pas prononcée, le débat reste ouvert. Faire seulement désigner celui qui paie le crédit ne suffit pas, puisque les comptes se feront au partage. La seule issue durable est de sortir de l’indivision, par la vente du bien ou le rachat de la part de l’autre.
 
 </div>
 
