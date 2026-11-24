@@ -50,7 +50,10 @@ import { cabinet, bookings } from '../data/cabinet';
       a.href = lien;
       document.getElementById('merci-creneau-bloc')!.style.display = 'flex';
     };
-    if (objet === 'rendez-vous') {
+    if (objet === 'rendez-vous' && q.get('suivi')) {
+      titre.textContent = 'Votre demande est transmise au cabinet.';
+      texte.textContent = 'Vous avez déjà consulté le cabinet pour cette affaire : le forfait de première consultation ne s’applique pas, le suivi est facturé au temps passé. Le cabinet vous recontacte sous 48 heures ouvrées pour convenir du rendez-vous et de son coût. Vous n’avez rien à régler maintenant.';
+    } else if (objet === 'rendez-vous') {
       const surPlace = formatRdv === 'cabinet';
       titre.textContent = q.get('annule') ? 'Votre demande est enregistrée, le paiement n’a pas été effectué.' : 'Votre demande est enregistrée : choisissez votre créneau.';
       texte.textContent = surPlace

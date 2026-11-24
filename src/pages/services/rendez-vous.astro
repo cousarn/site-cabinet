@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
 import Jeton from '../../components/Jeton.astro';
 import { cabinet, bookings } from '../../data/cabinet';
+import { bareme } from '../../data/honoraires';
 const formats = [
   ['cabinet', 'Au cabinet', '15 rue du Puits Mauger, Rennes — à 50 m du métro Colombier, accès par ascenseur.', 'Réglée au cabinet, ou en ligne'],
   ['visio', 'En visioconférence', 'Lien Microsoft Teams envoyé avec la confirmation ; un ordinateur ou un téléphone suffit, sans installation.', 'Réglée en ligne avant le rendez-vous'],
@@ -10,7 +11,7 @@ const formats = [
 ];
 ---
 <Base title="Prendre rendez-vous avec un avocat à Rennes | Arnaud Cousin" description="Résumez votre affaire, choisissez votre créneau, réglez en ligne : au cabinet à Rennes, en visio ou par téléphone. Consultation d’une heure, 132 € TTC." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Rendez-vous', href: '/services/rendez-vous' }]}>
-  <Hero variante="clair" surtitre="Rendez-vous" titre="Prendre rendez-vous" chapo="Résumez votre affaire, choisissez votre créneau, réglez la consultation. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier." image="couloir" />
+  <Hero variante="clair" surtitre="Rendez-vous" titre="Prendre rendez-vous" chapo="Résumez votre affaire, choisissez votre créneau, réglez la consultation. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier ; son tarif vaut une seule fois par affaire." image="couloir" />
   <section class="section">
     <div class="conteneur pile" style="gap: 32px">
       <!-- Formulaire traité par /api/rendez-vous.php ; le créneau (Bookings) et le règlement (PayPal) sont proposés ensuite, sur la page Merci et par courriel. -->
@@ -27,7 +28,10 @@ const formats = [
             </label>
           ))}
         </div>
+        <p style="border-left: 2px solid var(--laiton-clair); padding-left: 16px; max-width: 820px; font-size: 15px; margin: 0"><strong>Une seule fois par affaire.</strong> Le tarif de 132 € TTC est celui d’une première consultation de prise de contact. Les demandes ultérieures sur le même sujet relèvent d’un suivi : elles sont facturées au temps passé, au taux horaire du cabinet ({bareme.tauxHoraire} € TTC).</p>
         <div class="pile" style="gap: 14px; max-width: 820px"><h2 style="font-size: 28px">2. Résumez votre affaire</h2>
+          <label class="champ">Avez-vous déjà consulté le cabinet pour cette affaire ?<select name="deja" id="rdv-deja" required><option value="">Choisissez</option><option value="non">Non, c’est la première consultation pour cette affaire</option><option value="oui">Oui, j’ai déjà consulté le cabinet pour cette affaire</option></select></label>
+          <p id="rdv-suivi" hidden style="font-size: 15px; margin: 0">Votre demande relève du suivi : le forfait de 132 € ne s’applique pas et vous n’avez rien à régler maintenant. Envoyez ce formulaire ; le cabinet vous recontacte sous 48 heures ouvrées pour convenir du rendez-vous et de son coût.</p>
           <p class="muet" style="font-size: 15px">L’avocat lit ce résumé avant le rendez-vous. La consultation est une consultation d’orientation, sans recherche longue : si votre affaire appelle des recherches importantes, il vous le dit et vous propose un devis. Si elle ne relève pas de ses compétences, vous en êtes informé et remboursé.</p>
           <label class="champ">Domaine<select name="domaine"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Autre</option></select></label>
           <label class="champ">Résumé de votre affaire et question posée<textarea name="resume" id="rdv-resume" required minlength="80" maxlength="4000" style="min-height: 180px" placeholder="Qui est concerné, ce qui s’est passé et depuis quand, où en est l’affaire, ce que vous souhaitez savoir."></textarea></label>
@@ -56,6 +60,17 @@ const formats = [
       const radio = document.querySelector<HTMLInputElement>(`#form-rdv input[name="format"][value="${format}"]`);
       if (radio) radio.checked = true;
     }
+    const deja = document.getElementById('rdv-deja') as HTMLSelectElement | null;
+    const suivi = document.getElementById('rdv-suivi');
+    const bouton = document.querySelector<HTMLButtonElement>('#form-rdv button[type="submit"]');
+    const libelleBouton = bouton?.textContent ?? '';
+    const majSuivi = () => {
+      const oui = deja?.value === 'oui';
+      if (suivi) suivi.hidden = !oui;
+      if (bouton) bouton.textContent = oui ? 'Envoyer ma demande' : libelleBouton;
+    };
+    deja?.addEventListener('change', majSuivi);
+    majSuivi();
     const pre = q.get('pre') ?? '';
     const resume = document.getElementById('rdv-resume') as HTMLTextAreaElement | null;
     if (resume && !resume.value && /^\d{6}-[A-Z0-9]{4}$/.test(pre)) {

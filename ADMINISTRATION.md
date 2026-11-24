@@ -81,7 +81,7 @@ La fiche apparaît automatiquement sur `/fiches`, sur l'accueil (trois dernière
 
 ### 3.2 Modifier un prix, un horaire, une coordonnée
 
-- Rendez-vous (cabinet, visio, téléphone) : `bookings.prix` dans `src/data/cabinet.ts`, `$prix` dans `public/api/rendez-vous.php` (montant demandé à PayPal), CGV dans `mentions-legales.astro` **et** le prix dans chaque type de réunion Bookings (titre et description) **et** `honoraires.ts` (ligne « Consultation d'orientation ») **et** la FAQ de `honoraires.astro`.
+- Rendez-vous (cabinet, visio, téléphone) : `bookings.prix` dans `src/data/cabinet.ts`, `$prix` dans `public/api/rendez-vous.php` (montant demandé à PayPal ; première consultation, une seule fois par affaire — règle du 24/11/2026 ; le suivi se facture au taux horaire, `$taux` du même fichier et `bareme.tauxHoraire`), CGV dans `mentions-legales.astro` **et** le prix dans chaque type de réunion Bookings (titre et description) **et** `honoraires.ts` (ligne « Consultation d'orientation ») **et** la FAQ de `honoraires.astro`.
 - Consultation écrite : `$formules` dans `public/api/consultation.php` (montants TTC facturés), `services/consultation-ecrite.astro` (affichage), `services/index.astro` et `cabinet.ts › services` (« dès 80 € »), CGV dans `mentions-legales.astro`.
 - Horaires : `cabinet.horaires` et `cabinet.horairesSchema` ; puis fiche Google Business et page Bookings (heures de disponibilité).
 - Grille devis divorce (HT) : valeurs par défaut dans `_lib.php` (`devis`), surchargeables dans le fichier serveur (§ 6) ; l'affichage de `services/devis-divorce.astro` doit suivre.

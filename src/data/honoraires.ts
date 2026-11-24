@@ -4,7 +4,7 @@ export const bareme = {
   tauxHoraire: 192,
   lignes: [
     { famille: 'Consultations', items: [
-      { label: 'Consultation d’orientation — cabinet, visioconférence ou téléphone (1 h au plus)', prix: '132 €' },
+      { label: 'Première consultation de prise de contact, une fois par affaire — cabinet, visioconférence ou téléphone (1 h au plus)', prix: '132 €' },
       { label: 'Consultation au cabinet avec avis écrit', prix: '350 €' },
       { label: 'Consultation écrite par internet', prix: 'dès 80 €' },
     ]},
