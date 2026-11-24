@@ -1,6 +1,6 @@
 <?php
 /**
- * Notification de paiement instantané PayPal (IPN) — marque une consultation écrite « payée ».
+ * Notification de paiement instantané PayPal (IPN) — marque « payée » une consultation écrite ou une demande de rendez-vous.
  * PayPal appelle cette URL (notify_url posé par lien_paypal() dans _lib.php) à chaque événement sur un paiement.
  * Rien n'est exploité avant que PayPal ait confirmé le message (réponse VERIFIED à son renvoi) ; aucun secret, aucune clé API.
  * Écrit dans le dossier de la consultation (hors racine web) : paiement-<txn>.json (trace, idempotence) et paye.json (synthèse).
@@ -42,11 +42,11 @@ function paypal_verifier(string $brut, bool $sandbox): ?string {
 
 /** Lit la demande : demande.json (écrit par consultation.php) ; à défaut, analyse de demande.txt (anciennes demandes). */
 function lire_demande(string $dossier): array {
-    $d = ['formule' => '', 'libelle' => '', 'prix' => 0, 'nom' => '', 'email' => ''];
+    $d = ['formule' => '', 'libelle' => '', 'prix' => 0, 'nom' => '', 'email' => '', 'lien' => ''];
     if (is_file($dossier . '/demande.json')) {
         $j = json_decode((string)file_get_contents($dossier . '/demande.json'), true);
         if (is_array($j)) {
-            foreach (['formule', 'libelle', 'nom', 'email'] as $k) { $d[$k] = is_scalar($j[$k] ?? null) ? (string)$j[$k] : ''; }
+            foreach (['formule', 'libelle', 'nom', 'email', 'lien'] as $k) { $d[$k] = is_scalar($j[$k] ?? null) ? (string)$j[$k] : ''; }
             $d['prix'] = is_numeric($j['prix'] ?? null) ? (float)$j['prix'] : 0;
             return $d;
         }
@@ -97,7 +97,14 @@ $montant = $v('mc_gross');
 $devise  = $v('mc_currency');
 $refOk   = (bool)preg_match('/^\d{6}-[A-Z0-9]{4}$/', $ref);
 $refSure = $refOk ? $ref : ($ref === '' ? '' : 'ref-invalide'); // seule une référence bien formée est reprise dans le journal et les sujets
-$dossier = $refOk ? rtrim($CONFIG['stockage'], '/') . '/consultation-' . $ref : '';
+$dossier = ''; // dossier de la demande : consultation écrite ou rendez-vous
+$rdv     = false;
+if ($refOk) {
+    foreach (['consultation', 'rendez-vous'] as $type) {
+        $candidat = rtrim($CONFIG['stockage'], '/') . "/$type-$ref";
+        if (is_dir($candidat)) { $dossier = $candidat; $rdv = $type === 'rendez-vous'; break; }
+    }
+}
 $utiles  = [];
 foreach (['txn_id', 'parent_txn_id', 'txn_type', 'payment_status', 'pending_reason', 'reason_code', 'payment_date', 'payment_type',
           'mc_gross', 'mc_fee', 'mc_currency', 'payer_email', 'payer_id', 'payer_status', 'first_name', 'last_name',
@@ -126,7 +133,7 @@ if (!$destinataireOk && !empty($CONFIG['paypal_email'])) {
 }
 if (!$destinataireOk) { $aVerifier('destinataire inattendu : le paiement ne vise pas le compte PayPal du cabinet', 'destinataire'); }
 if ($devise !== 'EUR') { $aVerifier("devise « $devise » au lieu de EUR", 'devise'); }
-if (!$refOk || !is_dir($dossier)) { $aVerifier('référence de consultation inconnue' . ($ref !== '' ? ' (« ' . mb_substr($ref, 0, 40) . ' »)' : ' (champs invoice et custom vides)'), 'ref-inconnue'); }
+if (!$refOk || $dossier === '') { $aVerifier('référence inconnue' . ($ref !== '' ? ' (« ' . mb_substr($ref, 0, 40) . ' »)' : ' (champs invoice et custom vides)'), 'ref-inconnue'); }
 if (!preg_match('/^[A-Za-z0-9]{1,40}$/', $txn)) { $aVerifier('identifiant de transaction (txn_id) absent ou inattendu', 'txn-invalide'); }
 
 $demande    = lire_demande($dossier);
@@ -138,7 +145,7 @@ $fichierTxn = $dossier . '/paiement-' . $txn . '.json';
 $trace      = ['txn_id' => $txn, 'date' => date('c'), 'montant' => $montant, 'devise' => $devise, 'payer_email' => $v('payer_email'),
                'statut' => $statut, 'ref' => $ref, 'sandbox' => $sandbox, 'paypal' => $utiles];
 $payeur     = trim($v('first_name') . ' ' . $v('last_name')) . ($v('payer_email') !== '' ? ' <' . $v('payer_email') . '>' : '');
-$enTete     = "Consultation : $libelle" . ($prix > 0 ? ' (' . euros($prix) . ' € TTC attendus)' : '') . "\nClient : $nom" . ($email !== '' ? " <$email>" : '') . "\n"
+$enTete     = ($rdv ? 'Rendez-vous' : 'Consultation') . " : $libelle" . ($prix > 0 ? ' (' . euros($prix) . ' € TTC attendus)' : '') . "\nClient : $nom" . ($email !== '' ? " <$email>" : '') . "\n"
             . 'Montant : ' . euros((float)$montant) . ' € par PayPal' . ($v('mc_fee') !== '' ? ' (commission PayPal : ' . euros((float)$v('mc_fee')) . ' €)' : '') . "\n"
             . "Payeur PayPal : $payeur\nTransaction : $txn" . ($v('payment_date') !== '' ? ' — ' . $v('payment_date') : '') . "\n$test";
 $signature  = "Cabinet Arnaud Cousin — Avocat au Barreau de Rennes\n15 rue du Puits Mauger, 35000 Rennes · 02 30 96 33 35 · " . SITE_URL . "\n";
@@ -158,15 +165,17 @@ switch ($statut) {
         $aujourdhui = date('d/m/Y');
         $echeance   = echeance_ouvree(5);
         $corpsCabinet = "Paiement reçu — réf. $ref\n\n$enTete\n"
-            . "Le délai de réponse de 5 jours ouvrés court à compter de ce jour ($aujourdhui), soit au plus tard le $echeance (jours fériés non décomptés).\n\n"
+            . ($rdv ? "Le règlement du rendez-vous est enregistré. Le résumé de l'affaire figure dans le message « [SITE] Demande de rendez-vous » de même référence.\n\n"
+                    : "Le délai de réponse de 5 jours ouvrés court à compter de ce jour ($aujourdhui), soit au plus tard le $echeance (jours fériés non décomptés).\n\n")
             . ($email !== '' ? "Le client a reçu un courriel de confirmation du règlement.\n" : "Adresse du client introuvable : aucun courriel de confirmation ne lui a été adressé.\n")
             . "Dossier serveur : $dossier\n";
         $envoye = envoyer_mail($CONFIG['cabinet_email'], "[SITE] Paiement reçu — $libelle — $nom ($ref)", $corpsCabinet, $email !== '' ? $email : null);
 
         if (email_valide($email)) {
-            $corpsClient = "Bonjour,\n\nVotre règlement de " . euros((float)$montant) . " € TTC pour la consultation écrite « $libelle » (référence $ref) est bien reçu. Merci.\n\n"
-                . "La consultation est lancée : la réponse écrite de l'avocat vous parviendra par courriel, à cette adresse, sous 5 jours ouvrés. "
-                . "Si une précision vous était nécessaire, le cabinet vous contacterait sans attendre.\n\n"
+            $corpsClient = "Bonjour,\n\nVotre règlement de " . euros((float)$montant) . ' € TTC ' . ($rdv ? 'pour votre rendez-vous' : 'pour la consultation écrite') . " « $libelle » (référence $ref) est bien reçu. Merci.\n\n"
+                . ($rdv ? ($demande['lien'] !== '' ? "Si vous n'avez pas encore choisi votre créneau :\n$demande[lien]\n\n" : '')
+                        : "La consultation est lancée : la réponse écrite de l'avocat vous parviendra par courriel, à cette adresse, sous 5 jours ouvrés. "
+                          . "Si une précision vous était nécessaire, le cabinet vous contacterait sans attendre.\n\n")
                 . "Transaction PayPal : $txn. PayPal vous adresse par ailleurs son propre reçu.\n$test\n" . $signature;
             envoyer_mail($email, "Votre règlement est bien reçu ($ref)", $corpsClient);
         }
