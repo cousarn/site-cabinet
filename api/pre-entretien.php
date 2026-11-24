@@ -109,14 +109,12 @@ $pieces = ['disponibles' => pe_liste($piecesIn['disponibles'] ?? [], 30, 300), '
 $formatIn    = is_array($d['format'] ?? null) ? $d['format'] : [];
 $formatId    = in_array($formatIn['id'] ?? '', ['cabinet', 'visio', 'telephone', 'aucun'], true) ? $formatIn['id'] : 'aucun';
 $formatLabel = pe_ligne($formatIn['label'] ?? '', 60) ?: 'Non précisé';
-$lienBookings = (string)($formatIn['lien'] ?? '');
-// Seul un lien Microsoft Bookings du cabinet (fourni par la page, source : cabinet.ts) est repris dans le courriel.
-if ($formatId === 'aucun' || !preg_match('~^https://bookings\.cloud\.microsoft/bookwithme/[A-Za-z0-9@._/?&=%-]{1,300}$~', $lienBookings)) { $lienBookings = ''; }
-$lienRdv = $lienBookings !== '' ? $lienBookings : SITE_URL . '/services/rendez-vous';
 
 /* ───────────── Synthèse structurée ───────────── */
 
 $ref = reference();
+// Le rendez-vous se prend sur le site (créneau et règlement) ; la référence évite au client de résumer deux fois son affaire.
+$lienRdv = SITE_URL . '/services/rendez-vous?' . ($formatId !== 'aucun' ? "format=$formatId&" : '') . "pre=$ref";
 $dossier = rtrim($CONFIG['stockage'], '/') . '/pre-entretien-' . $ref;
 @mkdir($dossier, 0700, true);
 
@@ -214,8 +212,8 @@ if (!$envoye) {
 /* ───────────── Accusé de réception au client ───────────── */
 
 $blocRdv = $formatId !== 'aucun'
-    ? "PRENDRE RENDEZ-VOUS — " . mb_strtoupper($formatLabel) . "\nChoisissez votre créneau : $lienRdv\nSignalez dès la réservation les dates mentionnées ci-dessous : certains délais sont courts."
-    : "PRENDRE RENDEZ-VOUS\nQuand vous le souhaiterez, au cabinet, en visioconférence ou par téléphone : " . SITE_URL . "/services/rendez-vous\nSignalez dès la réservation les dates mentionnées ci-dessous : certains délais sont courts.";
+    ? "PRENDRE RENDEZ-VOUS — " . mb_strtoupper($formatLabel) . "\nRéservez et réglez la consultation : $lienRdv\nSignalez dès la réservation les dates mentionnées ci-dessous : certains délais sont courts."
+    : "PRENDRE RENDEZ-VOUS\nQuand vous le souhaiterez, au cabinet, en visioconférence ou par téléphone : $lienRdv\nSignalez dès la réservation les dates mentionnées ci-dessous : certains délais sont courts.";
 
 $corpsClient = "Bonjour,\n\n"
     . "Votre pré-entretien est bien transmis au cabinet (référence $ref). Vous trouverez ci-dessous les dates à signaler, les pièces à réunir et le récapitulatif de vos réponses.\n\n"

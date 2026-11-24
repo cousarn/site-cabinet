@@ -117,7 +117,7 @@ function honeypot_ok(): bool {
  * 4. Démarchage commercial présumé (formulaire de contact, voir _demarchage.php) : préfixe « [DÉMARCHAGE ?] »,
  *    sans accusé de réception ; rien n'est supprimé.
  * Les refus sont comptés dans le journal (cache/site-cabinet/journal.log), sans contenu personnel. */
-const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation', 'pre-entretien'];
+const FORMULAIRES_JETON = ['contact', 'saisine', 'devis', 'consultation', 'rendez-vous', 'pre-entretien'];
 const JETON_DELAI_MIN   = 3;          // secondes : personne ne remplit un formulaire plus vite
 const JETON_VALIDITE    = 7 * 86400;  // une page laissée ouverte une semaine reste utilisable
 
@@ -240,7 +240,7 @@ function journal(string $formulaire, string $etat): void {
 
 /** Lien de paiement PayPal (page hébergée : compte PayPal ou carte bancaire sans compte).
  *  Aucun secret : seul l'identifiant marchand public est utilisé. La référence voyage dans `invoice` et `custom`. */
-function lien_paypal(string $libelle, int $montant, string $ref, string $formule = ''): string {
+function lien_paypal(string $libelle, int $montant, string $ref, string $formule = '', string $objet = 'consultation'): string {
     global $CONFIG;
     $hote = 'https://' . ($_SERVER['HTTP_HOST'] ?? parse_url(SITE_URL, PHP_URL_HOST));
     return 'https://www.paypal.com/cgi-bin/webscr?' . http_build_query([
@@ -256,8 +256,8 @@ function lien_paypal(string $libelle, int $montant, string $ref, string $formule
         'no_note'       => '1',
         'lc'            => 'fr_FR',
         'charset'       => 'utf-8',
-        'return'        => $hote . '/merci?objet=paiement&ref=' . $ref,
-        'cancel_return' => $hote . '/merci?objet=consultation&ref=' . $ref . '&prix=' . $montant . '&annule=1',
+        'return'        => $hote . '/merci?objet=paiement&ref=' . $ref . ($objet === 'rendez-vous' ? '&type=rendez-vous&format=' . $formule : ''),
+        'cancel_return' => $hote . '/merci?objet=' . $objet . '&ref=' . $ref . '&prix=' . $montant . '&annule=1' . ($objet === 'rendez-vous' ? '&format=' . $formule : ''),
         'notify_url'    => $hote . '/api/paypal-ipn.php', // notification IPN : marque la demande « payée » (voir paypal-ipn.php)
     ], '', '&', PHP_QUERY_RFC3986);
 }
