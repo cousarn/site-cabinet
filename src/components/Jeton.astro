@@ -6,7 +6,7 @@
  * directement, ou en moins de 3 secondes, est refusé avant tout courriel.
  */
 import { cabinet } from '../data/cabinet';
-interface Props { formulaire: 'contact' | 'saisine' | 'devis' | 'consultation'; }
+interface Props { formulaire: 'contact' | 'saisine' | 'devis' | 'consultation' | 'rendez-vous'; }
 const { formulaire } = Astro.props;
 ---
 <input type="hidden" name="jeton" value="" data-jeton={formulaire} />

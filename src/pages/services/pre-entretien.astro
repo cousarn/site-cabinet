@@ -9,9 +9,8 @@
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
 import Icone from '../../components/Icone.astro';
-import { cabinet, bookings } from '../../data/cabinet';
+import { cabinet } from '../../data/cabinet';
 import { textes } from '../../data/pre-entretien';
-const liensRdv = JSON.stringify({ cabinet: bookings.cabinet, visio: bookings.visio, telephone: bookings.telephone });
 const reperes = [
   ['bouclier', 'Aucun conseil juridique', 'L’assistant ne qualifie pas votre situation et ne se prononce sur aucun droit ni aucun délai : c’est le rôle de l’avocat, au rendez-vous.'],
   ['horloge', 'Dix minutes, à votre rythme', 'Une question à la fois, un bouton « Revenir » pour corriger. Vous relisez tout avant d’envoyer.'],
@@ -23,7 +22,7 @@ const reperes = [
 
   <section class="section section--serree" id="assistant">
     <div class="conteneur pe-grille">
-      <div class="pe" id="pe" data-rdv={liensRdv} data-api="/api/pre-entretien.php">
+      <div class="pe" id="pe" data-api="/api/pre-entretien.php">
         <div class="pe-tete">
           <div class="pe-progression" role="progressbar" aria-label="Avancement du questionnaire" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pe-barre"></i></div>
           <p class="pe-etape" id="pe-etape">Pour commencer</p>
@@ -161,7 +160,6 @@ const reperes = [
   };
   prendreJeton();
   window.addEventListener('pageshow', (e) => { if (e.persisted) prendreJeton(); });
-  const liensRdv: Record<string, string> = JSON.parse(racine.dataset.rdv || '{}');
   const CLE_BROUILLON = 'pe-brouillon-v1';
   const AVATAR = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4z"/><path d="M8 8h8M8 11h5"/></svg>';
   const EXCLUSIVES = ['rien', 'aucun'];
@@ -535,7 +533,7 @@ const reperes = [
       reponses,
       dates,
       pieces: { disponibles: toutes.filter((p) => deja.has(p.id)).map((p) => p.label), manquantes: toutes.filter((p) => !deja.has(p.id)).map((p) => p.label) },
-      format: { id: format, label: optionLabel(formats, format), lien: liensRdv[format] ?? '' },
+      format: { id: format, label: optionLabel(formats, format) },
       contact: { nom: c.nom, email: c.email, telephone: c.telephone },
       consentement: etat.reponses['_consentement'] === true,
     };

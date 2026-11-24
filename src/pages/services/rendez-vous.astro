@@ -1,31 +1,65 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Hero from '../../components/Hero.astro';
+import Jeton from '../../components/Jeton.astro';
 import { cabinet, bookings } from '../../data/cabinet';
 const formats = [
-  ['Au cabinet', '15 rue du Puits Mauger, Rennes — à 50 m du métro Colombier, accès par ascenseur.', bookings.cabinet],
-  ['En visioconférence', 'Lien Microsoft Teams envoyé avec la confirmation ; un ordinateur ou un téléphone suffit, sans installation.', bookings.visio],
-  ['Par téléphone', 'Le cabinet vous appelle à l’heure convenue, au numéro indiqué lors de la réservation.', bookings.telephone],
+  ['cabinet', 'Au cabinet', '15 rue du Puits Mauger, Rennes — à 50 m du métro Colombier, accès par ascenseur.', 'Réglée au cabinet, ou en ligne'],
+  ['visio', 'En visioconférence', 'Lien Microsoft Teams envoyé avec la confirmation ; un ordinateur ou un téléphone suffit, sans installation.', 'Réglée en ligne avant le rendez-vous'],
+  ['telephone', 'Par téléphone', 'Le cabinet vous appelle à l’heure convenue, au numéro que vous indiquez.', 'Réglée en ligne avant le rendez-vous'],
 ];
 ---
-<Base title="Prendre rendez-vous avec un avocat à Rennes | Arnaud Cousin" description="Choisissez votre créneau en ligne : au cabinet à Rennes, en visio ou par téléphone. Consultation d’une heure, 132 € TTC, confirmation immédiate." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Rendez-vous', href: '/services/rendez-vous' }]}>
-  <Hero variante="clair" surtitre="Rendez-vous" titre="Prendre rendez-vous" chapo="Cabinet, visio ou téléphone : choisissez le format et le créneau, c’est confirmé. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier." image="couloir" />
+<Base title="Prendre rendez-vous avec un avocat à Rennes | Arnaud Cousin" description="Résumez votre affaire, choisissez votre créneau, réglez en ligne : au cabinet à Rennes, en visio ou par téléphone. Consultation d’une heure, 132 € TTC." fil={[{ label: 'Services en ligne', href: '/services' }, { label: 'Rendez-vous', href: '/services/rendez-vous' }]}>
+  <Hero variante="clair" surtitre="Rendez-vous" titre="Prendre rendez-vous" chapo="Résumez votre affaire, choisissez votre créneau, réglez la consultation. La première consultation est payante — vous repartez avec un avis — et déduite des honoraires si vous confiez ensuite votre dossier." image="couloir" />
   <section class="section">
     <div class="conteneur pile" style="gap: 32px">
-      <h2 style="font-size: 28px">Choisissez le format, puis votre créneau</h2>
-      <div class="grille">
-        {formats.map(([t, x, url]) => (
-          <div class="carte">
-            <h3>{t}</h3>
-            <p class="muet" style="font-size: 15px">{x}</p>
-            <p style="margin-top: auto; font-weight: 600; color: var(--vert)">{bookings.prix}</p>
-            <a href={url} class="btn btn--plein" target="_blank" rel="noopener" style="margin-top: 12px">Réserver {t.toLowerCase()}</a>
-          </div>
-        ))}
-      </div>
-      <!-- Microsoft Bookings (page de réservation personnelle du cabinet) : s'ouvre dans un nouvel onglet, la page ne s'intègre pas en iframe. -->
-      <p class="muet" style="font-size: 14px; max-width: 760px">Créneaux du lundi au vendredi : 10 h le matin, l’après-midi à partir de 14 h 30. Le calendrier n’affiche que les horaires réellement libres ; réservation au plus tôt pour le lendemain, jusqu’à trois mois à l’avance. Vous pouvez aussi <a href={bookings.page} class="lien" target="_blank" rel="noopener">voir tous les formats sur une seule page</a>. Sans accès en ligne : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>, {cabinet.horaires.toLowerCase()}.</p>
+      <!-- Formulaire traité par /api/rendez-vous.php ; le créneau (Bookings) et le règlement (PayPal) sont proposés ensuite, sur la page Merci et par courriel. -->
+      <form class="pile" method="post" action="/api/rendez-vous.php" id="form-rdv" style="gap: 28px">
+        <h2 style="font-size: 28px">1. Choisissez le format</h2>
+        <div class="grille" role="radiogroup" aria-label="Format du rendez-vous">
+          {formats.map(([v, t, x, r], i) => (
+            <label class="carte" style="cursor: pointer; position: relative">
+              <input type="radio" name="format" value={v} checked={i === 0} style="position: absolute; top: 20px; right: 20px; width: 20px; height: 20px; accent-color: var(--vert)" />
+              <h3 style="padding-right: 32px">{t}</h3>
+              <p class="muet" style="font-size: 15px">{x}</p>
+              <p style="margin-top: auto; font-weight: 600; color: var(--vert)">{bookings.prix}</p>
+              <p class="muet" style="font-size: 14px; margin: 0">{r}</p>
+            </label>
+          ))}
+        </div>
+        <div class="pile" style="gap: 14px; max-width: 820px"><h2 style="font-size: 28px">2. Résumez votre affaire</h2>
+          <p class="muet" style="font-size: 15px">L’avocat lit ce résumé avant le rendez-vous. La consultation est une consultation d’orientation, sans recherche longue : si votre affaire appelle des recherches importantes, il vous le dit et vous propose un devis. Si elle ne relève pas de ses compétences, vous en êtes informé et remboursé.</p>
+          <label class="champ">Domaine<select name="domaine"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Autre</option></select></label>
+          <label class="champ">Résumé de votre affaire et question posée<textarea name="resume" id="rdv-resume" required minlength="80" maxlength="4000" style="min-height: 180px" placeholder="Qui est concerné, ce qui s’est passé et depuis quand, où en est l’affaire, ce que vous souhaitez savoir."></textarea></label>
+          <label class="champ">Autres personnes concernées (adversaire, employeur, cohéritiers, notaire)<input type="text" name="personnes" maxlength="400" placeholder="Noms, pour vérifier l’absence de conflit d’intérêts" /></label>
+          <label class="champ">Audience, délai ou échéance, s’il y en a<input type="text" name="echeance" maxlength="200" placeholder="Par exemple : audience le 12 janvier, courrier reçu le 3 décembre" /></label>
+        </div>
+        <div class="pile" style="gap: 14px; max-width: 820px"><h2 style="font-size: 28px">3. Vos coordonnées</h2>
+          <div class="grille grille--2" style="gap: 14px"><label class="champ">Nom et prénom<input type="text" name="nom" required maxlength="120" autocomplete="name" /></label><label class="champ">Courriel<input type="email" name="email" required maxlength="200" autocomplete="email" /></label></div>
+          <label class="champ">Téléphone<input type="tel" name="telephone" required maxlength="40" autocomplete="tel" /></label>
+          <label style="display: flex; gap: 10px; font-size: 14px; color: var(--muet); align-items: flex-start"><input type="checkbox" name="cgv" required style="margin-top: 4px" /> <span>J’ai lu les <a href="/mentions-legales#cgv" class="lien">conditions de la consultation</a> et je demande qu’elle ait lieu à la date que je choisirai, même avant la fin du délai de rétractation de quatorze jours, auquel je renonce une fois la consultation donnée.</span></label>
+          <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
+          <Jeton formulaire="rendez-vous" />
+          <button type="submit" class="btn btn--plein" style="align-self: flex-start">Continuer : créneau et règlement</button>
+          <p class="muet" style="font-size: 13px">Étape suivante : le calendrier des créneaux libres et le règlement de 132 € TTC par PayPal ou carte bancaire (page sécurisée PayPal, sans compte nécessaire), ou par virement. Les deux liens vous sont aussi envoyés par courriel. Vos réponses sont couvertes par le secret professionnel.</p>
+        </div>
+      </form>
+      <p class="muet" style="font-size: 14px; max-width: 760px">Créneaux du lundi au vendredi : 10 h le matin, l’après-midi à partir de 14 h 30. Le calendrier n’affiche que les horaires réellement libres ; réservation au plus tôt pour le lendemain, jusqu’à trois mois à l’avance. Sans accès en ligne : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>, {cabinet.horaires.toLowerCase()}.</p>
       <p class="muet" style="font-size: 14px; max-width: 760px">Vous recevez une confirmation par courriel et un rappel la veille. Pour préparer le rendez-vous : la convocation ou la lettre reçue, le jugement s’il en existe, vos trois derniers bulletins de salaire en droit du travail, le contrat de mariage ou l’acte notarié en matière familiale et successorale. <a href="/fiches/pieces-premier-rendez-vous" class="lien">Les pièces à réunir</a></p>
     </div>
   </section>
+  <script>
+    // Arrivée depuis l'assistant de pré-entretien ou un lien direct : ?format=visio&pre=261124-ABCD
+    const q = new URLSearchParams(location.search);
+    const format = q.get('format') ?? '';
+    if (/^(cabinet|visio|telephone)$/.test(format)) {
+      const radio = document.querySelector<HTMLInputElement>(`#form-rdv input[name="format"][value="${format}"]`);
+      if (radio) radio.checked = true;
+    }
+    const pre = q.get('pre') ?? '';
+    const resume = document.getElementById('rdv-resume') as HTMLTextAreaElement | null;
+    if (resume && !resume.value && /^\d{6}-[A-Z0-9]{4}$/.test(pre)) {
+      resume.value = `Ma situation est exposée dans mon pré-entretien, transmis au cabinet sous la référence ${pre}. `;
+    }
+  </script>
 </Base>

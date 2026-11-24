@@ -88,11 +88,12 @@ Fichiers propres au serveur, hors racine web, jamais écrasés, communs à la pr
 | `contact.php` | formulaire de contact | cabinet (Reply-To client) + accusé de réception |
 | `saisine.php` | saisine notaires & confrères | cabinet + accusé « sous 24 h ouvrées » |
 | `devis.php` | estimation divorce par consentement mutuel (calcul serveur, grille dans `_lib.php` → `devis`) | client (détail ligne par ligne) + cabinet |
+| `rendez-vous.php` | demande de rendez-vous : format, résumé de l'affaire (obligatoire), conflit d'intérêts, échéance ; stockée hors racine web dans `../consultations/rendez-vous-<réf>/`, puis créneau Bookings et règlement de 132 € | client + cabinet |
 | `consultation.php` | consultation écrite : formule, question, pièces (stockées hors racine web dans `../consultations/<réf>/`), instructions de règlement | client + cabinet |
 | `pre-entretien.php` | assistant de pré-entretien (JSON) : synthèse `pre-entretien-<réf>/synthese.{txt,json}`, analyse IA facultative pour l'avocat | cabinet + récapitulatif client |
 | `depot.php` | dépôt de pièces par lien personnel (JSON) : état du lien, envoi par morceaux de 4 Mo, « terminer » | cabinet + accusé client |
 | `depot-admin.php` | console `/admin/depots` (session par clé serveur) : créer/envoyer un lien, suivi, zip, relais SharePoint | lien au client |
-| `paypal-ipn.php` | notification PayPal vérifiée : marque la consultation payée | cabinet + client |
+| `paypal-ipn.php` | notification PayPal vérifiée : marque payée la consultation écrite ou la demande de rendez-vous | cabinet + client |
 | `depot-veille.php` | veille quotidienne du dépôt (CLI seulement, tâche planifiée OVH) | cabinet, si besoin |
 
 Protections : POST seul, pot de miel (`site`), limite de 6 envois/heure/IP, validation des courriels, types MIME des pièces vérifiés, 20 Mo max, `_lib.php` et `.cache/` inaccessibles en HTTP.
@@ -143,7 +144,7 @@ Côté Microsoft 365 (une fois) : site SharePoint « Dépôts clients », inscri
 
 ## Rendez-vous en ligne (Microsoft Bookings)
 
-Page de réservation **personnelle** du compte `cabinet@` (« Bookings with me » — la création d'une page partagée échoue sur ce tenant, à réessayer plus tard). Trois types de réunion publics : cabinet, visioconférence Teams, téléphone — 1 h, 132 € TTC (110 € HT). Disponibilités personnalisées lun–ven 10 h–11 h et 14 h 30–19 h, pas de 30 min, délai minimal 1 jour, maximal 90 jours, rappel courriel la veille. Les rendez-vous et audiences déjà dans le calendrier Outlook (Secib, secrétariat) masquent les créneaux. Liens publics dans `src/data/cabinet.ts` (`bookings`), utilisés par `/services/rendez-vous` (boutons, nouvel onglet : la page personnelle ne s'intègre pas en iframe, la CSP reste donc `frame-src 'self'`). Les deux types par défaut en anglais (« 15/30 minutes meeting ») sont passés en privé.
+Page de réservation **personnelle** du compte `cabinet@` (« Bookings with me » — la création d'une page partagée échoue sur ce tenant, à réessayer plus tard). Trois types de réunion publics : cabinet, visioconférence Teams, téléphone — 1 h, 132 € TTC (110 € HT). Disponibilités personnalisées lun–ven 10 h–11 h et 14 h 30–19 h, pas de 30 min, délai minimal 1 jour, maximal 90 jours, rappel courriel la veille. Les rendez-vous et audiences déjà dans le calendrier Outlook (Secib, secrétariat) masquent les créneaux. **Depuis le 24/11/2026, le client passe d'abord par le formulaire de `/services/rendez-vous`** (`api/rendez-vous.php`) : il résume son affaire (80 caractères au moins), puis `/merci?objet=rendez-vous` et son courriel lui donnent le créneau (Bookings) et le règlement (PayPal, carte ou virement ; au cabinet, règlement sur place possible). Bookings n'encaisse rien et ne pose pas de question obligatoire ; la page Bookings reste publique (lien de la signature Outlook) et contourne ce formulaire. Liens publics dans `src/data/cabinet.ts` (`bookings`) **et** dans `public/api/rendez-vous.php` (`$formats`), à modifier aux deux endroits ; utilisés par `/merci` (nouvel onglet : la page personnelle ne s'intègre pas en iframe, la CSP reste donc `frame-src 'self'`). Les deux types par défaut en anglais (« 15/30 minutes meeting ») sont passés en privé.
 
 ## Points en attente
 

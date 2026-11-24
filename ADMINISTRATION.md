@@ -81,7 +81,7 @@ La fiche apparaît automatiquement sur `/fiches`, sur l'accueil (trois dernière
 
 ### 3.2 Modifier un prix, un horaire, une coordonnée
 
-- Rendez-vous (cabinet, visio, téléphone) : `bookings.prix` dans `src/data/cabinet.ts` **et** le prix dans chaque type de réunion Bookings (titre et description) **et** `honoraires.ts` (ligne « Consultation d'orientation ») **et** la FAQ de `honoraires.astro`.
+- Rendez-vous (cabinet, visio, téléphone) : `bookings.prix` dans `src/data/cabinet.ts`, `$prix` dans `public/api/rendez-vous.php` (montant demandé à PayPal), CGV dans `mentions-legales.astro` **et** le prix dans chaque type de réunion Bookings (titre et description) **et** `honoraires.ts` (ligne « Consultation d'orientation ») **et** la FAQ de `honoraires.astro`.
 - Consultation écrite : `$formules` dans `public/api/consultation.php` (montants TTC facturés), `services/consultation-ecrite.astro` (affichage), `services/index.astro` et `cabinet.ts › services` (« dès 80 € »), CGV dans `mentions-legales.astro`.
 - Horaires : `cabinet.horaires` et `cabinet.horairesSchema` ; puis fiche Google Business et page Bookings (heures de disponibilité).
 - Grille devis divorce (HT) : valeurs par défaut dans `_lib.php` (`devis`), surchargeables dans le fichier serveur (§ 6) ; l'affichage de `services/devis-divorce.astro` doit suivre.
@@ -106,7 +106,7 @@ Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) 
 2. *Jeton signé* (`controle_anti_robot`) : à l'ouverture de la page, le composant `src/components/Jeton.astro` demande à `/api/jeton.php` un horodatage signé, à usage unique. Le serveur refuse l'envoi si le jeton manque (robot qui poste directement, ou visiteur sans JavaScript), s'il est faux ou déjà servi, s'il a moins de 3 secondes ou plus de 7 jours. Le refus affiche une page d'erreur lisible et aucun courriel ne part. Le secret de signature est tiré au hasard dans `/home/arnaudcoqa/cache/site-cabinet/jeton.secret` (ou `jeton_secret` dans le fichier serveur) ; le supprimer invalide seulement les pages déjà ouvertes.
 3. *Contenu suspect* (`contenu_suspect`) : un lien dans le texte libre (http, www, telegra.ph, t.me, bit.ly, BBCode, HTML) fait arriver le message préfixé `[SPAM ?]`, avec un bandeau d'avertissement, **sans accusé de réception** à l'adresse saisie (qui peut être celle d'un tiers).
 
-Appliqué au contact, à la saisine, au devis, à la consultation écrite et au pré-entretien (jeton joint à sa requête JSON). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
+Appliqué au contact, à la saisine, au devis, à la consultation écrite, au rendez-vous et au pré-entretien (jeton joint à sa requête JSON). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
 
 ### 3.6 Dépôt de pièces (au quotidien)
 

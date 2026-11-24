@@ -40,6 +40,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Aucun poste du cabinet n'a PHP : une faute de syntaxe dans public/api arrête ici le déploiement.
+      - name: Contrôler la syntaxe PHP
+        run: find public -name '*.php' -print0 | xargs -0 -n1 php -l
       - run: npm run check
       - name: Construire (préprod → noindex)
         run: npm run build
