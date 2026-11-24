@@ -231,6 +231,26 @@ function envoyer_mail(string $a, string $sujet, string $corps, ?string $repondre
     return mail($a, $sujetEnc, wordwrap($corps, 900, "\n", true), implode("\r\n", $entetes), '-f' . $CONFIG['from_email']);
 }
 
+/** Courriel à deux versions (texte et HTML), pour un message à boutons destiné au cabinet. $html : contenu déjà échappé. */
+function envoyer_mail_html(string $a, string $sujet, string $texte, string $html, ?string $repondreA = null): bool {
+    global $CONFIG;
+    $b = 'b' . bin2hex(random_bytes(12));
+    $entetes = [
+        'From: ' . mb_encode_mimeheader($CONFIG['from_name'], 'UTF-8') . ' <' . $CONFIG['from_email'] . '>',
+        'MIME-Version: 1.0',
+        "Content-Type: multipart/alternative; boundary=\"$b\"",
+        'X-Mailer: site-cabinet',
+    ];
+    if ($repondreA && email_valide($repondreA)) { $entetes[] = 'Reply-To: ' . $repondreA; }
+    $partie = fn(string $type, string $c): string => "--$b\nContent-Type: $type; charset=UTF-8\nContent-Transfer-Encoding: base64\n\n" . chunk_split(base64_encode($c), 76, "\n");
+    return mail($a, mb_encode_mimeheader($sujet, 'UTF-8'), $partie('text/plain', $texte) . $partie('text/html', $html) . "--$b--\n", implode("\r\n", $entetes), '-f' . $CONFIG['from_email']);
+}
+
+/** Signature du lien « valider » ou « annuler » d'un rendez-vous de dossier en cours (rdv-decision.php). */
+function signature_rdv(string $ref, string $action): string {
+    return substr(hash_hmac('sha256', "rdv-decision|$ref|$action", secret_formulaires()), 0, 48);
+}
+
 /** Journal minimal (sans contenu personnel) pour le suivi. */
 function journal(string $formulaire, string $etat): void {
     $dir = DOSSIER_CACHE;
