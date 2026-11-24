@@ -89,6 +89,7 @@ Fichiers propres au serveur, hors racine web, jamais écrasés, communs à la pr
 | `saisine.php` | saisine notaires & confrères | cabinet + accusé « sous 24 h ouvrées » |
 | `devis.php` | estimation divorce par consentement mutuel (calcul serveur, grille dans `_lib.php` → `devis`) | client (détail ligne par ligne) + cabinet |
 | `rendez-vous.php` | demande de rendez-vous : format, résumé de l'affaire (obligatoire), conflit d'intérêts, échéance ; stockée hors racine web dans `../consultations/rendez-vous-<réf>/`, puis créneau Bookings et règlement de 132 € | client + cabinet |
+| `rdv-decision.php` | rendez-vous d'un dossier en cours : validation (accusé de réception au client) ou annulation par le cabinet, liens signés du message « [SITE] Dossier en cours », confirmation par POST | client + cabinet |
 | `consultation.php` | consultation écrite : formule, question, pièces (stockées hors racine web dans `../consultations/<réf>/`), instructions de règlement | client + cabinet |
 | `pre-entretien.php` | assistant de pré-entretien (JSON) : synthèse `pre-entretien-<réf>/synthese.{txt,json}`, analyse IA facultative pour l'avocat | cabinet + récapitulatif client |
 | `depot.php` | dépôt de pièces par lien personnel (JSON) : état du lien, envoi par morceaux de 4 Mo, « terminer » | cabinet + accusé client |

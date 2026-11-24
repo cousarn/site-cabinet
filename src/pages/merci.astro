@@ -50,7 +50,16 @@ import { cabinet, bookings } from '../data/cabinet';
       a.href = lien;
       document.getElementById('merci-creneau-bloc')!.style.display = 'flex';
     };
-    if (objet === 'rendez-vous' && q.get('suivi')) {
+    if (objet === 'rendez-vous' && q.get('dossier')) {
+      const creneau = q.get('creneau') ?? '';
+      const reservable = /^https:\/\/bookings\.cloud\.microsoft\/bookwithme\/user\/[A-Za-z0-9@._-]+\/meetingtype\/[A-Za-z0-9_-]+\?[A-Za-z0-9=&_-]+$/.test(creneau);
+      titre.textContent = reservable ? 'Votre demande est enregistrée : choisissez votre créneau.' : 'Votre demande est transmise au cabinet.';
+      texte.textContent = `${reservable ? 'Choisissez votre créneau ; le lien vous est aussi adressé par courriel. ' : 'Le cabinet vous recontacte pour convenir du créneau. '}Le cabinet vérifie votre dossier et vous confirme ensuite le rendez-vous par courriel. Vous n’avez rien à régler maintenant.`;
+      if (reservable) {
+        (document.getElementById('merci-creneau') as HTMLAnchorElement).href = creneau;
+        document.getElementById('merci-creneau-bloc')!.style.display = 'flex';
+      }
+    } else if (objet === 'rendez-vous' && q.get('suivi')) {
       titre.textContent = 'Votre demande est transmise au cabinet.';
       texte.textContent = 'Vous avez déjà consulté le cabinet pour cette affaire : le forfait de première consultation ne s’applique pas, le suivi est facturé au temps passé. Le cabinet vous recontacte sous 48 heures ouvrées pour convenir du rendez-vous et de son coût. Vous n’avez rien à régler maintenant.';
     } else if (objet === 'rendez-vous') {

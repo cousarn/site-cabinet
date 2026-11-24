@@ -30,22 +30,26 @@ const formats = [
         </div>
         <p style="border-left: 2px solid var(--laiton-clair); padding-left: 16px; max-width: 820px; font-size: 15px; margin: 0"><strong>Une seule fois par affaire.</strong> Le tarif de 132 € TTC est celui d’une première consultation de prise de contact. Les demandes ultérieures sur le même sujet relèvent d’un suivi : elles sont facturées au temps passé, au taux horaire du cabinet ({bareme.tauxHoraire} € TTC).</p>
         <div class="pile" style="gap: 14px; max-width: 820px"><h2 style="font-size: 28px">2. Résumez votre affaire</h2>
-          <label class="champ">Avez-vous déjà consulté le cabinet pour cette affaire ?<select name="deja" id="rdv-deja" required><option value="">Choisissez</option><option value="non">Non, c’est la première consultation pour cette affaire</option><option value="oui">Oui, j’ai déjà consulté le cabinet pour cette affaire</option></select></label>
+          <label class="champ">Avez-vous déjà consulté le cabinet pour cette affaire ?<select name="deja" id="rdv-deja" required><option value="">Choisissez</option><option value="non">Non, c’est la première consultation pour cette affaire</option><option value="oui">Oui, j’ai déjà consulté le cabinet pour cette affaire, sans dossier ouvert</option><option value="dossier">J’ai un dossier en cours au cabinet</option></select></label>
+          <div id="rdv-dossier" class="pile" hidden style="gap: 14px">
+            <p style="font-size: 15px; margin: 0">Rendez-vous dans un dossier en cours : vous n’avez rien à régler maintenant, il relève des conditions convenues pour votre dossier. Choisissez ensuite votre créneau ; le cabinet vérifie votre dossier et vous confirme le rendez-vous par courriel.</p>
+            <div class="grille grille--2" style="gap: 14px"><label class="champ">Numéro de dossier<input type="text" name="numero" id="rdv-numero" maxlength="30" inputmode="numeric" placeholder="Neuf chiffres, en tête de nos courriels" /></label><label class="champ">Nom de la partie adverse<input type="text" name="adverse" id="rdv-adverse" maxlength="120" placeholder="Si vous n’avez pas le numéro" /></label></div>
+          </div>
           <p id="rdv-suivi" hidden style="font-size: 15px; margin: 0">Votre demande relève du suivi : le forfait de 132 € ne s’applique pas et vous n’avez rien à régler maintenant. Envoyez ce formulaire ; le cabinet vous recontacte sous 48 heures ouvrées pour convenir du rendez-vous et de son coût.</p>
-          <p class="muet" style="font-size: 15px">L’avocat lit ce résumé avant le rendez-vous. La consultation est une consultation d’orientation, sans recherche longue : si votre affaire appelle des recherches importantes, il vous le dit et vous propose un devis. Si elle ne relève pas de ses compétences, vous en êtes informé et remboursé.</p>
-          <label class="champ">Domaine<select name="domaine"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Autre</option></select></label>
-          <label class="champ">Résumé de votre affaire et question posée<textarea name="resume" id="rdv-resume" required minlength="80" maxlength="4000" style="min-height: 180px" placeholder="Qui est concerné, ce qui s’est passé et depuis quand, où en est l’affaire, ce que vous souhaitez savoir."></textarea></label>
-          <label class="champ">Autres personnes concernées (adversaire, employeur, cohéritiers, notaire)<input type="text" name="personnes" maxlength="400" placeholder="Noms, pour vérifier l’absence de conflit d’intérêts" /></label>
+          <p class="muet" id="rdv-orientation" style="font-size: 15px">L’avocat lit ce résumé avant le rendez-vous. La consultation est une consultation d’orientation, sans recherche longue : si votre affaire appelle des recherches importantes, il vous le dit et vous propose un devis. Si elle ne relève pas de ses compétences, vous en êtes informé et remboursé.</p>
+          <label class="champ" id="rdv-domaine">Domaine<select name="domaine"><option>Famille, séparation</option><option>Succession, indivision</option><option>Droit du travail</option><option>Procédure, appel</option><option>Autre</option></select></label>
+          <label class="champ"><span id="rdv-resume-titre">Résumé de votre affaire et question posée</span><textarea name="resume" id="rdv-resume" required minlength="80" maxlength="4000" style="min-height: 180px" placeholder="Qui est concerné, ce qui s’est passé et depuis quand, où en est l’affaire, ce que vous souhaitez savoir."></textarea></label>
+          <label class="champ" id="rdv-personnes">Autres personnes concernées (adversaire, employeur, cohéritiers, notaire)<input type="text" name="personnes" maxlength="400" placeholder="Noms, pour vérifier l’absence de conflit d’intérêts" /></label>
           <label class="champ">Audience, délai ou échéance, s’il y en a<input type="text" name="echeance" maxlength="200" placeholder="Par exemple : audience le 12 janvier, courrier reçu le 3 décembre" /></label>
         </div>
         <div class="pile" style="gap: 14px; max-width: 820px"><h2 style="font-size: 28px">3. Vos coordonnées</h2>
           <div class="grille grille--2" style="gap: 14px"><label class="champ">Nom et prénom<input type="text" name="nom" required maxlength="120" autocomplete="name" /></label><label class="champ">Courriel<input type="email" name="email" required maxlength="200" autocomplete="email" /></label></div>
           <label class="champ">Téléphone<input type="tel" name="telephone" required maxlength="40" autocomplete="tel" /></label>
-          <label style="display: flex; gap: 10px; font-size: 14px; color: var(--muet); align-items: flex-start"><input type="checkbox" name="cgv" required style="margin-top: 4px" /> <span>J’ai lu les <a href="/mentions-legales#cgv" class="lien">conditions de la consultation</a> et je demande qu’elle ait lieu à la date que je choisirai, même avant la fin du délai de rétractation de quatorze jours, auquel je renonce une fois la consultation donnée.</span></label>
+          <label id="rdv-cgv" style="display: flex; gap: 10px; font-size: 14px; color: var(--muet); align-items: flex-start"><input type="checkbox" name="cgv" required style="margin-top: 4px" /> <span>J’ai lu les <a href="/mentions-legales#cgv" class="lien">conditions de la consultation</a> et je demande qu’elle ait lieu à la date que je choisirai, même avant la fin du délai de rétractation de quatorze jours, auquel je renonce une fois la consultation donnée.</span></label>
           <input type="text" name="site" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true" />
           <Jeton formulaire="rendez-vous" />
           <button type="submit" class="btn btn--plein" style="align-self: flex-start">Continuer : créneau et règlement</button>
-          <p class="muet" style="font-size: 13px">Étape suivante : le calendrier des créneaux libres et le règlement de 132 € TTC par PayPal ou carte bancaire (page sécurisée PayPal, sans compte nécessaire), ou par virement. Les deux liens vous sont aussi envoyés par courriel. Vos réponses sont couvertes par le secret professionnel.</p>
+          <p class="muet" id="rdv-etape" style="font-size: 13px">Étape suivante : le calendrier des créneaux libres et le règlement de 132 € TTC par PayPal ou carte bancaire (page sécurisée PayPal, sans compte nécessaire), ou par virement. Les deux liens vous sont aussi envoyés par courriel. Vos réponses sont couvertes par le secret professionnel.</p>
         </div>
       </form>
       <p class="muet" style="font-size: 14px; max-width: 760px">Créneaux du lundi au vendredi : 10 h le matin, l’après-midi à partir de 14 h 30. Le calendrier n’affiche que les horaires réellement libres ; réservation au plus tôt pour le lendemain, jusqu’à trois mois à l’avance. Sans accès en ligne : <a href={`tel:${cabinet.telephoneE164}`} class="lien">{cabinet.telephone}</a>, {cabinet.horaires.toLowerCase()}.</p>
@@ -64,11 +68,29 @@ const formats = [
     const suivi = document.getElementById('rdv-suivi');
     const bouton = document.querySelector<HTMLButtonElement>('#form-rdv button[type="submit"]');
     const libelleBouton = bouton?.textContent ?? '';
+    const cacher = (id: string, oui: boolean) => { const n = document.getElementById(id); if (n) n.hidden = oui; };
+    const numero = document.getElementById('rdv-numero') as HTMLInputElement | null;
+    const adverse = document.getElementById('rdv-adverse') as HTMLInputElement | null;
+    const champResume = document.getElementById('rdv-resume') as HTMLTextAreaElement | null;
+    const titreResume = document.getElementById('rdv-resume-titre');
+    const cgv = document.querySelector<HTMLInputElement>('#rdv-cgv input');
+    const invite = champResume?.placeholder ?? '';
+    const majDossier = () => numero?.setCustomValidity(deja?.value === 'dossier' && !numero.value.trim() && !adverse?.value.trim() ? 'Indiquez votre numéro de dossier ou le nom de la partie adverse.' : '');
     const majSuivi = () => {
       const oui = deja?.value === 'oui';
+      const dossier = deja?.value === 'dossier';
       if (suivi) suivi.hidden = !oui;
-      if (bouton) bouton.textContent = oui ? 'Envoyer ma demande' : libelleBouton;
+      cacher('rdv-dossier', !dossier);
+      for (const id of ['rdv-orientation', 'rdv-domaine', 'rdv-personnes']) cacher(id, dossier);
+      for (const id of ['rdv-cgv', 'rdv-etape']) cacher(id, dossier || oui);
+      if (cgv) cgv.required = !dossier && !oui;
+      if (champResume) { champResume.minLength = dossier ? 20 : 80; champResume.placeholder = dossier ? 'En une phrase ou deux : ce dont vous souhaitez parler.' : invite; }
+      if (titreResume) titreResume.textContent = dossier ? 'Objet du rendez-vous' : 'Résumé de votre affaire et question posée';
+      if (bouton) bouton.textContent = dossier ? 'Continuer : choisir le créneau' : oui ? 'Envoyer ma demande' : libelleBouton;
+      majDossier();
     };
+    numero?.addEventListener('input', majDossier);
+    adverse?.addEventListener('input', majDossier);
     deja?.addEventListener('change', majSuivi);
     majSuivi();
     const pre = q.get('pre') ?? '';

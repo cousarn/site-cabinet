@@ -108,6 +108,8 @@ Les formulaires (contact, saisine, devis, consultation écrite, pré-entretien) 
 
 Appliqué au contact, à la saisine, au devis, à la consultation écrite, au rendez-vous et au pré-entretien (jeton joint à sa requête JSON). Statistiques : `cache/site-cabinet/journal.log` (`robot-pot-de-miel`, `robot-jeton-absent`, `robot-jeton-trop-rapide`, `robot-jeton-rejoue`, `ok-suspect`…), sans contenu personnel. Un nouveau formulaire doit recevoir `<Jeton formulaire="…" />` à côté du pot de miel, son nom dans `FORMULAIRES_JETON` et l'appel `controle_anti_robot('…')` dans son point d'entrée.
 
+**Rendez-vous d'un dossier en cours** (ordre du 24/11/2026) : troisième choix du formulaire de `/services/rendez-vous`. Le client donne son numéro de dossier ou le nom de la partie adverse, choisit un créneau sans rien régler, et le cabinet reçoit « [SITE] Dossier en cours — rendez-vous de … » avec deux boutons, Valider (accusé de réception au client) et Annuler. Chaque bouton ouvre une page de confirmation (`api/rdv-decision.php`), car les antivirus de messagerie ouvrent les liens. Après une annulation, le créneau se supprime à la main dans Outlook. Les trois fiches Bookings « Dossier en cours » sont privées ; leurs liens sont dans SharePoint, `Dépôts du site/reglages-rendez-vous.json` (clés `cabinet`, `visio`, `telephone`), **jamais dans ce dépôt public** ; le site les garde une heure en cache. Fichier absent : le client est recontacté, sans créneau en ligne.
+
 ### 3.6 Dépôt de pièces (au quotidien)
 
 Note d'emploi complète (cabinet et secrétariat, modèle de courriel, incidents, sécurité) : https://claude.ai/code/artifact/b71204eb-fe77-412e-b946-f7fa1fe79c5d
