@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { cabinet, bookings } from '../data/cabinet';
+import { cabinet } from '../data/cabinet';
 ---
 <Base title="Message envoyé | Cabinet Arnaud Cousin" description="Votre demande est bien arrivée au cabinet." noindex>
   <section class="section"><div class="conteneur pile" style="gap: 18px; max-width: 720px; padding-top: 72px; padding-bottom: 72px">
@@ -10,7 +10,7 @@ import { cabinet, bookings } from '../data/cabinet';
     <p id="merci-estimation" class="pile" style="display: none; gap: 6px; border: 1px solid var(--ligne); border-radius: var(--r); padding: 20px 22px; background: var(--ivoire)"></p>
     <div id="merci-creneau-bloc" class="pile" style="display: none; gap: 14px; border: 1px solid var(--ligne); border-radius: var(--r); padding: 22px 24px; background: var(--ivoire)">
       <span class="surtitre">Choisir le créneau</span>
-      <a id="merci-creneau" href="/services/rendez-vous" class="btn btn--plein" target="_blank" rel="noopener" data-cabinet={bookings.cabinet} data-visio={bookings.visio} data-telephone={bookings.telephone}>Voir les créneaux libres</a>
+      <a id="merci-creneau" href="/services/rendez-vous" class="btn btn--plein" target="_blank" rel="noopener">Voir les créneaux libres</a>
       <span class="muet" style="font-size: 14px">Calendrier du cabinet (Microsoft Bookings), dans un nouvel onglet : « Continuer en tant qu’invité », sans compte. Revenez ensuite sur cette page.</span>
     </div>
     <div id="merci-paiement" class="pile" style="display: none; gap: 14px; border: 1px solid var(--laiton-clair); border-radius: var(--r); padding: 22px 24px; background: var(--ivoire)">
@@ -43,31 +43,28 @@ import { cabinet, bookings } from '../data/cabinet';
       }
     }
     const formatRdv = q.get('format') ?? '';
+    /* Le lien du créneau (fiche Bookings privée) vient seulement de l'adresse : le site n'en publie aucun. */
+    const creneau = q.get('creneau') ?? '';
+    const reservable = /^https:\/\/bookings\.cloud\.microsoft\/bookwithme\/user\/[A-Za-z0-9@._-]+\/meetingtype\/[A-Za-z0-9_-]+\?[A-Za-z0-9=&_-]+$/.test(creneau);
     const montrerCreneau = () => {
-      const a = document.getElementById('merci-creneau') as HTMLAnchorElement;
-      const lien = /^(cabinet|visio|telephone)$/.test(formatRdv) ? a.dataset[formatRdv] : '';
-      if (!lien) return;
-      a.href = lien;
+      if (!reservable) return;
+      (document.getElementById('merci-creneau') as HTMLAnchorElement).href = creneau;
       document.getElementById('merci-creneau-bloc')!.style.display = 'flex';
     };
     if (objet === 'rendez-vous' && q.get('dossier')) {
-      const creneau = q.get('creneau') ?? '';
-      const reservable = /^https:\/\/bookings\.cloud\.microsoft\/bookwithme\/user\/[A-Za-z0-9@._-]+\/meetingtype\/[A-Za-z0-9_-]+\?[A-Za-z0-9=&_-]+$/.test(creneau);
       titre.textContent = reservable ? 'Votre demande est enregistrée : choisissez votre créneau.' : 'Votre demande est transmise au cabinet.';
       texte.textContent = `${reservable ? 'Choisissez votre créneau ; le lien vous est aussi adressé par courriel. ' : 'Le cabinet vous recontacte pour convenir du créneau. '}Le cabinet vérifie votre dossier et vous confirme ensuite le rendez-vous par courriel. Vous n’avez rien à régler maintenant.`;
-      if (reservable) {
-        (document.getElementById('merci-creneau') as HTMLAnchorElement).href = creneau;
-        document.getElementById('merci-creneau-bloc')!.style.display = 'flex';
-      }
+      montrerCreneau();
     } else if (objet === 'rendez-vous' && q.get('suivi')) {
       titre.textContent = 'Votre demande est transmise au cabinet.';
       texte.textContent = 'Vous avez déjà consulté le cabinet pour cette affaire : le forfait de première consultation ne s’applique pas, le suivi est facturé au temps passé. Le cabinet vous recontacte sous 48 heures ouvrées pour convenir du rendez-vous et de son coût. Vous n’avez rien à régler maintenant.';
     } else if (objet === 'rendez-vous') {
       const surPlace = formatRdv === 'cabinet';
-      titre.textContent = q.get('annule') ? 'Votre demande est enregistrée, le paiement n’a pas été effectué.' : 'Votre demande est enregistrée : choisissez votre créneau.';
+      titre.textContent = q.get('annule') ? 'Votre demande est enregistrée, le paiement n’a pas été effectué.' : reservable ? 'Votre demande est enregistrée : choisissez votre créneau.' : 'Votre demande est enregistrée.';
+      const choix = reservable ? 'Choisissez votre créneau' : 'Le cabinet vous recontacte pour convenir du créneau';
       texte.textContent = surPlace
-        ? `Choisissez votre créneau. La consultation (${q.get('prix') ?? ''} € TTC) se règle au cabinet le jour du rendez-vous, ou dès maintenant en ligne. Les liens vous sont aussi adressés par courriel.`
-        : `Choisissez votre créneau, puis réglez la consultation (${q.get('prix') ?? ''} € TTC) : le rendez-vous est définitivement retenu à réception du règlement. Les deux liens vous sont aussi adressés par courriel.`;
+        ? `${choix}. La consultation (${q.get('prix') ?? ''} € TTC) se règle au cabinet le jour du rendez-vous, ou dès maintenant en ligne. Les liens vous sont aussi adressés par courriel.`
+        : `${choix}${reservable ? ', puis réglez' : ' ; réglez'} la consultation (${q.get('prix') ?? ''} € TTC) : le rendez-vous est définitivement retenu à réception du règlement. Les liens vous sont aussi adressés par courriel.`;
       montrerCreneau();
       const payerRdv = q.get('payer');
       if (payerRdv && /^https:\/\/www\.paypal\.com\//.test(payerRdv)) {
@@ -78,7 +75,7 @@ import { cabinet, bookings } from '../data/cabinet';
     }
     if (objet === 'paiement' && q.get('type') === 'rendez-vous') {
       titre.textContent = 'Merci, votre paiement est en cours de confirmation.';
-      texte.textContent = 'PayPal vous adresse son reçu par courriel ; le cabinet vous confirme à son tour la réception du règlement, en général dans les minutes qui suivent. Si vous n’avez pas encore choisi votre créneau, faites-le maintenant.';
+      texte.textContent = `PayPal vous adresse son reçu par courriel ; le cabinet vous confirme à son tour la réception du règlement, en général dans les minutes qui suivent. Si vous n’avez pas encore choisi votre créneau, faites-le maintenant${reservable ? '' : ', avec le lien du courriel que vous avez reçu'}.`;
       montrerCreneau();
     } else if (objet === 'paiement') {
       titre.textContent = 'Merci, votre paiement est en cours de confirmation.';

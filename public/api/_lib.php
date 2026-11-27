@@ -260,9 +260,11 @@ function journal(string $formulaire, string $etat): void {
 
 /** Lien de paiement PayPal (page hébergée : compte PayPal ou carte bancaire sans compte).
  *  Aucun secret : seul l'identifiant marchand public est utilisé. La référence voyage dans `invoice` et `custom`. */
-function lien_paypal(string $libelle, int $montant, string $ref, string $formule = '', string $objet = 'consultation'): string {
+function lien_paypal(string $libelle, int $montant, string $ref, string $formule = '', string $objet = 'consultation', string $creneau = ''): string {
     global $CONFIG;
     $hote = 'https://' . ($_SERVER['HTTP_HOST'] ?? parse_url(SITE_URL, PHP_URL_HOST));
+    // Rendez-vous : le lien privé du créneau suit le client au retour de PayPal (la page Merci n'en contient aucun).
+    $rdv = $objet === 'rendez-vous' ? '&format=' . $formule . ($creneau !== '' ? '&creneau=' . rawurlencode($creneau) : '') : '';
     return 'https://www.paypal.com/cgi-bin/webscr?' . http_build_query([
         'cmd'           => '_xclick',
         'business'      => $CONFIG['paypal_id'],
@@ -276,8 +278,8 @@ function lien_paypal(string $libelle, int $montant, string $ref, string $formule
         'no_note'       => '1',
         'lc'            => 'fr_FR',
         'charset'       => 'utf-8',
-        'return'        => $hote . '/merci?objet=paiement&ref=' . $ref . ($objet === 'rendez-vous' ? '&type=rendez-vous&format=' . $formule : ''),
-        'cancel_return' => $hote . '/merci?objet=' . $objet . '&ref=' . $ref . '&prix=' . $montant . '&annule=1' . ($objet === 'rendez-vous' ? '&format=' . $formule : ''),
+        'return'        => $hote . '/merci?objet=paiement&ref=' . $ref . ($objet === 'rendez-vous' ? '&type=rendez-vous' . $rdv : ''),
+        'cancel_return' => $hote . '/merci?objet=' . $objet . '&ref=' . $ref . '&prix=' . $montant . '&annule=1' . $rdv,
         'notify_url'    => $hote . '/api/paypal-ipn.php', // notification IPN : marque la demande « payée » (voir paypal-ipn.php)
     ], '', '&', PHP_QUERY_RFC3986);
 }

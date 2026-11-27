@@ -35,15 +35,11 @@ export const cabinet = {
 /**
  * Prise de rendez-vous en ligne : page de réservation personnelle Microsoft Bookings (« Bookings with me »)
  * du compte cabinet@. Les créneaux (lun–ven 10 h, puis l’après-midi à partir de 14 h 30, pas de 30 min) sont
- * masqués dès qu’un rendez-vous ou une audience figure dans le calendrier Outlook. Liens publics, sans secret.
- * Les trois liens « type » ouvrent directement le format choisi ; `page` les présente tous.
+ * masqués dès qu’un rendez-vous ou une audience figure dans le calendrier Outlook.
+ * Depuis le 27/11/2026, toutes les fiches Bookings sont privées : le créneau ne s’obtient qu’après le formulaire
+ * de /services/rendez-vous, qui lit les liens (avec `bookingcode`) dans SharePoint, jamais dans ce dépôt public.
  */
-const bookingsBase = 'https://bookings.cloud.microsoft/bookwithme/user/1b837552a8724b3389750385d7d2b910@arnaudcousin-avocat.fr';
 export const bookings = {
-  page: `${bookingsBase}?anonymous&ep=plink`,
-  cabinet: `${bookingsBase}/meetingtype/WVhQj8HnQkWwka4vXXl_ZA2?anonymous&ep=mLinkFromTile`,
-  visio: `${bookingsBase}/meetingtype/7r6ub-rr_kOYFlJqr2YP2Q2?anonymous&ep=mLinkFromTile`,
-  telephone: `${bookingsBase}/meetingtype/asah2_KYrEan3uNgg1MXLw2?anonymous&ep=mLinkFromTile`,
   /** Prix affiché pour les trois formats (110 € HT). */
   prix: '132 € TTC · 1 h au plus',
 } as const;

@@ -385,7 +385,7 @@ export const questionsCommunes: Question[] = [
 
 /* ───────────────────────── Fin du parcours ───────────────────────── */
 
-/** Formats de rendez-vous ; `bookings` renvoie à la clé correspondante de `cabinet.ts › bookings` (sauf « aucun »). Le lien mène au formulaire de rendez-vous. */
+/** Formats de rendez-vous ; l'identifiant (sauf « aucun ») est celui du formulaire de rendez-vous, vers lequel mène le lien. */
 export const formats: { id: 'cabinet' | 'visio' | 'telephone' | 'aucun'; label: string; aide: string }[] = [
   { id: 'cabinet', label: 'Au cabinet', aide: '15 rue du Puits Mauger, Rennes — métro Colombier' },
   { id: 'visio', label: 'En visioconférence', aide: 'Lien Teams envoyé avec la confirmation' },
